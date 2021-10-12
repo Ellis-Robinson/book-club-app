@@ -37,6 +37,38 @@ def sign_up():
 
     return render_template("sign_up.html")
 
+@app.route("/log_in", methods=["GET", "POST"])
+def log_in():
+    if request.method == "POST":
+        #checks if user already exists in db
+        existing_user = mongo.db.users.find_one({
+            "username": request.form.get("username").lower()})
+
+        if existing_user:
+            #checks if the password for user is correct
+            if check_password_hash(
+                    existing_user["password"], request.form.get("password")):
+                session["user"] = request.form.get("username").lower()
+                flash("Welcome back, {}".format(
+                    request.form.get("username")))
+                return redirect(url_for("get_books"))
+
+            else:
+                flash("Incorrect Username/Password")
+                return redirect(url_for("log_in"))
+        else:
+            flash("Incorrect Username/Password")
+            return redirect(url_for("log_in"))
+
+    return render_template("log_in.html")
+
+
+@app.route("/log_out")
+def log_out():
+    session.pop("user")
+    flash("You have successfully logged out")
+    return redirect(url_for("log_in"))
+
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
