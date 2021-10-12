@@ -24,6 +24,7 @@
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a href="{{ url_for('get_books') }}">Home</a></li>
                     {% if session.user %}
+                    <li><a href="{{ url_for('profile', username=session['user']) }}"><i class="fa fa-user"></i></a></li>
                     <li><a href="{{ url_for('log_out') }}">Log out</a></li>
                     {% else %}
                     <li><a href="{{ url_for('log_in') }}">Log in</a></li>

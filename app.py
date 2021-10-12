@@ -51,7 +51,7 @@ def log_in():
                 session["user"] = request.form.get("username").lower()
                 flash("Welcome back, {}".format(
                     request.form.get("username")))
-                return redirect(url_for("get_books"))
+                return redirect(url_for("user_profile"))
 
             else:
                 flash("Incorrect Username/Password")
@@ -61,6 +61,17 @@ def log_in():
             return redirect(url_for("log_in"))
 
     return render_template("log_in.html")
+
+
+@app.route("/profile/<username>", methods=["GET", "POST"])
+def profile(username):
+    username = mongo.db.users.find_one(
+        {"username": session["user"]})["username"]
+
+    if session["user"]:
+        return render_template("user_profile.html", username=username)
+
+    return redirect(url_for("log_in"))
 
 
 @app.route("/log_out")
