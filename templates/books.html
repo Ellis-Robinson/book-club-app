@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Club</title>
-</head>
-<body>
+{% extends "base.html" %}
+{% block content %}
+
+<h3> All Books </h3>
+
     {% for book in books %}
         {{ book.title }}<br>
         {{ book.genre }}<br>
@@ -17,5 +13,5 @@
         {{ book.series_name }}<br>
         {{ book.rating }}<br>
     {% endfor %}
-</body>
-</html>
+
+{% endblock %}
