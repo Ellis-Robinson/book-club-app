@@ -6,3 +6,7 @@ body {
 .center-align {
     text-align: center;
 }
+
+.padding-right {
+    padding-right: 5%;
+}

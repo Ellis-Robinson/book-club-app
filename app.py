@@ -51,7 +51,7 @@ def log_in():
                 session["user"] = request.form.get("username").lower()
                 flash("Welcome back, {}".format(
                     request.form.get("username")))
-                return redirect(url_for("user_profile"))
+                return redirect(url_for("profile", username=session["user"]))
 
             else:
                 flash("Incorrect Username/Password")

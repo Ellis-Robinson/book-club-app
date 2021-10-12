@@ -17,12 +17,13 @@
 
 <body>
     <header>
+        <!--medium and large screen size nav bar-->
         <nav>
             <div class="nav-wrapper amber darken-4">
                 <a href="{{ url_for('get_books') }}" class="brand-logo"><i class="fas fa-book"></i>Book Club</a>
                 <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="{{ url_for('get_books') }}">Home</a></li>
+                    <li><a href="{{ url_for('get_books') }}"><i class="fa fa-home"></i></a></li>
                     {% if session.user %}
                     <li><a href="{{ url_for('profile', username=session['user']) }}"><i class="fa fa-user"></i></a></li>
                     <li><a href="{{ url_for('log_out') }}">Log out</a></li>
@@ -35,8 +36,9 @@
         </nav>
         <!--collapsable nav-->
         <ul class="sidenav amber darken-4" id="mobile-nav">
-            <li><a href="{{ url_for('get_books') }}">Home</a></li>
+            <li><a href="{{ url_for('get_books') }}"><i class="fa fa-home"></i></a></li>
             {% if session.user %}
+            <li><a href="{{ url_for('profile', username=session['user']) }}"><i class="fa fa-user"></i></a></li>
             <li><a href="{{ url_for('log_out') }}">Log out</a></li>
             {% else %}
             <li><a href="{{ url_for('log_in') }}">Log in</a></li>
