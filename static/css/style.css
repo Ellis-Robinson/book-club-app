@@ -2,3 +2,7 @@ body {
     background-image: url("");
     background-repeat: no-repeat;
 }
+
+.center-align {
+    text-align: center;
+}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="center-align">Sign Up!</h3>
+
+<div class="row">
+    <div class="col s12 m8 offset-m2">
+        <div class="card gre lighten-1">
+            <div class="card-content">
+                <div class="row">
+                    <form class="col s12 m8" method="POST" action="{{ url_for('sign_up') }}">
+                        <div class="row">
+                            <!--username imput field-->
+                            <div class="input-field col s12">
+                                <input id="username" name="username" type="text" minlength="3"
+                                maxlength="15" pattern="^[a-zA-Z0-9]{3,15}$" class="validate" required>
+                                <label for="username">User Name</label>
+                            </div>
+                            <!--password imput field-->
+                            <div class="input-field col s12">
+                                <input id="password" name="password" type="password" minlength="8"
+                                maxlength="20" pattern="^[a-zA-Z0-9]{3,15}$" class="validate" required>
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                        <button class="btn waves-effect waves-light amber darken-1" type="submit" name="action">
+                            Submit
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
