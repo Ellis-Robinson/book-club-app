@@ -112,6 +112,11 @@ def my_reviews():
     reviews = mongo.db.reviews.find()
     return render_template("my_reviews.html", reviews=reviews)
 
+@app.route("/edit_review/<review_id>", methods=["GET", "POST"])
+def edit_review(review_id):
+    review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+    return render_template("edit_review.html", review=review)
+
 
 @app.route("/log_out")
 def log_out():

@@ -16,6 +16,10 @@
             <div><i class="fas fa-align-left"></i>
                 Reviews: {{ review.review }}
             </div>
+            <div>
+            <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn amber darken-2">Edit</a>
+            <a href=""  class="waves-effect waves-light btn amber darken-2">Delete</a>
+            </div>
 
         </div>
         </div>

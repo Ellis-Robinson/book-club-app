@@ -4,7 +4,7 @@
 <h3 class="center-align"> Add Books </h3>
 
 <div class="row">
-    <form class="col s12 m6 offset-m3" method="POST">
+    <form class="col s12 m6 offset-m3" method="POST" action="{{ url_for('add_book') }}">
         <div class="row">
             <div class="input-field col s12 ">
                 <input id="title" name="title" type="text" class="validate">
