@@ -3,13 +3,24 @@
 
 <h3 class="center-align"> Edit Review </h3>
 
+<div class="row center-align">
+    {{ review.book_reviewed }}
+</div>
+
 <div class="row">
     <form class="col s12 m6 offset-m3" method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
         <div class="row">
             <div class="input-field col s12 ">
-                <textarea id="review" name="review" class="materialize-textarea" required></textarea>
+                <textarea id="review" name="review"  class="materialize-textarea" required>
+                    {{- review.review -}}
+                </textarea>
                 <label for="review">Review</label>
             </div>
+        </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Edit
+                <i class="fas fa-edit"></i>
+            </button>
         </div>
     </form>
 </div>
