@@ -22,7 +22,8 @@ mongo = PyMongo(app)
 @app.route("/get_books")
 def get_books():
     books = mongo.db.books.find()
-    return render_template("books.html", books=books)
+    reviews = mongo.db.reviews.find()
+    return render_template("books.html", books=books, reviews=reviews)
 
 
 @app.route("/sign_up", methods=["GET", "POST"])
@@ -91,14 +92,25 @@ def add_book():
         review = {
             "book_reviewed": request.form.get("title").lower(),
             "review": request.form.get("review"),
+            "reviewer": session["user"]
         }
 
         mongo.db.books.insert_one(book)
         mongo.db.reviews.insert_one(review)
         flash("Book Successfully Added")
+
+    if session["user"]:
+        genres = mongo.db.genres.find().sort("genres", 1)
+        return render_template("add_book.html", genres=genres)
     
-    genres = mongo.db.genres.find().sort("genres", 1)
-    return render_template("add_book.html", genres=genres)
+    return redirect(url_for('log_in'))
+
+
+@app.route("/my_reviews")
+def my_reviews():
+
+    reviews = mongo.db.reviews.find()
+    return render_template("my_reviews.html", reviews=reviews)
 
 
 @app.route("/log_out")

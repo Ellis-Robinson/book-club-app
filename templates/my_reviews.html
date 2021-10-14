@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="center-align"> My Reviews </h3>
+
+<ul class="collapsible">
+{% for review in reviews %}
+{% if review.reviewer == session["user"] %}
+    <li>
+        <div class="collapsible-header">
+            <i class="fas fa-align-left"></i>
+            <div class="padding-right">Book Name: {{ review.book_reviewed }}</div>
+        </div>
+        <div class="collapsible-body">
+
+            <div><i class="fas fa-align-left"></i>
+                Reviews: {{ review.review }}
+            </div>
+
+        </div>
+        </div>
+    </li>
+{% endif %}
+{% endfor %}
+</ul>
+
+{% endblock %}

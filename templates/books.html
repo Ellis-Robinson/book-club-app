@@ -3,34 +3,36 @@
 
 <h3 class="center-align"> All Books </h3>
 
+{% if session['user'] %}
+<div class="center-align">
+    <a href="{{ url_for('add_book') }}" class="waves-effect waves-light amber darken-2 btn">Add Book!</a>
+</div>
+{% endif %}
+
 <ul class="collapsible">
     {% for book in books %}
     <li>
-        <div class="collapsible-header"><i class=""></i>
+        <div class="collapsible-header">
+            <i class="fas fa-book"></i>
             <div class="padding-right">Name: {{ book.title.capitalize() }}</div>
             <div class="padding-right">Genre: {{ book.genre.capitalize() }}</div>
             <div class="padding-right">Author: {{ book.author.capitalize() }}</div>
             <div class="padding-right">Year Of Publishing: {{ book.year }}</div>
-            <div >Rating: {{ book.rating }}/5</div>
+            <div>Rating: {{ book.rating }}/5</div>
         </div>
         <div class="collapsible-body">
             <div>Synopsis: {{ book.synopsis }}</div>
             <div>Series: {{ book.series_name }}</div>
-            <a href="{{ url_for('add_book') }}" class="waves-effect waves-light amber darken-2 btn">button</a>
+
+
+            <div><i class="fas fa-align-left"></i>
+                Reviews:
+            </div>
+
+        </div>
         </div>
     </li>
     {% endfor %}
 </ul>
-
-{% for book in books %}
-{{ book.title }}<br>
-{{ book.genre }}<br>
-{{ book.author }}<br>
-{{ book.year }}<br>
-{{ book.synopsis }}<br>
-{{ book.is_series }}<br>
-{{ book.series_name }}<br>
-{{ book.rating }}<br>
-{% endfor %}
 
 {% endblock %}
