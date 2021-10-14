@@ -7,9 +7,10 @@
     {{ book.title }}
 </div>
 
+<!--all form sections hidden except for review input-->
 <div class="row">
     <form class="col s12 m6 offset-m3" method="POST" action="{{ url_for('review_book', book_id=book._id) }}">
-        <div class="row">
+        <div class="row hidden">
             <div class="input-field col s12 ">
                 <input id="book_reviewed" name="book_reviewed" value="{{ book.title }}" type="text" class="validate" required >
                 <label for="book_reviewed">Book Name</label>
@@ -21,17 +22,20 @@
                 <label for="review">Review</label>
             </div>
         </div>
-        <div class="row">
+        <div class="row hidden">
             <div class="input-field col s12 ">
-                <input id="book_id" name="book_id" value="{{ book._id }}" type="text" class="validate" required >
+                <input id="book_id" name="book_id" value="{{ book._id }}" type="text" class="validate" >
                 <label for="book_id">Book Id</label>
             </div>
         </div>
-        <div class="row">
+        <div class="row hidden">
             <div class="input-field col s12 ">
                 <input id="reviewer" name="reviewer" value="{{ session['user'] }}" type="text" class="validate" required >
                 <label for="reviewer">Reviewed by</label>
             </div>
+        </div>
+        <div class="row">
+            By: {{ session['user'] }}
         </div>
         <div class="row">
             <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Review

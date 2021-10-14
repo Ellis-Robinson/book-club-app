@@ -19,3 +19,7 @@ body {
     width: 80%;
 }
 
+.hidden {
+    display: none;
+}
+

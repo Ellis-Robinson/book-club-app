@@ -17,8 +17,11 @@
                 Reviews: {{ review.review }}
             </div>
             <div>
+               {{ review.book_id }}
+            </div>
+            <div>
             <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn amber darken-2">Edit</a>
-            <a href=""  class="waves-effect waves-light btn amber darken-2">Delete</a>
+            <a href="{{ url_for('delete_review', review_id=review._id) }}"  class="waves-effect waves-light btn red darken-2">Delete</a>
             </div>
 
         </div>

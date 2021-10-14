@@ -22,7 +22,7 @@ mongo = PyMongo(app)
 @app.route("/get_books")
 def get_books():
     books = mongo.db.books.find()
-    reviews = mongo.db.reviews.find()
+    reviews = list(mongo.db.reviews.find())
     return render_template("books.html", books=books, reviews=reviews)
 
 
@@ -134,7 +134,7 @@ def edit_review(review_id):
             "book_reviewed": request.form.get("book_reviewed"),
             "review": request.form.get("review"),
             "reviewer": request.form.get("reviewer"),
-            "book_id": ObjectId(request.form.get("book_id"))
+            "book_id": request.form.get("book_id"),
         }
 
         mongo.db.reviews.update({"_id": ObjectId(review_id)}, edit)
@@ -142,6 +142,13 @@ def edit_review(review_id):
         return redirect(url_for('my_reviews'))
 
     return render_template("edit_review.html", review=review)
+
+
+@app.route("/delete_review/<review_id>")
+def delete_review(review_id):
+    mongo.db.reviews.remove({"_id": ObjectId(review_id)})
+    flash("Review Successfully Removed")
+    return redirect(url_for('my_reviews'))
 
 
 @app.route("/log_out")
