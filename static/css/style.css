@@ -10,3 +10,12 @@ body {
 .padding-right {
     padding-right: 5%;
 }
+
+.large-icon {
+    font-size: 70px;
+}
+
+.square {
+    width: 80%;
+}
+

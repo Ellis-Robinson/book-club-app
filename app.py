@@ -74,6 +74,33 @@ def profile(username):
     return redirect(url_for("log_in"))
 
 
+@app.route("/add_book", methods=["GET", "POST"])
+def add_book():
+    if request.method == "POST":
+        is_series = "yes" if request.form.get("is_series") else "no"
+        book = {
+            "title": request.form.get("title").lower(),
+            "genre": request.form.get("genre").lower(),
+            "author": request.form.get("author").lower(),
+            "year": request.form.get("year").lower(),
+            "synopsis": request.form.get("synopsis").lower(),
+            "is_series": is_series,
+            "series_name": request.form.get("series_name"),
+            "rating": request.form.get("rating")
+        }
+        review = {
+            "book_reviewed": request.form.get("title").lower(),
+            "review": request.form.get("review"),
+        }
+
+        mongo.db.books.insert_one(book)
+        mongo.db.reviews.insert_one(review)
+        flash("Book Successfully Added")
+    
+    genres = mongo.db.genres.find().sort("genres", 1)
+    return render_template("add_book.html", genres=genres)
+
+
 @app.route("/log_out")
 def log_out():
     session.pop("user")

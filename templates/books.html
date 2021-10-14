@@ -16,6 +16,7 @@
         <div class="collapsible-body">
             <div>Synopsis: {{ book.synopsis }}</div>
             <div>Series: {{ book.series_name }}</div>
+            <a href="{{ url_for('add_book') }}" class="waves-effect waves-light amber darken-2 btn">button</a>
         </div>
     </li>
     {% endfor %}

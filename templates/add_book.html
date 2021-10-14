@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="center-align"> Add Books </h3>
+
+<div class="row">
+    <form class="col s12 m6 offset-m3" method="POST">
+        <div class="row">
+            <div class="input-field col s12 ">
+                <input id="title" name="title" type="text" class="validate">
+                <label for="title">Title</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <select id="genre" name="genre" class="validate" required>
+                    <option value="" disabled selected>Choose the Genre</option>
+                    {% for genre in genres %}
+                    <option value="{{ genre.name }}">{{ genre.name.capitalize() }}</option>
+                    {% endfor %}
+                </select>
+                <label>Genre</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 ">
+                <input id="author" name="author" type="text" class="validate" required>
+                <label for="author">Author</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 ">
+                <input id="year" name="year" type="text" placeholder="1999" pattern="[0-9]{4}" class="validate" required>
+                <label for="year">Year of Publishing</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 ">
+                <textarea id="synopsis" name="synopsis" class="materialize-textarea" required></textarea>
+                <label for="synopsis">Synopsis</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 ">
+                <textarea id="review" name="review" class="materialize-textarea" required></textarea>
+                <label for="review">Review</label>
+            </div>
+        </div>
+            Rating:
+            <p>
+                <lable>
+                    <input name="rating" class="with-gap" type="radio" value="1" />
+                    <span>1</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input name="rating" class="with-gap" type="radio" value="2" />
+                    <span>2</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input name="rating" class="with-gap" type="radio" value="3" checked/>
+                    <span>3</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input name="rating" class="with-gap" type="radio" value="4" />
+                    <span>4</span>
+                </label>
+            </p>
+            <p>
+                <label>
+                    <input name="rating" class="with-gap" type="radio" value="5" />
+                    <span>5</span>
+                </label>
+            </p>
+        <div class="row">
+            <label for="in_series">Is This A Series?</label>
+        </div>
+        <div class="switch">
+            <label>
+                No
+                <input type="checkbox" id="in_series" name="in_series">
+                <span class="lever"></span>
+                Yes
+            </label>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 ">
+                <input id="series_name" name="series_name" type="text" class="validate">
+                <label for="series_name">Name of Series</label>
+            </div>
+        </div>
+        <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Add Book!
+            <i class="fas fa-plus"></i>
+        </button>
+    </form>
+</div>
+
+{% endblock %}
