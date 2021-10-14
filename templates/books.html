@@ -29,10 +29,11 @@
             <div><i class="fas fa-align-left"></i>
                 Reviews:
                 {% for review in reviews %}
+                {% if review.book_id == book._id|string %}
 
                 {{ review.review }}
 
-
+                {% endif %}
                 {% endfor %}
             </div>
 
