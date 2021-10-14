@@ -19,6 +19,7 @@
             <div class="padding-right">Author: {{ book.author.capitalize() }}</div>
             <div class="padding-right">Year Of Publishing: {{ book.year }}</div>
             <div>Rating: {{ book.rating }}/5</div>
+            <div>Book ID: {{ book._id }}</div>
         </div>
         <div class="collapsible-body">
             <div>Synopsis: {{ book.synopsis }}</div>
@@ -27,11 +28,15 @@
 
             <div><i class="fas fa-align-left"></i>
                 Reviews:
+                {% for review in reviews%}
+                {% if review.book_id == book._id %}
+                {{ review.reviews }}
+                {% endif %}
+                {% endfor %}
             </div>
             <div class="row">
-                <button href="" class="waves-effect waves-light amber darken-2 btn"> 
-                    Review Book
-                </button>
+                <a href="{{ url_for('review_book', book_id=book._id) }}" 
+                    class="waves-effect waves-light btn amber darken-2">Review Book</a>
             </div>
 
         </div>

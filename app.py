@@ -79,6 +79,7 @@ def profile(username):
 def add_book():
     if request.method == "POST":
         is_series = "yes" if request.form.get("is_series") else "no"
+
         book = {
             "title": request.form.get("title").lower(),
             "genre": request.form.get("genre").lower(),
@@ -89,21 +90,33 @@ def add_book():
             "series_name": request.form.get("series_name"),
             "rating": request.form.get("rating")
         }
-        review = {
-            "book_reviewed": request.form.get("title").lower(),
-            "review": request.form.get("review"),
-            "reviewer": session["user"]
-        }
-
         mongo.db.books.insert_one(book)
-        mongo.db.reviews.insert_one(review)
         flash("Book Successfully Added")
 
     if session["user"]:
         genres = mongo.db.genres.find().sort("genres", 1)
         return render_template("add_book.html", genres=genres)
-    
+
     return redirect(url_for('log_in'))
+
+
+@app.route("/review_book/<book_id>", methods=["GET", "POST"])
+def review_book(book_id):
+    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+
+    if request.method == "POST":
+        review = {
+            "book_reviewed": request.form.get("book_reviewed"),
+            "review": request.form.get("review"),
+            "reviewer": request.form.get("reviewer"),
+            "book_id": request.form.get("book_id")
+        }
+        mongo.db.reviews.insert_one(review)
+        flash("Book Successfully reviewed")
+        return redirect(url_for("my_reviews"))
+
+    return render_template("review_book.html", book=book)
+
 
 
 @app.route("/my_reviews")
@@ -120,7 +133,8 @@ def edit_review(review_id):
         edit = {
             "book_reviewed": request.form.get("book_reviewed"),
             "review": request.form.get("review"),
-            "reviewer": request.form.get("reviewer")
+            "reviewer": request.form.get("reviewer"),
+            "book_id": ObjectId(request.form.get("book_id"))
         }
 
         mongo.db.reviews.update({"_id": ObjectId(review_id)}, edit)
