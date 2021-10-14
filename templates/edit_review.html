@@ -11,10 +11,22 @@
     <form class="col s12 m6 offset-m3" method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
         <div class="row">
             <div class="input-field col s12 ">
+                <input id="book_reviewed" name="book_reviewed" value="{{ review.book_reviewed }}" type="text" class="validate" required >
+                <label for="book_reviewed">Book Name</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 ">
                 <textarea id="review" name="review"  class="materialize-textarea" required>
                     {{- review.review -}}
                 </textarea>
                 <label for="review">Review</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12 ">
+                <input id="reviewer" name="reviewer" value="{{ review.reviewer }}" type="text" class="validate" required>
+                <label for="reviewer">Reviewer</label>
             </div>
         </div>
         <div class="row">
