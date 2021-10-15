@@ -208,6 +208,23 @@ def my_library():
     return render_template("my_library.html", books=books, reviews=reviews)
 
 
+#@app.route("/add_to_library/<book_id>", methods=["GET", "POST"])
+#def add_to_library(book_id):
+#    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+#    if session["user"]:
+#       if request.method == "POST":
+#           book = {
+#               "book_id": book_id
+#           }
+#           mongo.db.users.find_one({
+#               "username": session["user"]
+#                   }).books_read.insert_one(book)
+#           flash("Book Successfully added to library")
+#           return redirect(url_for("my_library"))
+
+
+
+
 @app.route("/log_out")
 def log_out():
     session.pop("user")
