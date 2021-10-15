@@ -1,7 +1,13 @@
 body {
-    background-image: url("");
+    background-image: url("https://www.wallpaperflare.com/static/767/594/322/books-library-bokeh-depth-of-field-wallpaper.jpg");
     background-repeat: no-repeat;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
+  main {
+    flex: 1 0 auto;
+  }
 
 .center-align {
     text-align: center;
@@ -13,10 +19,6 @@ body {
 
 .large-icon {
     font-size: 70px;
-}
-
-.square {
-    width: 80%;
 }
 
 .hidden {

@@ -20,12 +20,19 @@
             <div class="padding-right">Author: {{ book.author.capitalize() }}</div>
             <div class="padding-right">Year Of Publishing: {{ book.year }}</div>
             <div>Rating: {{ book.rating }}/5</div>
-            <div>Book ID: {{ book._id }}</div>
         </div>
         <div class="collapsible-body">
-            <div>Synopsis: {{ book.synopsis }}</div>
-            <div>Series: {{ book.series_name }}</div>
-
+            <div class="row">
+                <div class="col s12 ">
+                  <div class="card amber darken-4">
+                    <div class="card-content white-text">
+                      <span class="card-title">Synopsis:</span>
+                      <div>{{ book.synopsis }}</div>
+                      <div>Series: {{ book.series_name }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <div>
                 <ul class="collection with-header">
                     <li class="collection-header">
@@ -40,7 +47,7 @@
                     <!--gets all reviews that match current book-->
                     {% if review.book_id == book._id|string %}
 
-                    <li class="collection-item">"{{ review.review }}" - {{ review.reviewer }}
+                    <li class="collection-item"><blockquote >"{{ review.review }}" - {{ review.reviewer }}</blockquote>
                         <!--only shows if review belongs to user-->
                         {% if review.reviewer == session["user"] %}
 
