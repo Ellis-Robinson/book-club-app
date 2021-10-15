@@ -17,18 +17,6 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
-
-@app.route("/")
-@app.route("/get_books")
-def get_books():
-    books = mongo.db.books.find()
-    reviews = list(mongo.db.reviews.find())
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
-    return render_template(
-        "books.html", books=books, reviews=reviews, user=user)
-
 # loads page with list of all books
 @app.route("/")
 @app.route("/get_books")
@@ -183,16 +171,6 @@ def delete_review(review_id):
     flash("Review Successfully Removed")
     return redirect(url_for('my_reviews'))
 
-
-# allows user to delete books they have added
-@app.route("/delete_book/<book_id>")
-def delete_book(book_id):
-    # finds reviews associated with book
-    reviews = mongo.db.reviews.find_one({"book_id": book_id})
-    mongo.db.books.remove({"_id": ObjectId(book_id)})
-    mongo.db.reviews.remove(reviews)
-    flash("Book Successfully Removed")
-    return redirect(url_for('get_books'))
 
 
 # allows admin users to add genre
