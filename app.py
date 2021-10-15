@@ -23,7 +23,10 @@ mongo = PyMongo(app)
 def get_books():
     books = mongo.db.books.find()
     reviews = list(mongo.db.reviews.find())
-    return render_template("books.html", books=books, reviews=reviews)
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
+    return render_template("books.html", books=books, reviews=reviews, user=user)
 
 
 @app.route("/sign_up", methods=["GET", "POST"])
@@ -92,7 +95,8 @@ def add_book():
             "synopsis": request.form.get("synopsis").lower(),
             "is_series": is_series,
             "series_name": request.form.get("series_name"),
-            "rating": request.form.get("rating")
+            "rating": request.form.get("rating"),
+            "added_by": session["user"]
         }
         mongo.db.books.insert_one(book)
         flash("Book Successfully Added")
@@ -155,6 +159,13 @@ def delete_review(review_id):
     return redirect(url_for('my_reviews'))
 
 
+@app.route("/delete_book/<book_id>")
+def delete_book(book_id):
+    mongo.db.books.remove({"_id": ObjectId(book_id)})
+    flash("Book Successfully Removed")
+    return redirect(url_for('get_books'))
+
+
 @app.route("/add_genre", methods=["GET", "POST"])
 def add_genre():
     user = mongo.db.users.find_one({
@@ -163,7 +174,7 @@ def add_genre():
     if request.method == "POST":
 
         genre = {
-            "genre": request.form.get("genre").lower(),
+            "name": request.form.get("name").lower(),
         }
         mongo.db.genres.insert_one(genre)
         flash("Genre Successfully Added")
@@ -176,7 +187,7 @@ def add_genre():
 
 @app.route("/my_library")
 def my_library():
-    books = mongo.db.books.find()
+    books = list(mongo.db.books.find())
     reviews = list(mongo.db.reviews.find())
     return render_template("my_library.html", books=books, reviews=reviews)
 

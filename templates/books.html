@@ -42,6 +42,10 @@
             <div class="row">
                 <a href="{{ url_for('review_book', book_id=book._id) }}"
                     class="waves-effect waves-light btn amber darken-2">Review Book</a>
+                {% if book.added_by == session['user'] or user["admin"] %}
+                <a href="{{ url_for('delete_book', book_id=book._id) }}"
+                    class="waves-effect waves-light btn red darken-2">Delete Book</a>
+                {% endif %}
             </div>
 
         </div>
