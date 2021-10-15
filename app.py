@@ -18,6 +18,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
+# loads main page with list of all books
 @app.route("/")
 @app.route("/get_books")
 def get_books():
@@ -29,6 +30,7 @@ def get_books():
     return render_template("books.html", books=books, reviews=reviews, user=user)
 
 
+# allows user to create username and password
 @app.route("/sign_up", methods=["GET", "POST"])
 def sign_up():
     if request.method == "POST":
@@ -42,15 +44,16 @@ def sign_up():
 
     return render_template("sign_up.html")
 
+
 @app.route("/log_in", methods=["GET", "POST"])
 def log_in():
     if request.method == "POST":
-        #checks if user already exists in db
+        # checks if user already exists in db
         existing_user = mongo.db.users.find_one({
             "username": request.form.get("username").lower()})
 
         if existing_user:
-            #checks if the password for user is correct
+            # checks if the password for user is correct
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
@@ -68,6 +71,7 @@ def log_in():
     return render_template("log_in.html")
 
 
+# loads users page or redirects to log in page
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
     username = mongo.db.users.find_one(
@@ -82,6 +86,8 @@ def profile(username):
     return redirect(url_for("log_in"))
 
 
+# if use is logged in takes to add book page
+# otherwise redirects to log in page
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
     if request.method == "POST":
@@ -109,25 +115,29 @@ def add_book():
     return redirect(url_for('log_in'))
 
 
+# if use is logged in takes to review book page
+# otherwise redirects to log in page
 @app.route("/review_book/<book_id>", methods=["GET", "POST"])
 def review_book(book_id):
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+    if session["user"]:
+        if request.method == "POST":
+            review = {
+                "book_reviewed": request.form.get("book_reviewed"),
+                "review": request.form.get("review"),
+                "reviewer": request.form.get("reviewer"),
+                "book_id": request.form.get("book_id")
+            }
+            mongo.db.reviews.insert_one(review)
+            flash("Book Successfully reviewed")
+            return redirect(url_for("my_reviews"))
 
-    if request.method == "POST":
-        review = {
-            "book_reviewed": request.form.get("book_reviewed"),
-            "review": request.form.get("review"),
-            "reviewer": request.form.get("reviewer"),
-            "book_id": request.form.get("book_id")
-        }
-        mongo.db.reviews.insert_one(review)
-        flash("Book Successfully reviewed")
-        return redirect(url_for("my_reviews"))
+        return render_template("review_book.html", book=book)
 
-    return render_template("review_book.html", book=book)
+    return redirect(url_for('log_in'))
 
 
-
+# shows all reviews user has posted
 @app.route("/my_reviews")
 def my_reviews():
 
@@ -135,6 +145,7 @@ def my_reviews():
     return render_template("my_reviews.html", reviews=reviews)
 
 
+# allows user to edit their reviews
 @app.route("/edit_review/<review_id>", methods=["GET", "POST"])
 def edit_review(review_id):
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
@@ -153,6 +164,7 @@ def edit_review(review_id):
     return render_template("edit_review.html", review=review)
 
 
+# allows user to delete their reviews
 @app.route("/delete_review/<review_id>")
 def delete_review(review_id):
     mongo.db.reviews.remove({"_id": ObjectId(review_id)})
@@ -160,6 +172,7 @@ def delete_review(review_id):
     return redirect(url_for('my_reviews'))
 
 
+# allows user to delete books they have added
 @app.route("/delete_book/<book_id>")
 def delete_book(book_id):
     mongo.db.books.remove({"_id": ObjectId(book_id)})
@@ -167,6 +180,7 @@ def delete_book(book_id):
     return redirect(url_for('get_books'))
 
 
+# allows admin users to add genre
 @app.route("/add_genre", methods=["GET", "POST"])
 def add_genre():
     user = mongo.db.users.find_one({
@@ -181,6 +195,7 @@ def add_genre():
         flash("Genre Successfully Added")
         return redirect(url_for("get_books"))
 
+    # checks if user is admin
     if user["admin"]:
         return render_template("add_genre.html")
     return redirect(url_for("get_books"))
