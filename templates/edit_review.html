@@ -4,10 +4,10 @@
 <h3 class="center-align white-text text-shadow"> Edit Review </h3>
 
 <div class="row center-align">
-    {{ review.book_reviewed }}
+    <h5 cloass="white-text text-shadow">{{ review.book_reviewed }}</h5>
 </div>
 
-<div class="row">
+<div class="row dark-shadow-background white-text">
     <form class="col s12 m6 offset-m3" method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
         <div class="row hidden">
             <div class="input-field col s12 ">

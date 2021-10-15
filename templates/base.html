@@ -19,7 +19,7 @@
     <header>
         <!--medium and large screen size nav bar-->
         <nav>
-            <div class="nav-wrapper amber darken-4">
+            <div class="nav-wrapper green darken-3">
                 <a href="{{ url_for('get_books') }}" class="brand-logo"><i class="fas fa-book"></i>Book Club</a>
                 <a href="#" data-target="mobile-nav" class="sidenav-trigger"><i class="fas fa-bars"></i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -36,9 +36,9 @@
         </nav>
         <!--collapsable nav-->
         <ul class="sidenav amber darken-4" id="mobile-nav">
-            <li><a href="{{ url_for('get_books') }}"><i class="fa fa-home"></i></a></li>
+            <li><a href="{{ url_for('get_books') }}">Home</a></li>
             {% if session.user %}
-            <li><a href="{{ url_for('profile', username=session['user']) }}"><i class="fa fa-user"></i></a></li>
+            <li><a href="{{ url_for('profile', username=session['user']) }}">My Profile></a></li>
             <li><a href="{{ url_for('log_out') }}">Log out</a></li>
             {% else %}
             <li><a href="{{ url_for('log_in') }}">Log in</a></li>
@@ -52,7 +52,7 @@
         {% if messages %}
         {% for message in messages %}
         <div class="row flashes">
-            <h4 class="amber darken-2 center-align"> {{ message }} </h4>
+            <h4 class="green darken-2 white-text center-align"> {{ message }} </h4>
         </div>
         {% endfor %}
         {% endif %}
@@ -65,7 +65,7 @@
     </main>
 
     <footer>
-        <div class="footer-copyright amber darken-4">
+        <div class="footer-copyright green darken-3">
             <div class="container">
                 © 2021 BookClub
                 <a class="white-text right" href="#!">More Links</a>

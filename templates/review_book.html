@@ -4,11 +4,11 @@
 <h3 class="center-align white-text text-shadow"> Review Book </h3>
 
 <div class="row center-align">
-    {{ book.title }}
+    <h5 class="white-text text-shadow">{{ book.title }}</h5>
 </div>
 
 <!--all form sections hidden except for review input-->
-<div class="row">
+<div class="row dark-shadow-background white-text"></div> 
     <form class="col s12 m6 offset-m3" method="POST" action="{{ url_for('review_book', book_id=book._id) }}">
         <div class="row hidden">
             <div class="input-field col s12 ">
@@ -38,7 +38,7 @@
             By: {{ session['user'] }}
         </div>
         <div class="row">
-            <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Review
+            <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Review
                 <i class="fas fa-edit"></i>
             </button>
         </div>

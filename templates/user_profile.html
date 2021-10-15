@@ -4,78 +4,88 @@
 <h3 class="center-align white-text text-shadow"> {{ username.capitalize() }}'s Profile </h3>
 
 <div class="row">
-    <div class="col s12 m6 l4 offset-l1">
-        <div class="card shadow-background">
-            <div class="card-content white-text center-align">
-                <span class="card-title">
-                    <i class="fas fa-book large-icon"></i>
-                    <i class="fas fa-search"></i>
-                </span>
-                <h4>
-                <a class="white-text text-shadow" href="{{ url_for('get_books') }}">Search Book</a>
-                </h4>
+    <a href="{{ url_for('get_books') }}">
+        <div class="col s12 m6 l4 offset-l1">
+            <div class="card shadow-background">
+                <div class="card-content white-text text-shadow center-align">
+                    <span class="card-title">
+                        <i class="fas fa-book large-icon"></i>
+                        <i class="fas fa-search"></i>
+                    </span>
+                    <h4>
+                        Search Book
+                    </h4>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col s12 m6 l4 offset-l2">
-        <div class="card shadow-background">
-            <div class="card-content white-text center-align">
-                <span class="card-title">
-                    <i class="fas fa-plus large-icon"></i>
-                </span>
-                <h4 >
-                <a  class="white-text text-shadow" href=" {{ url_for('add_book') }} ">Add Book</a>
-                </h4>
+    </a>
+    <a href=" {{ url_for('add_book') }} ">
+        <div class="col s12 m6 l4 offset-l2">
+            <div class="card shadow-background">
+                <div class="card-content white-text text-shadow center-align">
+                    <span class="card-title">
+                        <i class="fas fa-plus large-icon"></i>
+                    </span>
+                    <h4>
+                        Add Book
+                    </h4>
+                </div>
             </div>
         </div>
-    </div>
+    </a>
 </div>
 
 <div class="row">
-    <div class="col s12 m6 l4 offset-l1">
-        <div class="card shadow-background">
-            <div class="card-content white-text center-align">
-                <span class="card-title">
-                    <i class="fas fa-align-left large-icon"></i>
-                </span>
-                <h4>
-                <a class="white-text text-shadow" href="{{ url_for('my_reviews') }}">My Reviews</a>
-                </h4>
+    <a href="{{ url_for('my_reviews') }}">
+        <div class="col s12 m6 l4 offset-l1">
+            <div class="card shadow-background">
+                <div class="card-content white-text text-shadow center-align">
+                    <span class="card-title">
+                        <i class="fas fa-align-left large-icon"></i>
+                    </span>
+                    <h4>
+                        My Reviews
+                    </h4>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col s12 m6 l4 offset-l2">
-        <div class="card shadow-background">
-            <div class="card-content white-text center-align">
-                <span class="card-title">
-                    <i class="fas fa-book large-icon"></i>
-                    <i class="fas fa-heart"></i>
-                </span>
-                <h4>
-                <a class="white-text text-shadow" href="{{ url_for('my_library') }}">My Library</a>
-                </h4>
+    </a>
+    <a href="{{ url_for('my_library') }}">
+        <div class="col s12 m6 l4 offset-l2">
+            <div class="card shadow-background">
+                <div class="card-content white-text text-shadow center-align">
+                    <span class="card-title">
+                        <i class="fas fa-book large-icon"></i>
+                        <i class="fas fa-heart"></i>
+                    </span>
+                    <h4>
+                        My Library
+                    </h4>
+                </div>
             </div>
         </div>
-    </div>
+    </a>
 </div>
 
 {% if user["admin"] %}
 <div class="row">
-    <div class="col s12 m6 l4 offset-l1">
-        <div class="card shadow-background">
-            <div class="card-content white-text center-align">
-                <span class="card-title">
-                    <i class="fas fa-plus large-icon"></i>
-                </span>
-                <h4>
-                <a class="white-text text-shadow" href="{{ url_for('add_genre') }}">Add Genre</a>
-                </h4>
+    <a href="{{ url_for('add_genre') }}">
+        <div class="col s12 m6 l4 offset-l1">
+            <div class="card shadow-background">
+                <div class="card-content white-text text-shadow center-align">
+                    <span class="card-title">
+                        <i class="fas fa-plus large-icon"></i>
+                    </span>
+                    <h4>
+                        Add Genre
+                    </h4>
+                </div>
             </div>
         </div>
-    </div>
+    </a>
 </div>
 {% endif %}
 
 
 
-    {% endblock %}
+{% endblock %}

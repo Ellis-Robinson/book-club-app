@@ -3,25 +3,40 @@
 
 <h3 class="center-align white-text text-shadow"> My Library </h3>
 <div class="row">
-    <ul class="collapsible col l6">
-        <h6 class="center-align">Books I've read</h4>
+    <ul class="collapsible col s12 m9 ">
+        <h5 class="center-align white-text text-shadow">Books I've read</h5>
+        {% for book in books %}
+        {% if book.added_by == session['user'] %}
         <li>
-            <div class="collapsible-header">
-                <i class="fas fa-align-left"></i>
-                <div class="padding-right"></div>
+            <div class="collapsible-header shadow-background white-text center-align">
+                <i class="fas fa-book-open"></i>
+                <h6 class="padding-right"> {{ book.title.capitalize() }}</h6>
             </div>
-            <div class="collapsible-body">
+            <div class="collapsible-body white-text text-shadow dark-shadow-background">
+                <div class="row">
+                    <div class="col s3">
+                        <div class="padding-right"><strong>Genre:</strong> {{ book.genre.capitalize() }}</div>
+                        <div class="padding-right"><strong>Author:</strong> {{ book.author.capitalize() }}</div>
+                        <div class="padding-right"><strong>Year Of Publishing:</strong> {{ book.year }}</div>
+                        <div><strong>Rating:</strong> {{ book.rating }}/5</div>
+                    </div>
+                    <div class="col s9">
+                        {{ book.synopsis }}
+                    </div>
+                </div>
             </div>
         </li>
+        {% endif %}
+        {% endfor %}
     </ul>
-    <ul class="collapsible col l6">
-        <h6 class="center-align">Books To Read</h4>
+</div>
+<div class="row">
+    <ul class="collapsible col s12 m9 offset-m3">
+        <h3 class="center-align white-text text-shadow">Books To Read</h3>
         <li>
-            <div class="collapsible-header">
-                <i class="fas fa-align-left"></i>
-                <div class="padding-right"></div>
+            <div class="collapsible-header shadow-background">
             </div>
-            <div class="collapsible-body">
+            <div class=" collapsible-body white-text text-shadow dark-shadow-background">
             </div>
         </li>
     </ul>

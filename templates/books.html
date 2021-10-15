@@ -6,14 +6,14 @@
 <!--only shows if user is logged in-->
 {% if session['user'] %}
 <div class="center-align">
-    <a href="{{ url_for('add_book') }}" class="waves-effect waves-light amber darken-2 btn">Add Book!</a>
+    <a href="{{ url_for('add_book') }}" class="waves-effect waves-light green darken-4 btn">Add Book!</a>
 </div>
 {% endif %}
 
 <ul class="collapsible">
     {% for book in books %}
     <li>
-        <div class="collapsible-header">
+        <div class="collapsible-header white-text shadow-background">
             <i class="fas fa-book"></i>
             <div class="padding-right">Name: {{ book.title.capitalize() }}</div>
             <div class="padding-right">Genre: {{ book.genre.capitalize() }}</div>
@@ -21,49 +21,53 @@
             <div class="padding-right">Year Of Publishing: {{ book.year }}</div>
             <div>Rating: {{ book.rating }}/5</div>
         </div>
-        <div class="collapsible-body shadow-background white-text">
+        <div class="collapsible-body dark-shadow-background white-text">
             <div class="row">
                 <div class="card-content white-text col s9 shadow-background">
                     <span class="card-title">Synopsis:</span>
                     <div>{{ book.synopsis }}</div>
                     <div>Series: {{ book.series_name }}</div>
                 </div>
-
+                <!-- button does nothing at the moment, need to create functionality-->
                 <div class="col s3">
                     <span>Have You Read This?</span>
-                    <a href="#" class="waves-effect waves-light btn-small">Add to library</a>
+                    <a href="#" class="waves-effect waves-light btn-small green darken-2">Add to library</a>
                 </div>
+
                 <div class="col s3">
-                    <span>Want to Read This?</span>
-                    <a href="#" class="waves-effect waves-light btn-small">Add to Read List</a>
+                    <a href="{{ url_for('review_book', book_id=book._id) }}"
+                        class="waves-effect waves-light btn green darken-4 s6">Review Book</a>
                 </div>
             </div>
+            <!-- button does nothing at the moment, need to create functionality-->
+            <div class="col s3">
+                <span>Want to Read This?</span>
+                <a href="#" class="waves-effect waves-light btn-small green darken-2">Add to Read List</a>
+            </div>
+
             <div>
                 <ul class="">
-                    <li class="">
-                        <h4 class="s6"><i class="fas fa-align-left"></i>Reviews</h4>
 
-                        <a href="{{ url_for('review_book', book_id=book._id) }}"
-                            class="waves-effect waves-light btn amber darken-2 s6">Review Book</a>
-
-                    </li>
+                    <h6 class="s6"><i class="fas fa-align-left"></i>Reviews</h6>
 
                     {% for review in reviews %}
                     <!--gets all reviews that match current book-->
                     {% if review.book_id == book._id|string %}
 
                     <li class="collection-item shadow-background">
-                        <blockquote>"{{ review.review }}" - {{ review.reviewer }}</blockquote>
-                        <!--only shows if review belongs to user-->
-                        {% if review.reviewer == session["user"] %}
+                        <blockquote>"{{ review.review }}" - {{ review.reviewer }}
+                            <!--only shows if review belongs to user-->
+                            {% if review.reviewer == session["user"] %}
 
-                        <a href="{{ url_for('edit_review', review_id=review._id) }}"
-                            class="waves-effect waves-light btn-small amber darken-2">Edit Review</a>
-                        <!--only shows if review belongs to user or if user is admin-->
-                        {% if review.reviewer == session["user"] or user["admin"] %}
+                            <a href="{{ url_for('edit_review', review_id=review._id) }}"
+                                class="waves-effect waves-light btn-small amber darken-4">Edit Review</a>
+                            <!--only shows if review belongs to user or if user is admin-->
+                            {% if review.reviewer == session["user"] or user["admin"] %}
 
-                        <a href="{{ url_for('delete_review', review_id=review._id) }}"
-                            class="waves-effect waves-light btn-small red darken-2">Delete Review</a>
+                            <a href="{{ url_for('delete_review', review_id=review._id) }}"
+                                class="waves-effect waves-light btn-small red darken-2">Delete Review</a>
+
+                        </blockquote>
 
                         {% endif %}
                         {% endif %}
@@ -75,19 +79,31 @@
 
                 </ul>
             </div>
-
-
-
             <div class="row">
                 <!--only shows if review belongs to user or if user is admin-->
                 {% if book.added_by == session['user'] or user["admin"] %}
-                <a href="{{ url_for('delete_book', book_id=book._id) }}"
-                    class="waves-effect waves-light btn-small red darken-2">Delete Book</a>
+                <!-- Modal Trigger -->
+                <a class="waves-effect waves-light btn-small red darken-2 modal-trigger" href="#modal1">Delete</a>
                 {% endif %}
             </div>
-
         </div>
     </li>
+
+    </div>
+    </li>
+
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content green darken-3 white-text">
+            <h4>Are you Sure?</h4>
+            <p>Clicking 'yes' will permenantly remove {{book.title}}</p>
+        </div>
+        <div class="modal-footer green darken-4">
+            <a href="#!" class="modal-close waves-effect waves-light btn-small green darken-1">No</a>
+            <a href="{{ url_for('delete_book', book_id=book._id) }}"
+                class="waves-effect waves-light btn-small red darken-2">Yes</a>
+        </div>
+    </div>
     {% endfor %}
 </ul>
 

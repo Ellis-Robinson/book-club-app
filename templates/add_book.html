@@ -3,8 +3,8 @@
 
 <h3 class="center-align white-text text-shadow"> Add Books </h3>
 
-<div class="row">
-    <form class="col s12 m6 offset-m3" method="POST" action="{{ url_for('add_book') }}">
+<div class="row center-align">
+    <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST" action="{{ url_for('add_book') }}">
         <div class="row">
             <div class="input-field col s12 ">
                 <input id="title" name="title" type="text" class="validate">
@@ -30,7 +30,8 @@
         </div>
         <div class="row">
             <div class="input-field col s12 ">
-                <input id="year" name="year" type="text" placeholder="1999" pattern="[0-9]{4}" class="validate" required>
+                <input id="year" name="year" type="text" placeholder="1999" pattern="[0-9]{4}" class="validate"
+                    required>
                 <label for="year">Year of Publishing</label>
             </div>
         </div>
@@ -46,37 +47,43 @@
                 <label for="review">Review</label>
             </div>
         </div>
+
+        <div class="row rating">
             Rating:
+
             <p>
-                <lable>
-                    <input name="rating" class="with-gap" type="radio" value="1" />
+                <label>
+                    <input class="with-gap" name="rating" type="radio" value="1"/>
                     <span>1</span>
                 </label>
             </p>
             <p>
                 <label>
-                    <input name="rating" class="with-gap" type="radio" value="2" />
+                    <input class="with-gap" name="rating" type="radio" value="2"/>
                     <span>2</span>
                 </label>
             </p>
             <p>
                 <label>
-                    <input name="rating" class="with-gap" type="radio" value="3" checked/>
+                    <input class="with-gap" name="rating" type="radio" value="3"/>
                     <span>3</span>
                 </label>
             </p>
             <p>
                 <label>
-                    <input name="rating" class="with-gap" type="radio" value="4" />
+                    <input class="with-gap" name="rating" type="radio" value="4"/>
                     <span>4</span>
                 </label>
             </p>
             <p>
                 <label>
-                    <input name="rating" class="with-gap" type="radio" value="5" />
+                    <input class="with-gap" name="rating" type="radio" value="5"/>
                     <span>5</span>
                 </label>
             </p>
+
+        </div>
+
         <div class="row">
             <label for="in_series">Is This A Series?</label>
         </div>
@@ -94,7 +101,7 @@
                 <label for="series_name">Name of Series</label>
             </div>
         </div>
-        <button class="btn waves-effect waves-light amber darken-2" type="submit" name="action">Add Book!
+        <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Add Book!
             <i class="fas fa-plus"></i>
         </button>
     </form>

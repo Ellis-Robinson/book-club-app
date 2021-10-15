@@ -18,7 +18,6 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
-# loads main page with list of all books
 @app.route("/")
 @app.route("/get_books")
 def get_books():
@@ -27,7 +26,20 @@ def get_books():
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
-    return render_template("books.html", books=books, reviews=reviews, user=user)
+    return render_template(
+        "books.html", books=books, reviews=reviews, user=user)
+
+# loads page with list of all books
+@app.route("/")
+@app.route("/get_books")
+def get_books():
+    books = mongo.db.books.find()
+    reviews = list(mongo.db.reviews.find())
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
+    return render_template(
+        "books.html", books=books, reviews=reviews, user=user)
 
 
 # allows user to create username and password
@@ -175,7 +187,10 @@ def delete_review(review_id):
 # allows user to delete books they have added
 @app.route("/delete_book/<book_id>")
 def delete_book(book_id):
+    # finds reviews associated with book
+    reviews = mongo.db.reviews.find_one({"book_id": book_id})
     mongo.db.books.remove({"_id": ObjectId(book_id)})
+    mongo.db.reviews.remove(reviews)
     flash("Book Successfully Removed")
     return redirect(url_for('get_books'))
 
@@ -206,23 +221,6 @@ def my_library():
     books = list(mongo.db.books.find())
     reviews = list(mongo.db.reviews.find())
     return render_template("my_library.html", books=books, reviews=reviews)
-
-
-#@app.route("/add_to_library/<book_id>", methods=["GET", "POST"])
-#def add_to_library(book_id):
-#    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-#    if session["user"]:
-#       if request.method == "POST":
-#           book = {
-#               "book_id": book_id
-#           }
-#           mongo.db.users.find_one({
-#               "username": session["user"]
-#                   }).books_read.insert_one(book)
-#           flash("Book Successfully added to library")
-#           return redirect(url_for("my_library"))
-
-
 
 
 @app.route("/log_out")
