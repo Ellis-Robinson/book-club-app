@@ -69,9 +69,12 @@ def log_in():
 def profile(username):
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
+    user = mongo.db.users.find_one(
+        {"username": session["user"]})
 
     if session["user"]:
-        return render_template("user_profile.html", username=username)
+        return render_template(
+            "user_profile.html", username=username, user=user)
 
     return redirect(url_for("log_in"))
 
@@ -169,6 +172,13 @@ def add_genre():
     if user["admin"]:
         return render_template("add_genre.html")
     return redirect(url_for("get_books"))
+
+
+@app.route("/my_library")
+def my_library():
+    books = mongo.db.books.find()
+    reviews = list(mongo.db.reviews.find())
+    return render_template("my_library.html", books=books, reviews=reviews)
 
 
 @app.route("/log_out")
