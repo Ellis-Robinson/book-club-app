@@ -100,6 +100,7 @@ def add_book():
         }
         mongo.db.books.insert_one(book)
         flash("Book Successfully Added")
+        return redirect(url_for('review_book', book_id=book._id))
 
     if session["user"]:
         genres = mongo.db.genres.find().sort("genres", 1)
