@@ -31,7 +31,8 @@ def sign_up():
     if request.method == "POST":
         register = { 
             "username": request.form.get("username").lower(),
-            "password": generate_password_hash(request.form.get("password"))
+            "password": generate_password_hash(request.form.get("password")),
+            "admin": False
         }
         mongo.db.users.insert_one(register)
         flash("User successfully signed up!")
@@ -149,6 +150,25 @@ def delete_review(review_id):
     mongo.db.reviews.remove({"_id": ObjectId(review_id)})
     flash("Review Successfully Removed")
     return redirect(url_for('my_reviews'))
+
+
+@app.route("/add_genre", methods=["GET", "POST"])
+def add_genre():
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
+    if request.method == "POST":
+
+        genre = {
+            "genre": request.form.get("genre").lower(),
+        }
+        mongo.db.genres.insert_one(genre)
+        flash("Genre Successfully Added")
+        return redirect(url_for("get_books"))
+
+    if user["admin"]:
+        return render_template("add_genre.html")
+    return redirect(url_for("get_books"))
 
 
 @app.route("/log_out")
