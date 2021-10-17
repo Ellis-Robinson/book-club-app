@@ -204,10 +204,19 @@ def delete_review(review_id):
 
 @app.route("/delete_book/<book_id>")
 def delete_book(book_id):
-    mongo.db.books.remove({"_id": ObjectId(book_id)})
-    flash("Book Successfully Removed")
-    return redirect(url_for('get_books'))
 
+    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+
+    reviews = mongo.db.reviews.find()
+
+    mongo.db.books.remove(book)
+    
+    for review in reviews:
+        if review["book_id"] == str(book["_id"]):
+            mongo.db.reviews.remove(review)
+
+    flash("Book Successfully Removed")
+    return redirect(url_for('my_library'))
 
 
 # allows admin users to add genre
