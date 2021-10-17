@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="center-align white-text text-shadow"> Edit Genre </h3>
+
+<div class="row">
+    <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST"
+        action="{{ url_for('edit_genre') }}">
+        <div class="row center-align">
+            <div class="input-field col s12">
+                <select id="current_genre" name="current_genre" class="validate" required>
+                    <option value="" disabled selected>Choose the Genre To Edit</option>
+                    {% for genre in genres %}
+                    <option value="{{ genre.name }}">{{ genre.name.capitalize() }}</option>
+                    {% endfor %}
+                </select>
+                <label for="current_genre">Current Genre</label>
+            </div>
+        </div>
+        <div class="row center-align">
+            <div class="input-field col s12 ">
+                <input id="new_genre" name="new_genre" type="text" class="validate" value="" >
+                <label for="new_genre">New Genre</label>
+            </div>
+            <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Edit Genre
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

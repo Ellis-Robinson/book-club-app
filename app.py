@@ -204,13 +204,10 @@ def delete_review(review_id):
 
 @app.route("/delete_book/<book_id>")
 def delete_book(book_id):
-
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-
     reviews = mongo.db.reviews.find()
-
     mongo.db.books.remove(book)
-    
+    #finds reviews connected to book via book id
     for review in reviews:
         if review["book_id"] == str(book["_id"]):
             mongo.db.reviews.remove(review)
@@ -238,6 +235,27 @@ def add_genre():
     if user["admin"]:
         return render_template("add_genre.html")
     return redirect(url_for("get_books"))
+
+
+@app.route("/edit_genre", methods=["GET", "POST"])
+def edit_genre():
+    # gets all genres in collection
+    genres = list(mongo.db.genres.find())
+    if request.method == "POST":
+
+        new_genre = {
+            "name": request.form.get("new_genre")
+        }
+        # links selected genre with correct genre in database and updates
+        for genre in genres:
+            if genre["name"] == request.form.get("current_genre"):
+                current_genre = genre
+                mongo.db.genres.update(current_genre, new_genre)
+
+        flash("genre successfully edited")
+        return redirect(url_for("edit_genre"))
+    return render_template("edit_genre.html", genres=genres)
+
 
 
 @app.route("/my_library")
