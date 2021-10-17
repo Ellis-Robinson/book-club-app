@@ -90,27 +90,60 @@ def profile(username):
 # otherwise redirects to log in page
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
-    if request.method == "POST":
-        is_series = "yes" if request.form.get("is_series") else "no"
-
-        book = {
-            "title": request.form.get("title").lower(),
-            "genre": request.form.get("genre").lower(),
-            "author": request.form.get("author").lower(),
-            "year": request.form.get("year").lower(),
-            "synopsis": request.form.get("synopsis").lower(),
-            "is_series": is_series,
-            "series_name": request.form.get("series_name"),
-            "rating": request.form.get("rating"),
-            "added_by": session["user"]
-        }
-        mongo.db.books.insert_one(book)
-        flash("Book Successfully Added")
-        return redirect(url_for('review_book', book_id=book._id))
-
     if session["user"]:
+
+        if request.method == "POST":
+            is_series = "yes" if request.form.get("is_series") else "no"
+
+            book = {
+                "title": request.form.get("title").lower(),
+                "genre": request.form.get("genre").lower(),
+                "author": request.form.get("author").lower(),
+                "year": request.form.get("year").lower(),
+                "synopsis": request.form.get("synopsis").lower(),
+                "is_series": is_series,
+                "series_name": request.form.get("series_name"),
+                "rating": request.form.get("rating"),
+                "added_by": session["user"]
+            }
+            mongo.db.books.insert_one(book)
+            flash("Book Successfully Added")
+            return redirect(url_for('my_library'))
+
         genres = mongo.db.genres.find().sort("genres", 1)
         return render_template("add_book.html", genres=genres)
+
+    return redirect(url_for('log_in'))
+
+
+@app.route("/edit_book/<book_id>", methods=["GET", "POST"])
+def edit_book(book_id):
+
+    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+
+    is_series = "yes" if request.form.get("is_series") else "no"
+
+    if session["user"]:
+        if request.method == "POST":
+            update = {
+                "title": request.form.get("title").lower(),
+                "genre": request.form.get("genre").lower(),
+                "author": request.form.get("author").lower(),
+                "year": request.form.get("year").lower(),
+                "synopsis": request.form.get("synopsis").lower(),
+                "is_series": is_series,
+                "series_name": request.form.get("series_name"),
+                "rating": request.form.get("rating"),
+                "added_by": session["user"]
+            }
+
+            mongo.db.books.update(book, update)
+            flash("Book Successfully Edited")
+            return redirect(url_for("my_library"))
+
+        genres = mongo.db.genres.find().sort("genres", 1)
+
+        return render_template("edit_book.html", book=book, genres=genres)
 
     return redirect(url_for('log_in'))
 
@@ -150,14 +183,11 @@ def my_reviews():
 def edit_review(review_id):
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
     if request.method == "POST":
-        edit = {
-            "book_reviewed": request.form.get("book_reviewed"),
-            "review": request.form.get("review"),
-            "reviewer": request.form.get("reviewer"),
-            "book_id": request.form.get("book_id"),
-        }
+        #updates the "review" field only
+        mongo.db.reviews.update(
+            {"_id": ObjectId(review_id)}, {
+                "$set": {"review": request.form.get("review")}})
 
-        mongo.db.reviews.update({"_id": ObjectId(review_id)}, edit)
         flash("Review Successfully Edited")
         return redirect(url_for('my_reviews'))
 
@@ -170,6 +200,13 @@ def delete_review(review_id):
     mongo.db.reviews.remove({"_id": ObjectId(review_id)})
     flash("Review Successfully Removed")
     return redirect(url_for('my_reviews'))
+
+
+@app.route("/delete_book/<book_id>")
+def delete_book(book_id):
+    mongo.db.books.remove({"_id": ObjectId(book_id)})
+    flash("Book Successfully Removed")
+    return redirect(url_for('get_books'))
 
 
 

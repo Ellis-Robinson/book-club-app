@@ -23,6 +23,10 @@
                     <div class="col s9">
                         {{ book.synopsis }}
                     </div>
+                    <div>
+                        <a href="{{ url_for('edit_book', book_id=book._id) }}"
+                            class="waves-effect waves-light btn-small amber darken-4">Edit Book</a>
+                    </div>
                 </div>
             </div>
         </li>

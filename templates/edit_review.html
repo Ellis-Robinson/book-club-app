@@ -4,35 +4,17 @@
 <h3 class="center-align white-text text-shadow"> Edit Review </h3>
 
 <div class="row center-align">
-    <h5 cloass="white-text text-shadow">{{ review.book_reviewed }}</h5>
+    <h4 class="white-text text-shadow">{{ review.book_reviewed }}</h4>
 </div>
 
-<div class="row dark-shadow-background white-text">
-    <form class="col s12 m6 offset-m3" method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
-        <div class="row hidden">
-            <div class="input-field col s12 ">
-                <input id="book_reviewed" name="book_reviewed" value="{{ review.book_reviewed }}" type="text" class="validate" required >
-                <label for="book_reviewed">Book Name</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="input-field col s12 ">
-                <textarea id="review" name="review"  class="materialize-textarea" required>
+<div class="row">
+    <form class="col s12 m8 offset-m2 dark-shadow-background center-align" method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
+        <div class="row padding-top">
+            <div class="input-field col s12 m10 offset-m1">
+                <textarea id="review" name="review"  class="materialize-textarea white-text" required>
                     {{- review.review -}}
                 </textarea>
                 <label for="review">Review</label>
-            </div>
-        </div>
-        <div class="row hidden">
-            <div class="input-field col s12 ">
-                <input id="reviewer" name="reviewer" value="{{ review.reviewer }}" type="text" class="validate" required>
-                <label for="reviewer">Reviewer</label>
-            </div>
-        </div>
-        <div class="row hidden">
-            <div class="input-field col s12 ">
-                <input id="book_id" name="book_id" value="{{ review.book_id }}" type="text" class="validate" required>
-                <label for="book_id">Book Id</label>
             </div>
         </div>
         <div class="row">

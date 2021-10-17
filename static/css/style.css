@@ -18,6 +18,10 @@ body {
     padding-right: 5%;
 }
 
+.padding-top {
+    padding-top: 5%;
+}
+
 .large-icon {
     font-size: 70px;
 }
@@ -40,4 +44,12 @@ body {
 
 .rating > p {
     display: inline ;
+}
+
+form input {
+    color: white;
+}
+
+form textarea {
+    color: white;
 }
