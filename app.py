@@ -153,20 +153,29 @@ def edit_book(book_id):
 @app.route("/review_book/<book_id>", methods=["GET", "POST"])
 def review_book(book_id):
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+    reviews = mongo.db.reviews.find()
+
     if session["user"]:
+        # checks if user has already reviewed book
+        for review in reviews:
+            if review["book_id"] == str(book["_id"]):
+                if review["reviewed_by"] == session["user"]:
+                    flash("You Have Already Reviewed This Book")
+                    return redirect(url_for("get_books"))
+
         if request.method == "POST":
             review = {
                 "book_reviewed": request.form.get("book_reviewed"),
                 "review": request.form.get("review"),
-                "reviewer": request.form.get("reviewer"),
+                "reviewed_by": request.form.get("reviewed_by"),
                 "book_id": request.form.get("book_id")
             }
             mongo.db.reviews.insert_one(review)
             flash("Book Successfully reviewed")
             return redirect(url_for("my_reviews"))
-
-        return render_template("review_book.html", book=book)
-
+            
+            return render_template("review_book.html", book=book)
+    flash("You Need To Be Logged In To Review Books.")
     return redirect(url_for('log_in'))
 
 
