@@ -174,7 +174,7 @@ def review_book(book_id):
             flash("Book Successfully reviewed")
             return redirect(url_for("my_reviews"))
             
-            return render_template("review_book.html", book=book)
+        return render_template("review_book.html", book=book)
     flash("You Need To Be Logged In To Review Books.")
     return redirect(url_for('log_in'))
 
@@ -264,6 +264,21 @@ def edit_genre():
         flash("genre successfully edited")
         return redirect(url_for("edit_genre"))
     return render_template("edit_genre.html", genres=genres)
+
+
+@app.route("/remove_user", methods=["GET", "POST"])
+def remove_user():
+    users = mongo.db.users.find()
+    if request.method == "POST":
+        # links selected user with correct user in database and removes
+        for user in users:
+            if user["username"] == request.form.get("selected_user"):
+                selected_user = user
+                mongo.db.users.remove(selected_user)
+
+        flash("User Successfully Deleted")
+        return redirect(url_for("remove_user"))
+    return render_template("remove_user.html", users=users)
 
 
 

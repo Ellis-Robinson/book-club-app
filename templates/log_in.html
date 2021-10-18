@@ -4,18 +4,16 @@
 <h3 class="center-align white-text text-shadow">Log in!</h3>
 
 <div class="row">
-    <form class="col s12 m6 offset-m3 centre-align" method="POST" action="{{ url_for('log_in') }}">
+    <form class="col s12 m6 offset-m3 dark-shadow-background center-align" method="POST" action="{{ url_for('log_in') }}">
         <div class="row">
             <!--username imput field-->
             <div class="input-field col s12">
-                <input id="username" name="username" type="text" minlength="3" maxlength="15"
-                    pattern="^[a-zA-Z0-9]{3,15}$" class="validate" required>
+                <input id="username" name="username" type="text" minlength="3" maxlength="15" pattern="^[a-zA-Z0-9]{3,15}$" class="validate" required>
                 <label for="username">User Name</label>
             </div>
             <!--password imput field-->
             <div class="input-field col s12">
-                <input id="password" name="password" type="password" minlength="8" maxlength="20"
-                    pattern="^[a-zA-Z0-9]{3,15}$" class="validate" required>
+                <input id="password" name="password" type="password" minlength="8" maxlength="20" pattern="^[a-zA-Z0-9]{3,15}$" class="validate" required>
                 <label for="password">Password</label>
             </div>
         </div>

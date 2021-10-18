@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="center-align white-text text-shadow"> Remove User </h3>
+
+<div class="row">
+    <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST" action="{{ url_for('remove_user') }}">
+        <div class="row center-align">
+            <div class="input-field col s12">
+                <select id="selected_user" name="selected_user" class="validate" required>
+                    <option value="" disabled selected>Choose the User To Remove</option>
+                    {% for user in users %}
+                    {% if user.username != session["user"] %}
+                    <option value="{{ user.username }}">{{ user.username.capitalize() }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <label for="selected_user">Selected User</label>
+            </div>
+        </div>
+        <div class="row center-align">
+            <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Remove User
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

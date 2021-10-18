@@ -5,7 +5,7 @@
 
 <ul class="collapsible">
 {% for review in reviews %}
-{% if review.reviewer == session["user"] %}
+{% if review.reviewed_by == session["user"] %}
     <li>
         <div class="collapsible-header white-text shadow-background">
             <i class="fas fa-align-left"></i>
