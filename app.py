@@ -34,7 +34,14 @@ def get_books():
 @app.route("/sign_up", methods=["GET", "POST"])
 def sign_up():
     if request.method == "POST":
-        register = { 
+        # checks if username already in database
+        users = mongo.db.users.find()
+        for user in users:
+            if user["username"] == request.form.get("username").lower():
+                flash("Username Taken, Please Try Another")
+                return redirect(url_for("sign_up"))
+
+        register = {
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password")),
             "admin": False
@@ -268,17 +275,26 @@ def edit_genre():
 
 @app.route("/remove_user", methods=["GET", "POST"])
 def remove_user():
-    users = mongo.db.users.find()
-    if request.method == "POST":
-        # links selected user with correct user in database and removes
-        for user in users:
-            if user["username"] == request.form.get("selected_user"):
-                selected_user = user
-                mongo.db.users.remove(selected_user)
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
+    if user["admin"]:
 
-        flash("User Successfully Deleted")
-        return redirect(url_for("remove_user"))
-    return render_template("remove_user.html", users=users)
+        users = mongo.db.users.find()
+        if request.method == "POST":
+            # links selected user with correct user in database and removes
+            for user in users:
+                if user["username"] == request.form.get("selected_user"):
+                    selected_user = user
+                    mongo.db.users.remove(selected_user)
+
+            flash("User Successfully Deleted")
+            return redirect(url_for("remove_user"))
+
+        return render_template("remove_user.html", users=users)
+
+    flash("You Are Not Authorised To Do That!")
+    return redirect(url_for("get_books"))
 
 
 
