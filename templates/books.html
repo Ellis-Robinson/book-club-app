@@ -28,7 +28,7 @@
                     <div>{{ book.synopsis }}</div>
                     <div>Series: {{ book.series_name }}</div>
                 </div>
-                <!-- button does nothing at the moment, need to create functionality-->
+                <!-- add to library button -->
                 <div class="col s3">
                     <span>Have You Read This?</span>
                     <a href="{{ url_for('add_to_library', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Add to library</a>

@@ -17,17 +17,22 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
+#make home page that explains how the app works
+
 # loads page with list of all books
 @app.route("/")
 @app.route("/get_books")
 def get_books():
-    books = mongo.db.books.find()
-    reviews = list(mongo.db.reviews.find())
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
-    return render_template(
-        "books.html", books=books, reviews=reviews, user=user)
+    if session:
+        books = mongo.db.books.find()
+        reviews = list(mongo.db.reviews.find())
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        return render_template(
+            "books.html", books=books, reviews=reviews, user=user)
+    flash("You need to log in first")
+    return redirect(url_for("log_in"))
 
 
 # allows user to create username and password
@@ -188,7 +193,7 @@ def review_book(book_id):
             }
             mongo.db.reviews.insert_one(review)
             flash("Book Successfully reviewed")
-            return redirect(url_for("my_reviews"))
+            return redirect(url_for("get_books"))
             
         return render_template("review_book.html", book=book)
     flash("You Need To Be Logged In To Review Books.")
@@ -342,7 +347,7 @@ def add_to_library(book_id):
                     "books_read": books_read + [book]}})
 
             flash("Book Added To Library")
-            return redirect(url_for("my_library"))
+            return redirect(url_for("get_books"))
 
         if request.form.get("to_read_book"):
             for books in books_to_read:
@@ -356,7 +361,7 @@ def add_to_library(book_id):
                     "books_to_read": books_to_read + [book]}})
 
             flash("Book Added To Library")
-            return redirect(url_for("my_library"))
+            return redirect(url_for("get_books"))
 
     return render_template("add_to_library.html", book=book, user=user)
 
