@@ -50,10 +50,13 @@ def sign_up():
         register = {
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password")),
-            "admin": False
+            "admin": False,
+            "books_read": [],
+            "books_to_read": []
         }
         mongo.db.users.insert_one(register)
         flash("User successfully signed up!")
+        return redirect(url_for("log_in"))
 
     return render_template("sign_up.html")
 
@@ -314,7 +317,7 @@ def my_library():
     reviews = list(mongo.db.reviews.find())
     return render_template(
         "my_library.html", books=books, reviews=reviews,
-         books_read=books_read, books_to_read=books_to_read)
+        books_read=books_read, books_to_read=books_to_read)
 
 
 @app.route("/add_to_library/<book_id>", methods=["GET", "POST"])
