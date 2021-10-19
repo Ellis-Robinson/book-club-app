@@ -18,6 +18,11 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 #make home page that explains how the app works
+@app.route("/")
+@app.route("/home")
+def home():
+    return render_template("home.html")
+
 
 # loads page with list of all books
 @app.route("/")
@@ -31,6 +36,7 @@ def get_books():
         })
         return render_template(
             "books.html", books=books, reviews=reviews, user=user)
+    
     flash("You need to log in first")
     return redirect(url_for("log_in"))
 

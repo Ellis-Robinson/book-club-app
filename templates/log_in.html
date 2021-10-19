@@ -20,13 +20,11 @@
         <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">
             Log in!
         </button>
-    </form>
-    <div class="row center-align">
-        <div class="col s12 m6 offset-m3">
-            <a href="{{ url_for('sign_up') }}" class="white-text text-shadow">Not got an account? Click here to
+        <div class="row center-align padding-top">
+            <a href=" {{ url_for('sign_up') }}" class="white-text text-shadow">Not got an account? Click here to
                 Register!</a>
         </div>
-    </div>
+    </form>
 </div>
 
 {% endblock %}
