@@ -36,11 +36,17 @@ def sign_up():
     if request.method == "POST":
         # checks if username already in database
         users = mongo.db.users.find()
+        password = request.form.get("password")
+        confirm_password = request.form.get("confirm_password")
+
         for user in users:
             if user["username"] == request.form.get("username").lower():
                 flash("Username Taken, Please Try Another")
                 return redirect(url_for("sign_up"))
 
+        if password != confirm_password:
+            flash("Passwords Did Not Match, Please Try Again")
+            return redirect(url_for("sign_up"))
         register = {
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password")),
@@ -297,12 +303,20 @@ def remove_user():
     return redirect(url_for("get_books"))
 
 
-
 @app.route("/my_library")
 def my_library():
     books = list(mongo.db.books.find())
     reviews = list(mongo.db.reviews.find())
     return render_template("my_library.html", books=books, reviews=reviews)
+
+
+@app.route("/add_to_library/<book_id>", methods=["GET", "POST"])
+def add_to_library(book_id):
+    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+    user = user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
+    return render_template("add_to_library.html", book=book, user=user)
 
 
 @app.route("/log_out")
