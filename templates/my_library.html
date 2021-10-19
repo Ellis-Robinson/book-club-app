@@ -24,21 +24,41 @@
                         {{ book.synopsis }}
                     </div>
                     <div>
-                        <a href="{{ url_for('edit_book', book_id=book._id) }}"
-                            class="waves-effect waves-light btn-small amber darken-4">Edit Book</a>
+                        <a href="{{ url_for('edit_book', book_id=book._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Book</a>
                     </div>
                     <div class="col s3">
-                        <a href="{{ url_for('review_book', book_id=book._id) }}"
-                            class="waves-effect waves-light btn green darken-4 s6">Review Book</a>
+                        <a href="{{ url_for('review_book', book_id=book._id) }}" class="waves-effect waves-light btn green darken-4 s6">Review Book</a>
                     </div>
                     <div>
-                        <a class="waves-effect waves-light btn-small red darken-2 modal-trigger"
-                            href="{{ url_for('delete_book', book_id=book._id) }}">Delete Book</a>
+                        <a class="waves-effect waves-light btn-small red darken-2 modal-trigger" href="{{ url_for('delete_book', book_id=book._id) }}">Delete Book</a>
                     </div>
                 </div>
             </div>
         </li>
         {% endif %}
+        {% endfor %}
+
+        {% for book in books_read %}
+
+        <div class="collapsible-header shadow-background white-text center-align">
+            <i class="fas fa-book-open"></i>
+            <h6 class="padding-right"> {{ book["title"].capitalize() }}</h6>
+            <div class="padding-right"><strong>Genre:</strong> {{ book["genre"].capitalize() }}</div>
+            <div class="padding-right"><strong>Author:</strong> {{ book["author"].capitalize() }}</div>
+        </div>
+        <div class="collapsible-body white-text text-shadow dark-shadow-background">
+            <div class="row">
+                <div class="col s3">
+                    <div class="padding-right"><strong>Genre:</strong> {{ book["genre"].capitalize() }}</div>
+                    <div class="padding-right"><strong>Author:</strong> {{ book["author"].capitalize() }}</div>
+                    <div class="padding-right"><strong>Year Of Publishing:</strong> {{ book["year"] }}</div>
+                    <div><strong>Rating:</strong> {{ book["rating"] }}/5</div>
+                </div>
+                <div class="col s9">
+                    {{ book["synopsis"] }}
+                </div>
+            </div>
+        </div>
         {% endfor %}
     </ul>
 </div>

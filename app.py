@@ -306,16 +306,41 @@ def remove_user():
 @app.route("/my_library")
 def my_library():
     books = list(mongo.db.books.find())
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
+    books_read = user["books_read"]
     reviews = list(mongo.db.reviews.find())
-    return render_template("my_library.html", books=books, reviews=reviews)
+    return render_template(
+        "my_library.html", books=books, reviews=reviews, books_read=books_read)
 
 
 @app.route("/add_to_library/<book_id>", methods=["GET", "POST"])
 def add_to_library(book_id):
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-    user = user = mongo.db.users.find_one({
+    user = mongo.db.users.find_one({
         "username": session["user"]
     })
+    books_read = user["books_read"]
+
+    if request.method == "POST":
+        if request.form.get("read_book"):
+            for books in books_read:
+                if books == book:
+                    print(book)
+                    flash("Book already in library")
+                    return redirect(url_for("get_books"))
+
+            # Embeds book in users 'books_read' field
+            mongo.db.users.update(
+                user, {"$set": {
+                    "books_read": books_read + [book]}})
+
+            flash("Book Added To Library")
+            return redirect(url_for("my_library"))
+
+        print(books_read)
+        
     return render_template("add_to_library.html", book=book, user=user)
 
 
