@@ -17,6 +17,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
+
 #make home page that explains how the app works
 @app.route("/")
 @app.route("/home")
@@ -25,7 +26,6 @@ def home():
 
 
 # loads page with list of all books
-@app.route("/")
 @app.route("/get_books")
 def get_books():
     if session:
@@ -342,12 +342,13 @@ def add_to_library(book_id):
 
     if request.method == "POST":
         if request.form.get("read_book"):
+            # checks if book already in 'books read' list
             for books in books_read:
                 if books == book:
                     flash("Book already in library")
                     return redirect(url_for("get_books"))
 
-            # Embeds book in users 'books_read' field
+            # Embeds book in users 'books_read' list
             mongo.db.users.update(
                 user, {"$set": {
                     "books_read": books_read + [book]}})
@@ -356,15 +357,19 @@ def add_to_library(book_id):
             return redirect(url_for("get_books"))
 
         if request.form.get("to_read_book"):
+            # checks if book already in users to read list
             for books in books_to_read:
                 if books == book:
                     flash("Book already in library")
                     return redirect(url_for("get_books"))
-
-            # Embeds book in users 'books_to_read' field
-            mongo.db.users.update(
-                user, {"$set": {
-                    "books_to_read": books_to_read + [book]}})
+            # checks if book already in 'books read' list
+            for books in books_read:
+                if books == book:
+                    flash("Book already in library")
+                    return redirect(url_for("get_books"))
+            # Embeds book in users 'books_to_read' list
+            mongo.db.users.update_one(
+                user, {"$push": {"books_to_read": book}})
 
             flash("Book Added To Library")
             return redirect(url_for("get_books"))
