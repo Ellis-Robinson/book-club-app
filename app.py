@@ -42,6 +42,20 @@ def get_books():
     return redirect(url_for("log_in"))
 
 
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    query = request.form.get("query")
+    books = list(mongo.db.books.find(
+        {"$text": {"$search": query }}))
+    reviews = list(mongo.db.reviews.find())
+    user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+
+    return render_template(
+        "books.html", books=books, reviews=reviews, user=user)
+
+
 # allows user to create username and password
 @app.route("/sign_up", methods=["GET", "POST"])
 def sign_up():
@@ -118,11 +132,12 @@ def profile(username):
 # otherwise redirects to log in page
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
+    books = mongo.db.books.find()
+    user = mongo.db.users.find_one({"username": session["user"]})
     if session["user"]:
 
         if request.method == "POST":
             is_series = "yes" if request.form.get("is_series") else "no"
-            user = mongo.db.users.find_one({"username": session["user"]})
 
             book = {
                 "title": request.form.get("title").lower(),
@@ -135,6 +150,11 @@ def add_book():
                 "rating": request.form.get("rating"),
                 "added_by": session["user"]
             }
+            # Checks if title matches a book in database 
+            for b in books:
+                if b["title"] == book["title"]:
+                    flash("Book Already in Database")
+                    return redirect(url_for("add_book"))
             mongo.db.books.insert_one(book)
             # Adds book to users books read list
             mongo.db.users.update(

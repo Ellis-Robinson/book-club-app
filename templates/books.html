@@ -3,6 +3,21 @@
 
 <h3 class="center-align white-text text-shadow"> All Books </h3>
 
+<div class="row center-align">
+    <form action="{{ url_for('search') }}" methods="POST" class="col s12 m6 offset-m3 shadow-background white-text">
+        <div class="input-field">
+            <input type="text" id="query" name="query" class="validate" required>
+            <label for="query">Search Books</label>
+        </div>
+        <div>
+            <a href="{{ url_for('get_books') }}" class="red btn">Reset</a>
+            <button type="submit" class="waves-effect waves-light btn-small green darken-2">
+                <i class="fas fa-search left"></i> Search
+            </button>
+        </div>
+    </form>
+</div>
+
 <!--only shows if user is logged in-->
 {% if session['user'] %}
 <div class="center-align">
