@@ -29,11 +29,12 @@ def home():
 @app.route("/get_books")
 def get_books():
     if session:
-        books = mongo.db.books.find()
+        books = mongo.db.books.find().sort('title', 1)
         reviews = list(mongo.db.reviews.find())
         user = mongo.db.users.find_one({
             "username": session["user"]
         })
+
         return render_template(
             "books.html", books=books, reviews=reviews, user=user)
     
