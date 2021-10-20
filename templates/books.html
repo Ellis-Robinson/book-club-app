@@ -34,7 +34,9 @@
                     <a href="{{ url_for('add_to_library', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Add to library</a>
                 </div>
                 {% for review in reviews: %}
+                <!-- Checks if book has been reviewed -->
                 {% if review["book_id"] == book["_id"]|string: %}
+                <!-- Checks if user has reviewed book-->
                 {% if review["reviewed_by"] != session["user"]: %}
                 <div class="col s3">
                     <a href="{{ url_for('review_book', book_id=book._id) }}" class="waves-effect waves-light btn green darken-4 s6">Review Book</a>
@@ -43,7 +45,7 @@
                 {% endif %}
                 {% endfor %}
                 <div class="col s3">
-                    <!--only shows if review belongs to user or if user is admin-->
+                    <!--Checks if review belongs to user or if user is admin-->
                     {% if book.added_by == session['user'] or user["admin"] %}
 
                     <a class="waves-effect waves-light btn-small red darken-2 modal-trigger" href="{{ url_for('delete_book', book_id=book._id) }}">Delete Book</a>
@@ -57,16 +59,16 @@
                     <h6 class="s6"><i class="fas fa-align-left"></i>Reviews</h6>
 
                     {% for review in reviews %}
-                    <!--gets all reviews that match current book-->
+                    <!-- Gets all reviews that match current book-->
                     {% if review.book_id == book._id|string %}
 
                     <li class="collection-item shadow-background">
                         <blockquote>"{{ review.review }}" - {{ review.reviewed_by }}
-                            <!--only shows if review belongs to user-->
+                            <!-- Checks if review belongs to user-->
                             {% if review.reviewed_by == session["user"] %}
 
                             <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Review</a>
-                            <!--only shows if review belongs to user or if user is admin-->
+                            <!-- Checks if review belongs to user or if user is admin-->
                             {% if review.reviewed_by == session["user"] or user["admin"] %}
 
                             <a href="{{ url_for('delete_review', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete Review</a>

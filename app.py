@@ -121,6 +121,7 @@ def add_book():
 
         if request.method == "POST":
             is_series = "yes" if request.form.get("is_series") else "no"
+            user = mongo.db.users.find_one({"username": session["user"]})
 
             book = {
                 "title": request.form.get("title").lower(),
@@ -134,11 +135,14 @@ def add_book():
                 "added_by": session["user"]
             }
             mongo.db.books.insert_one(book)
+            # Adds book to users books read list
+            mongo.db.users.update(
+                user, {"$push": {"books_read": book}})
             flash("Book Successfully Added")
             return redirect(url_for('my_library'))
 
         genres = mongo.db.genres.find().sort("genres", 1)
-        return render_template("add_book.html", genres=genres)
+        return render_template("add_book.html", genres=genres, user=user)
 
     return redirect(url_for('log_in'))
 
@@ -334,9 +338,9 @@ def my_library():
 @app.route("/add_to_library/<book_id>", methods=["GET", "POST"])
 def add_to_library(book_id):
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+    reviews = mongo.db.reviews.find()
     user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
+        "username": session["user"]})
     books_read = user["books_read"]
     books_to_read = user["books_to_read"]
 
@@ -350,8 +354,7 @@ def add_to_library(book_id):
 
             # Embeds book in users 'books_read' list
             mongo.db.users.update(
-                user, {"$set": {
-                    "books_read": books_read + [book]}})
+                user, {"$push": {"books_read": book}})
 
             flash("Book Added To Library")
             return redirect(url_for("get_books"))
@@ -374,7 +377,7 @@ def add_to_library(book_id):
             flash("Book Added To Library")
             return redirect(url_for("get_books"))
 
-    return render_template("add_to_library.html", book=book, user=user)
+    return render_template("add_to_library.html", book=book, user=user, reviews=reviews)
 
 
 @app.route("/log_out")
