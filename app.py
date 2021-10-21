@@ -34,9 +34,10 @@ def get_books():
         user = mongo.db.users.find_one({
             "username": session["user"]
         })
-
+        user_review = []
         return render_template(
-            "books.html", books=books, reviews=reviews, user=user)
+            "books.html", books=books,
+            reviews=reviews, user=user, user_review=user_review)
     
     flash("You need to log in first")
     return redirect(url_for("log_in"))
@@ -46,7 +47,7 @@ def get_books():
 def search():
     query = request.form.get("query")
     books = list(mongo.db.books.find(
-        {"$text": {"$search": query }}))
+        {"$text": {"$search": query}}))
     reviews = list(mongo.db.reviews.find())
     user = mongo.db.users.find_one({
             "username": session["user"]
@@ -139,7 +140,7 @@ def add_book():
         if request.method == "POST":
             is_series = "yes" if request.form.get("is_series") else "no"
 
-            book = {
+            new_book = {
                 "title": request.form.get("title").lower(),
                 "genre": request.form.get("genre").lower(),
                 "author": request.form.get("author").lower(),
@@ -150,15 +151,15 @@ def add_book():
                 "rating": request.form.get("rating"),
                 "added_by": session["user"]
             }
-            # Checks if title matches a book in database 
-            for b in books:
-                if b["title"] == book["title"]:
+            # Checks if title matches a book in database
+            for book in books:
+                if book["title"] == book["title"]:
                     flash("Book Already in Database")
                     return redirect(url_for("add_book"))
-            mongo.db.books.insert_one(book)
+            mongo.db.books.insert_one(new_book)
             # Adds book to users books read list
             mongo.db.users.update(
-                user, {"$push": {"books_read": book}})
+                user, {"$push": {"books_read": new_book}})
             flash("Book Successfully Added")
             return redirect(url_for('my_library'))
 
@@ -220,7 +221,8 @@ def review_book(book_id):
                 "book_reviewed": request.form.get("book_reviewed"),
                 "review": request.form.get("review"),
                 "reviewed_by": request.form.get("reviewed_by"),
-                "book_id": request.form.get("book_id")
+                "book_id": request.form.get("book_id"),
+                "rating": request.form.get("rating")
             }
             mongo.db.reviews.insert_one(review)
             flash("Book Successfully reviewed")
@@ -244,10 +246,11 @@ def my_reviews():
 def edit_review(review_id):
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
     if request.method == "POST":
-        #updates the "review" field only
+        # updates the "review" field only
         mongo.db.reviews.update(
             {"_id": ObjectId(review_id)}, {
-                "$set": {"review": request.form.get("review")}})
+                "$set": {"review": request.form.get("review"),
+                         "rating": request.form.get("rating")}})
 
         flash("Review Successfully Edited")
         return redirect(url_for('my_reviews'))
@@ -353,7 +356,7 @@ def my_library():
     reviews = list(mongo.db.reviews.find())
     return render_template(
         "my_library.html", books=books, reviews=reviews,
-        books_read=books_read, books_to_read=books_to_read)
+        books_read=books_read, books_to_read=books_to_read, user=user)
 
 
 @app.route("/add_to_library/<book_id>", methods=["GET", "POST"])

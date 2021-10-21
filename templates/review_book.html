@@ -10,32 +10,73 @@
 
 <div class="row">
     <form class="col s12 m8 offset-m2 dark-shadow-background white-text center-align" method="POST" action="{{ url_for('review_book', book_id=book._id) }}">
+        <!-- hidden book name section -->
         <div class="row hidden">
             <div class="input-field">
-                <input id="book_reviewed" name="book_reviewed" value="{{ book.title }}" type="text" class="validate"
-                    required>
+                <input id="book_reviewed" name="book_reviewed" value="{{ book.title }}" type="text" class="validate" required>
                 <label for="book_reviewed">Book Name</label>
             </div>
         </div>
+        <!-- review input -->
         <div class="row padding-top">
             <div class="input-field white-text col m10 offset-m1">
                 <textarea id="review" name="review" class="materialize-textarea white-text" required></textarea>
                 <label for="review">Review</label>
             </div>
         </div>
+        <!-- rating input -->
+        <div class="row padding-top">
+            <div class="row rating">
+                Rating:
+
+                <p>
+                    <label>
+                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="1" />
+                        <span>1</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="2" />
+                        <span>2</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="3" />
+                        <span>3</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="4" />
+                        <span>4</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="5" />
+                        <span>5</span>
+                    </label>
+                </p>
+
+            </div>
+        </div>
+        <!-- hidden book id section -->
         <div class="row hidden">
             <div class="input-field">
                 <input id="book_id" name="book_id" value="{{ book._id }}" type="text" class="validate">
                 <label for="book_id">Book Id</label>
             </div>
         </div>
+        <!-- hidden user name section -->
         <div class="row hidden">
             <div class="input-field">
-                <input id="reviewed_by" name="reviewed_by" value="{{ session['user'] }}" type="text" class="validate"
-                    required>
+                <input id="reviewed_by" name="reviewed_by" value="{{ session['user'] }}" type="text" class="validate" required>
                 <label for="reviewed_by">Reviewed by</label>
             </div>
         </div>
+        <!-- submit button -->
         <div class="row">
             <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Review
                 <i class="fas fa-edit"></i>

@@ -48,9 +48,11 @@
                     <span>Have You Read This?</span>
                     <a href="{{ url_for('add_to_library', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Add to library</a>
                 </div>
+
                 <div>
                     <a href="{{ url_for('review_book', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Review</a>
                 </div>
+
                 <div class="col s3">
                     <!--Checks if review belongs to user or if user is admin-->
                     {% if book.added_by == session['user'] or user["admin"] %}
@@ -70,7 +72,7 @@
                     {% if review.book_id == book._id|string %}
 
                     <li class="collection-item shadow-background">
-                        <blockquote>"{{ review.review }}" - {{ review.reviewed_by }}
+                        <blockquote>"{{ review.review }}" {{review.rating}}/5 - {{ review.reviewed_by }}
                             <!-- Checks if review belongs to user-->
                             {% if review.reviewed_by == session["user"] %}
 

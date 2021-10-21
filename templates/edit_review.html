@@ -9,12 +9,49 @@
 
 <div class="row">
     <form class="col s12 m8 offset-m2 dark-shadow-background center-align" method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
+        <!-- review input -->
         <div class="row padding-top">
             <div class="input-field col s12 m10 offset-m1">
-                <textarea id="review" name="review"  class="materialize-textarea white-text" required>
-                    {{- review.review -}}
+                <textarea id="review" name="review" class="materialize-textarea white-text" required>
+                {{- review.review -}}
                 </textarea>
                 <label for="review">Review</label>
+            </div>
+        </div>
+        <!-- rating input -->
+        <div class="row padding-top">
+            <div class="row rating">
+                Rating:
+                <p>
+                    <label>
+                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="1" />
+                        <span>1</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="2" />
+                        <span>2</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="3" />
+                        <span>3</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="4" />
+                        <span>4</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="5" />
+                        <span>5</span>
+                    </label>
+                </p>
             </div>
         </div>
         <div class="row">
