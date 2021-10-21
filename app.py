@@ -423,8 +423,7 @@ def remove_from_books_read(book):
     user = mongo.db.users.find_one({
         "username": session["user"]})
     if request.method == "POST":
-        mongo.db.users.update_one(
-                user, {"$pull": {"books_read": book}})
+        mongo.db.users.update_one(user, {"$pull": {"books_read": book}})
         flash("Book removed from library")
         return redirect(url_for("my_library"))
     return redirect(url_for("my_library"))
