@@ -32,8 +32,18 @@
                     <div class="col s3">
                         <a href="{{ url_for('review_book', book_id=book._id) }}" class="waves-effect waves-light btn green darken-4 s6">Review Book</a>
                     </div>
+
+                    <form action="{{ url_for('remove_from_books_read', book=book) }}" method="POST">
+                        <div class="col s3">
+                            <div class="row">
+                                <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Remove From Library
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
                     <!-- Checks if book added by user or if user admin-->
-                    {% if book.added_by == session['user'] or user["admin"] %}
+                    {% if user["admin"] %}
                     <div>
                         <a class="waves-effect waves-light btn-small red darken-2 modal-trigger" href="{{ url_for('delete_book', book_id=book._id) }}">Delete Book</a>
                     </div>

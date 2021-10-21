@@ -153,7 +153,7 @@ def add_book():
             }
             # Checks if title matches a book in database
             for book in books:
-                if book["title"] == book["title"]:
+                if book["title"] == new_book["title"]:
                     flash("Book Already in Database")
                     return redirect(url_for("add_book"))
             mongo.db.books.insert_one(new_book)
@@ -268,16 +268,28 @@ def delete_review(review_id):
 
 @app.route("/delete_book/<book_id>")
 def delete_book(book_id):
-    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-    reviews = mongo.db.reviews.find()
-    mongo.db.books.remove(book)
-    #finds reviews connected to book via book id
-    for review in reviews:
-        if review["book_id"] == str(book["_id"]):
-            mongo.db.reviews.remove(review)
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
+    users = mongo.db.users.find()
 
-    flash("Book Successfully Removed")
-    return redirect(url_for('my_library'))
+    if user["admin"]:
+        book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+        reviews = mongo.db.reviews.find()
+        mongo.db.books.remove(book)
+        # finds reviews connected to book via book id
+        for review in reviews:
+            if review["book_id"] == str(book["_id"]):
+                mongo.db.reviews.remove(review)
+
+        for user in users:
+            mongo.db.users.update_one(
+                user, {"$pull": {"books_read": book}})
+
+        flash("Book Successfully Removed")
+        return redirect(url_for('get_books'))
+    flash("Sorry, You are not autherised to do that")
+    return redirect(url_for('get_books'))
 
 
 # allows admin users to add genre
@@ -377,7 +389,7 @@ def add_to_library(book_id):
                     return redirect(url_for("get_books"))
 
             # Embeds book in users 'books_read' list
-            mongo.db.users.update(
+            mongo.db.users.update_one(
                 user, {"$push": {"books_read": book}})
 
             flash("Book Added To Library")
@@ -401,7 +413,21 @@ def add_to_library(book_id):
             flash("Book Added To Library")
             return redirect(url_for("get_books"))
 
-    return render_template("add_to_library.html", book=book, user=user, reviews=reviews)
+    return render_template("add_to_library.html",
+                           book=book, user=user, reviews=reviews)
+
+
+# function not working, doesnt remove book from database
+@app.route("/remove_from_books_read/<book>", methods=["GET", "POST"])
+def remove_from_books_read(book):
+    user = mongo.db.users.find_one({
+        "username": session["user"]})
+    if request.method == "POST":
+        mongo.db.users.update_one(
+                user, {"$pull": {"books_read": book}})
+        flash("Book removed from library")
+        return redirect(url_for("my_library"))
+    return redirect(url_for("my_library"))
 
 
 @app.route("/log_out")
