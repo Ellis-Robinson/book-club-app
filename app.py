@@ -79,7 +79,8 @@ def sign_up():
             "password": generate_password_hash(request.form.get("password")),
             "admin": False,
             "books_read": [],
-            "books_to_read": []
+            "books_to_read": [],
+            "books_reviewed": []
         }
         mongo.db.users.insert_one(register)
         flash("User successfully signed up!")
