@@ -34,10 +34,11 @@ def get_books():
         user = mongo.db.users.find_one({
             "username": session["user"]
         })
-        user_review = []
+        user_reviews = user["books_reviewed"]
+        print(user_reviews)
         return render_template(
             "books.html", books=books,
-            reviews=reviews, user=user, user_review=user_review)
+            reviews=reviews, user=user, user_reviews=user_reviews)
     
     flash("You need to log in first")
     return redirect(url_for("log_in"))
