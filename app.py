@@ -207,6 +207,9 @@ def edit_book(book_id):
 @app.route("/review_book/<book_id>", methods=["GET", "POST"])
 def review_book(book_id):
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
     reviews = mongo.db.reviews.find()
 
     if session["user"]:
@@ -226,6 +229,7 @@ def review_book(book_id):
                 "rating": request.form.get("rating")
             }
             mongo.db.reviews.insert_one(review)
+            mongo.db.users.update_one(user, {"$push": {"books_reviewed": book}})
             flash("Book Successfully reviewed")
             return redirect(url_for("get_books"))
             
