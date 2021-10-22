@@ -7,33 +7,27 @@
     <ul class="collapsible col s12 m9 ">
         <h5 class="center-align white-text text-shadow">Books I've read</h5>
         <!-- Shows books from users books_read list-->
-        {% for book in books_read %}
+
+
+
         <li>
             <div class="collapsible-header shadow-background white-text center-align">
                 <i class="fas fa-book-open"></i>
-                <h6 class="padding-right"> {{ book.title.capitalize() }}</h6>
+                <h6 class="padding-right"> </h6>
             </div>
             <div class="collapsible-body white-text text-shadow dark-shadow-background">
                 <div class="row">
                     <div class="col s3">
-                        <div class="padding-right"><strong>Genre:</strong> {{ book.genre.capitalize() }}</div>
-                        <div class="padding-right"><strong>Author:</strong> {{ book.author.capitalize() }}</div>
-                        <div class="padding-right"><strong>Year Of Publishing:</strong> {{ book.year }}</div>
-                        <div><strong>Rating:</strong> {{ book.rating }}/5</div>
+                        <div class="padding-right"><strong>Genre:</strong> </div>
+                        <div class="padding-right"><strong>Author:</strong> </div>
+                        <div class="padding-right"><strong>Year Of Publishing:</strong></div>
+                        <div><strong>Rating:</strong> </div>
                     </div>
                     <div class="col s9">
-                        {{ book.synopsis }}
+
                     </div>
 
-                    <div>
-                        <a href="{{ url_for('edit_book', book_id=book._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Book</a>
-                    </div>
-
-                    <div class="col s3">
-                        <a href="{{ url_for('review_book', book_id=book._id) }}" class="waves-effect waves-light btn green darken-4 s6">Review Book</a>
-                    </div>
-
-                    <form action="{{ url_for('remove_from_books_read', book=book) }}" method="POST">
+                    <form action="{{ url_for('remove_from_books_read') }}" method="POST">
                         <div class="col s3">
                             <div class="row">
                                 <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Remove From Library
@@ -43,15 +37,11 @@
                     </form>
 
                     <!-- Checks if book added by user or if user admin-->
-                    {% if user["admin"] %}
-                    <div>
-                        <a class="waves-effect waves-light btn-small red darken-2 modal-trigger" href="{{ url_for('delete_book', book_id=book._id) }}">Delete Book</a>
-                    </div>
-                    {% endif %}
+
                 </div>
             </div>
         </li>
-        {% endfor %}
+
     </ul>
 </div>
 

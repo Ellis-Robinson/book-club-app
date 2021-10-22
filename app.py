@@ -34,7 +34,7 @@ def get_books():
         user = mongo.db.users.find_one({
             "username": session["user"]
         })
-        user_reviews = user["books_reviewed"]
+        user_reviews = list(user["books_reviewed"])
         print(user_reviews)
         return render_template(
             "books.html", books=books,
@@ -161,7 +161,7 @@ def add_book():
             mongo.db.books.insert_one(new_book)
             # Adds book to users books read list
             mongo.db.users.update(
-                user, {"$push": {"books_read": new_book}})
+                user, {"$push": {"books_read": new_book["_id"]}})
             flash("Book Successfully Added")
             return redirect(url_for('my_library'))
 
@@ -175,6 +175,7 @@ def add_book():
 def edit_book(book_id):
 
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+    user = mongo.db.users.find_one({"username": session["user"]})
 
     is_series = "yes" if request.form.get("is_series") else "no"
 
@@ -424,14 +425,13 @@ def add_to_library(book_id):
 
 
 # function not working, doesnt remove book from database
-@app.route("/remove_from_books_read/<book>", methods=["GET", "POST"])
-def remove_from_books_read(book):
+@app.route("/remove_from_books_read", methods=["GET", "POST"])
+def remove_from_books_read():
     user = mongo.db.users.find_one({
         "username": session["user"]})
     if request.method == "POST":
-        mongo.db.users.update_one(user, {"$pull": {"books_read": book}})
+        mongo.db.users.update_one(user, {"$pull": {"books_read": 0}})
         flash("Book removed from library")
-        print({"_id": ObjectId(user["_id"])})
         return redirect(url_for("my_library"))
     return redirect(url_for("my_library"))
 
