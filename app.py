@@ -376,9 +376,12 @@ def my_library():
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
-    books_read = user["books_read"]
-    book = mongo.db.books.find_one({"_id": books_read[0]})
-    print(book)
+
+    books_read = []
+    for book_id in user["books_read"]:
+        books_read += mongo.db.books.find_one({"_id": ObjectId(book_id)})
+    print(books_read)
+
     books_to_read = user["books_to_read"]
     reviews = list(mongo.db.reviews.find())
     return render_template(
@@ -399,31 +402,31 @@ def add_to_library(book_id):
         if request.form.get("read_book"):
             # checks if book already in 'books read' list
             for books in books_read:
-                if books == book:
+                if books == str(book["_id"]):
                     flash("Book already in library")
                     return redirect(url_for("get_books"))
 
             # Embeds book in users 'books_read' list
             mongo.db.users.update_one(
-                user, {"$push": {"books_read": book}})
+                user, {"$push": {"books_read": str(book["_id"])}})
 
             flash("Book Added To Library")
             return redirect(url_for("get_books"))
 
         if request.form.get("to_read_book"):
-            # checks if book already in users to read list
+            # checks if book already in users 'to read' list
             for books in books_to_read:
-                if books == book:
+                if books == str(book["_id"]):
                     flash("Book already in library")
                     return redirect(url_for("get_books"))
             # checks if book already in 'books read' list
             for books in books_read:
-                if books == book:
+                if books == str(book["_id"]):
                     flash("Book already in library")
                     return redirect(url_for("get_books"))
             # Embeds book in users 'books_to_read' list
             mongo.db.users.update_one(
-                user, {"$push": {"books_to_read": book}})
+                user, {"$push": {"books_to_read": str(book["_id"])}})
 
             flash("Book Added To Library")
             return redirect(url_for("get_books"))

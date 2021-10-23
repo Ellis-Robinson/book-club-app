@@ -12,7 +12,7 @@
         <li>
             <div class="collapsible-header shadow-background white-text center-align">
                 <i class="fas fa-book-open"></i>
-                <h6 class="padding-right"> </h6>
+                <h6 class="padding-right"> Title: </h6>
             </div>
             <div class="collapsible-body white-text text-shadow dark-shadow-background">
                 <div class="row">
@@ -48,27 +48,27 @@
 <div class="row">
     <ul class="collapsible col s12 m9 offset-m3">
         <h5 class="center-align white-text text-shadow">Books To Read</h5>
-        {% for book in books_to_read %}
+
         <li>
             <div class="collapsible-header shadow-background white-text center-align">
                 <i class="fas fa-book-open"></i>
-                <h6 class="padding-right"> {{ book["title"].capitalize() }}</h6>
+                <h6 class="padding-right"> </h6>
             </div>
             <div class="collapsible-body white-text text-shadow dark-shadow-background">
                 <div class="row">
                     <div class="col s3">
-                        <div class="padding-right"><strong>Genre:</strong> {{ book["genre"].capitalize() }}</div>
-                        <div class="padding-right"><strong>Author:</strong> {{ book["author"].capitalize() }}</div>
-                        <div class="padding-right"><strong>Year Of Publishing:</strong> {{ book["year"] }}</div>
-                        <div><strong>Rating:</strong> {{ book["rating"] }}/5</div>
+                        <div class="padding-right"><strong>Genre:</strong> </div>
+                        <div class="padding-right"><strong>Author:</strong> </div>
+                        <div class="padding-right"><strong>Year Of Publishing:</strong> </div>
+                        <div><strong>Rating:</strong> /5</div>
                     </div>
                     <div class="col s9">
-                        {{ book["synopsis"] }}
+
                     </div>
                 </div>
             </div>
         </li>
-        {% endfor %}
+
     </ul>
 </div>
 
