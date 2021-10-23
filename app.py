@@ -380,12 +380,14 @@ def my_library():
     books_read = []
     # Creates list of book objects, from object ids
     for book_id in user["books_read"]:
-        books_read.append(mongo.db.books.find_one({"_id": ObjectId(book_id)}))
+        books_read.append(mongo.db.books.find_one(
+            {"_id": ObjectId(book_id)}))
 
     books_to_read = []
     # Creates list of book objects, from object ids
     for book_id in user["books_to_read"]:
-        books_to_read.append(mongo.db.books.find_one({"_id": ObjectId(book_id)}))
+        books_to_read.append(mongo.db.books.find_one(
+            {"_id": ObjectId(book_id)}))
 
     reviews = list(mongo.db.reviews.find())
     return render_template(
@@ -439,16 +441,37 @@ def add_to_library(book_id):
                            book=book, user=user, reviews=reviews)
 
 
-# function not working, doesnt remove book from database
-@app.route("/remove_from_books_read", methods=["GET", "POST"])
-def remove_from_books_read():
+@app.route("/remove_from_books_read/<book_id>", methods=["GET", "POST"])
+def remove_from_books_read(book_id):
     user = mongo.db.users.find_one({
         "username": session["user"]})
     if request.method == "POST":
-        mongo.db.users.update_one(user, {"$pull": {"books_read": 0}})
+        # removes book id from users book_read array
+        mongo.db.users.update_one(
+                user, {"$pull": {"books_read": str(book_id)}})
         flash("Book removed from library")
         return redirect(url_for("my_library"))
     return redirect(url_for("my_library"))
+
+
+@app.route("/add_to_books_read/<book_id>", methods=["GET", "POST"])
+def add_to_books_read(book_id):
+    user = mongo.db.users.find_one({
+        "username": session["user"]})
+    if request.method == "POST":
+        # removes book id from users books_to_read array
+        mongo.db.users.update_one(
+                user, {"$pull": {"books_to_read": str(book_id)}})
+        to_read_to_books_read(book_id, user)
+        flash("Book added to Books Read")
+        return redirect(url_for("my_library"))
+    return redirect(url_for("my_library"))
+
+
+# adds book from books_to_read, to books_read
+def to_read_to_books_read(book_id, user):
+    mongo.db.users.update_one(
+                user, {"$push": {"books_read": str(book_id)}})
 
 
 @app.route("/log_out")

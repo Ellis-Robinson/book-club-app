@@ -25,7 +25,7 @@
 
                     </div>
 
-                    <form action="{{ url_for('remove_from_books_read') }}" method="POST">
+                    <form action="{{ url_for('remove_from_books_read', book_id=book._id) }}" method="POST">
                         <div class="col s3">
                             <div class="row">
                                 <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Remove From Library
@@ -62,8 +62,17 @@
                         <div><strong>Rating:</strong> /5</div>
                     </div>
                     <div class="col s9">
-
+                        <form action="{{ url_for('add_to_books_read', book_id=book._id) }}" method="POST">
+                            <div class="col s3">
+                                <div class="row">
+                                    <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Add to Books Read?
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
+
+
                 </div>
             </div>
         </li>
