@@ -18,7 +18,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
-#make home page that explains how the app works
+# make home page that explains how the app works
 @app.route("/")
 @app.route("/home")
 def home():
@@ -35,7 +35,6 @@ def get_books():
             "username": session["user"]
         })
         user_reviews = list(user["books_reviewed"])
-        print(user_reviews)
         return render_template(
             "books.html", books=books,
             reviews=reviews, user=user, user_reviews=user_reviews)
@@ -161,7 +160,18 @@ def add_book():
             mongo.db.books.insert_one(new_book)
             # Adds book to users books read list
             mongo.db.users.update(
-                user, {"$push": {"books_read": new_book["_id"]}})
+                user, {"$push": {"books_read": str(new_book["_id"])}})
+            add_to_books_reviewed(new_book, user)
+            # finds book added into database
+            review = {
+                "book_reviewed": new_book["title"],
+                "review": request.form.get("review"),
+                "reviewed_by": session["user"],
+                "book_id": str(new_book["_id"]),
+                "rating": request.form.get("rating")
+            }
+            # adds review to collection
+            mongo.db.reviews.insert_one(review)
             flash("Book Successfully Added")
             return redirect(url_for('my_library'))
 
@@ -171,12 +181,14 @@ def add_book():
     return redirect(url_for('log_in'))
 
 
+def add_to_books_reviewed(new_book, user):
+    mongo.db.users.update(
+        user, {"$push": {"books_reviewed": str(new_book["_id"])}})
+
+
 @app.route("/edit_book/<book_id>", methods=["GET", "POST"])
 def edit_book(book_id):
-
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-    user = mongo.db.users.find_one({"username": session["user"]})
-
     is_series = "yes" if request.form.get("is_series") else "no"
 
     if session["user"]:
@@ -194,11 +206,6 @@ def edit_book(book_id):
             }
 
             mongo.db.books.update(book, update)
-            #dont need this, check if it works and use elswhere
-            mongo.db.users.update(
-                {"_id": user["_id"], user["books_read"]: book["_id"]},
-                {"$set": {"books_read.$": update["_id"]}})
-
             flash("Book Successfully Edited")
             return redirect(url_for("my_library"))
 
@@ -284,7 +291,7 @@ def delete_book(book_id):
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
-    users = mongo.db.users.find()
+    users = list(mongo.db.users.find())
 
     if user["admin"]:
         book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
@@ -297,7 +304,7 @@ def delete_book(book_id):
 
         for user in users:
             mongo.db.users.update_one(
-                user, {"$pull": {"books_read": book}})
+                user, {"$pull": {"books_read": str(book["_id"])}})
 
         flash("Book Successfully Removed")
         return redirect(url_for('get_books'))
@@ -454,24 +461,17 @@ def remove_from_books_read(book_id):
     return redirect(url_for("my_library"))
 
 
-@app.route("/add_to_books_read/<book_id>", methods=["GET", "POST"])
-def add_to_books_read(book_id):
+@app.route("/remove_from_to_read/<book_id>", methods=["GET", "POST"])
+def remove_from_to_read(book_id):
     user = mongo.db.users.find_one({
         "username": session["user"]})
     if request.method == "POST":
         # removes book id from users books_to_read array
         mongo.db.users.update_one(
                 user, {"$pull": {"books_to_read": str(book_id)}})
-        to_read_to_books_read(book_id, user)
-        flash("Book added to Books Read")
+        flash("Book removed from to read list")
         return redirect(url_for("my_library"))
     return redirect(url_for("my_library"))
-
-
-# adds book from books_to_read, to books_read
-def to_read_to_books_read(book_id, user):
-    mongo.db.users.update_one(
-                user, {"$push": {"books_read": str(book_id)}})
 
 
 @app.route("/log_out")
