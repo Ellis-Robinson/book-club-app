@@ -382,7 +382,11 @@ def my_library():
     for book_id in user["books_read"]:
         books_read.append(mongo.db.books.find_one({"_id": ObjectId(book_id)}))
 
-    books_to_read = user["books_to_read"]
+    books_to_read = []
+    # Creates list of book objects, from object ids
+    for book_id in user["books_to_read"]:
+        books_to_read.append(mongo.db.books.find_one({"_id": ObjectId(book_id)}))
+
     reviews = list(mongo.db.reviews.find())
     return render_template(
         "my_library.html", books=books, reviews=reviews,

@@ -47,10 +47,11 @@
 <div class="row">
     <ul class="collapsible col s12 m9 offset-m3">
         <h5 class="center-align white-text text-shadow">Books To Read</h5>
+        {% for book in books_to_read %}
         <li>
             <div class="collapsible-header shadow-background white-text center-align">
                 <i class="fas fa-book-open"></i>
-                <h6 class="padding-right"> </h6>
+                <h6 class="padding-right">Name: {{ book.title }} </h6>
             </div>
             <div class="collapsible-body white-text text-shadow dark-shadow-background">
                 <div class="row">
@@ -66,7 +67,7 @@
                 </div>
             </div>
         </li>
-
+        {% endfor %}
     </ul>
 </div>
 
