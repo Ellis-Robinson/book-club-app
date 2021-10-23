@@ -70,7 +70,7 @@
                     <span>Have You Read This?</span>
                     <a href="{{ url_for('add_to_library', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Add to library</a>
                 </div>
-                {% if book in user_reviews %}
+                {% if book._id|string in user_reviews %}
                 <div>
                     You've already reviewed this book!
                 </div>
@@ -99,6 +99,9 @@
 
                     <li class="collection-item shadow-background">
                         <blockquote>"{{ review.review }}" {{review.rating}}/5 - {{ review.reviewed_by }}
+                            {{ book["_id"] }}
+                            {{ review.book_id }}
+                            {{ user_reviews }}
                             <!-- Checks if review belongs to user-->
                             {% if review.reviewed_by == session["user"] %}
 

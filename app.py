@@ -194,6 +194,11 @@ def edit_book(book_id):
             }
 
             mongo.db.books.update(book, update)
+            #dont need this, check if it works and use elswhere
+            mongo.db.users.update(
+                {"_id": user["_id"], user["books_read"]: book["_id"]},
+                {"$set": {"books_read.$": update["_id"]}})
+
             flash("Book Successfully Edited")
             return redirect(url_for("my_library"))
 
@@ -231,7 +236,8 @@ def review_book(book_id):
                 "rating": request.form.get("rating")
             }
             mongo.db.reviews.insert_one(review)
-            mongo.db.users.update_one(user, {"$push": {"books_reviewed": book}})
+            mongo.db.users.update_one(
+                user, {"$push": {"books_reviewed": str(book["_id"])}})
             flash("Book Successfully reviewed")
             return redirect(url_for("get_books"))
             
@@ -371,6 +377,8 @@ def my_library():
         "username": session["user"]
     })
     books_read = user["books_read"]
+    book = mongo.db.books.find_one({"_id": books_read[0]})
+    print(book)
     books_to_read = user["books_to_read"]
     reviews = list(mongo.db.reviews.find())
     return render_template(
