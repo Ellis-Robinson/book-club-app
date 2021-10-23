@@ -161,7 +161,6 @@ def add_book():
             # Adds book to users books read list
             mongo.db.users.update(
                 user, {"$push": {"books_read": str(new_book["_id"])}})
-            add_to_books_reviewed(new_book, user)
             # finds book added into database
             review = {
                 "book_reviewed": new_book["title"],
@@ -179,11 +178,6 @@ def add_book():
         return render_template("add_book.html", genres=genres, user=user)
 
     return redirect(url_for('log_in'))
-
-
-def add_to_books_reviewed(new_book, user):
-    mongo.db.users.update(
-        user, {"$push": {"books_reviewed": str(new_book["_id"])}})
 
 
 @app.route("/edit_book/<book_id>", methods=["GET", "POST"])
