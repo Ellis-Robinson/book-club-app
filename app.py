@@ -161,6 +161,7 @@ def add_book():
             # Adds book to users books read list
             mongo.db.users.update(
                 user, {"$push": {"books_read": str(new_book["_id"])}})
+                
             # finds book added into database
             review = {
                 "book_reviewed": new_book["title"],
@@ -459,10 +460,16 @@ def remove_from_books_read(book_id):
 def remove_from_to_read(book_id):
     user = mongo.db.users.find_one({
         "username": session["user"]})
+        
     if request.method == "POST":
+
         # removes book id from users books_to_read array
-        mongo.db.users.update_one(
+        mongo.db.users.update(
                 user, {"$pull": {"books_to_read": str(book_id)}})
+        # adds book id to users books_read array
+        mongo.db.users.update(
+                user, {"$push": {"books_read": str(book_id)}})
+
         flash("Book removed from to read list")
         return redirect(url_for("my_library"))
     return redirect(url_for("my_library"))
