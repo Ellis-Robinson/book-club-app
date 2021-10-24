@@ -65,6 +65,8 @@
     
 [ add features once ive finalised the app]
 
+### future features
+
 ## Technologies
 
 ### Languages

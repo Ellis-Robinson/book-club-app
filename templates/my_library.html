@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3 class="center-align white-text text-shadow"> My Library </h3>
+<h3 class="center-align white-text text-shadow large-heading"> My Library </h3>
 <!--Books read collapsible-->
 <div class="row">
+    <h5 class="center-align white-text text-shadow">Books I've read</h5>
     <ul class="collapsible col s12 m9 ">
-        <h5 class="center-align white-text text-shadow">Books I've read</h5>
         <!-- Shows books from users books_read list-->
         {% for book in books_read %}
         <li>
@@ -45,8 +45,8 @@
 
 <!-- Books to read collapsible-->
 <div class="row">
+    <h5 class="center-align white-text text-shadow">Books To Read</h5>
     <ul class="collapsible col s12 m9 offset-m3">
-        <h5 class="center-align white-text text-shadow">Books To Read</h5>
         {% for book in books_to_read %}
         <li>
             <div class="collapsible-header shadow-background white-text center-align">

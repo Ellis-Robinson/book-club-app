@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3 class="center-align white-text text-shadow"> Add Genre </h3>
+<h3 class="center-align white-text text-shadow large-heading"> Add Genre </h3>
 
 <div class="row">
     <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST" action="{{ url_for('add_genre') }}">
@@ -10,9 +10,9 @@
                 <input id="name" name="name" type="text" class="validate">
                 <label for="name">Genre</label>
             </div>
-                <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Add Genre
-            <i class="fas fa-plus"></i>
-        </button>
+            <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Add Genre
+                <i class="fas fa-plus"></i>
+            </button>
     </form>
 </div>
 

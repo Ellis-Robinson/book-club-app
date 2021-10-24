@@ -48,6 +48,10 @@ h6 {
     font-family: Italianno;
 }
 
+.large-heading {
+    font-size: 4.5rem;
+}
+
 .large-icon {
     font-size: 70px;
 }
