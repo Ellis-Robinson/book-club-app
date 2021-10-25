@@ -28,9 +28,9 @@ def home():
 # loads page with list of all books
 @app.route("/get_books")
 def get_books():
+    books = mongo.db.books.find().sort('title', 1)
+    reviews = list(mongo.db.reviews.find())
     if session:
-        books = mongo.db.books.find().sort('title', 1)
-        reviews = list(mongo.db.reviews.find())
         user = mongo.db.users.find_one({
             "username": session["user"]
         })
@@ -39,8 +39,9 @@ def get_books():
             "books.html", books=books,
             reviews=reviews, user=user, user_reviews=user_reviews)
     
-    flash("You need to log in first")
-    return redirect(url_for("log_in"))
+    return render_template(
+        "books.html", books=books,
+        reviews=reviews)
 
 
 @app.route("/search", methods=["GET", "POST"])
