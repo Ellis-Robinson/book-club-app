@@ -226,11 +226,29 @@ def review_book(book_id):
             mongo.db.users.update_one(
                 user, {"$push": {"books_reviewed": str(book["_id"])}})
             flash("Book Successfully reviewed")
+
+            update_book_rating(book)
+            
             return redirect(url_for("get_books"))
 
         return render_template("review_book.html", book=book)
     flash("You Need To Be Logged In To Review Books.")
     return redirect(url_for('log_in'))
+
+
+# finds mean rating for book
+@app.route("/update_book_rating")
+def update_book_rating(book):
+    reviews = mongo.db.reviews.find()
+    list_of_ratings = []
+    for review in reviews:
+        if review["book_id"] == str(book["_id"]):
+            list_of_ratings.append(int(review["rating"]))
+    new_rating = sum(list_of_ratings) / len(list_of_ratings)
+    print(round(new_rating))
+    mongo.db.books.update(
+            book, {
+                "$set": {"rating": round(new_rating)}})
 
 
 # shows all reviews user has posted
@@ -245,6 +263,14 @@ def my_reviews():
 @app.route("/edit_review/<review_id>", methods=["GET", "POST"])
 def edit_review(review_id):
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+    
+    book = {}
+
+    books = mongo.db.books.find()
+    for b in books:
+        if str(b["_id"]) == review["book_id"]:
+            book = b
+
     if request.method == "POST":
         # updates the "review" field only
         mongo.db.reviews.update(
@@ -253,6 +279,9 @@ def edit_review(review_id):
                          "rating": request.form.get("rating")}})
 
         flash("Review Successfully Edited")
+
+        update_book_rating(book)
+
         return redirect(url_for('my_reviews'))
 
     return render_template("edit_review.html", review=review)
@@ -261,8 +290,15 @@ def edit_review(review_id):
 # allows user to delete their reviews
 @app.route("/delete_review/<review_id>")
 def delete_review(review_id):
+    review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)}) 
+    book = {}
+    books = mongo.db.books.find()
+    for b in books:
+        if str(b["_id"]) == review["book_id"]:
+            book = b
     mongo.db.reviews.remove({"_id": ObjectId(review_id)})
     flash("Review Successfully Removed")
+    update_book_rating(book)
     return redirect(url_for('my_reviews'))
 
 
