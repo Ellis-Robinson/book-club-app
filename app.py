@@ -244,11 +244,12 @@ def update_book_rating(book):
     for review in reviews:
         if review["book_id"] == str(book["_id"]):
             list_of_ratings.append(int(review["rating"]))
-    new_rating = sum(list_of_ratings) / len(list_of_ratings)
-    print(round(new_rating))
-    mongo.db.books.update(
-            book, {
-                "$set": {"rating": round(new_rating)}})
+    if len(list_of_ratings) > 0:
+        new_rating = sum(list_of_ratings) / len(list_of_ratings)
+        print(round(new_rating))
+        mongo.db.books.update(
+                book, {
+                    "$set": {"rating": round(new_rating)}})
 
 
 # shows all reviews user has posted
