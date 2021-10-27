@@ -18,13 +18,6 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
-# make home page that explains how the app works
-@app.route("/")
-@app.route("/home")
-def home():
-    return render_template("home.html")
-
-
 # loads page with list of all books
 @app.route("/get_books")
 def get_books():
@@ -436,7 +429,6 @@ def add_to_library(book_id):
             # Embeds book in users 'books_to_read' list
             mongo.db.users.update_one(
                 user, {"$push": {"books_to_read": str(book["_id"])}})
-
             flash("Book Added To Library")
             return redirect(url_for("get_books"))
 
@@ -461,7 +453,7 @@ def remove_from_books_read(book_id):
 def remove_from_to_read(book_id):
     user = mongo.db.users.find_one({
         "username": session["user"]})
-        
+
     if request.method == "POST":
 
         # removes book id from users books_to_read array
