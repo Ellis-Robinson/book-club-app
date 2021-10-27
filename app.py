@@ -311,8 +311,16 @@ def delete_review(review_id):
         if str(b["_id"]) == review["book_id"]:
             book = b
     mongo.db.reviews.remove({"_id": ObjectId(review_id)})
-    mongo.db.users.update_one(
-        user, {"$pull": {"books_reviewed": str(book["_id"])}})
+    
+    reviewer = mongo.db.users.find_one({"username": review["reviewed_by"]})
+
+    if review["reviewed_by"] == user["username"]:
+        mongo.db.users.update_one(
+            user, {"$pull": {"books_reviewed": str(book["_id"])}})
+    elif review["reviewed_by"] == reviewer["username"]:
+        mongo.db.users.update_one(
+            reviewer, {"$pull": {"books_reviewed": str(book["_id"])}})
+
     flash("Review Successfully Removed")
     update_book_rating(book)
     return redirect(url_for('my_reviews'))
