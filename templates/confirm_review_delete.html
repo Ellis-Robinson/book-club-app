@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="center-align white-text text-shadow large-heading"> Are You Sure? </h3>
+
+
+<div class="row center-align">
+    <div class="col s12 m6 offset-m3">
+        <div class="card shadow-background">
+            <div class="card-content white-text">
+                <p>
+                    Clicking delete will permenantly remove the review: <br><br>
+                    <div><i class="fas fa-align-left"></i>
+                        {{ review["review"] }} - {{ review["rating"] }}/5
+                    </div> <br>
+                    What do you want to do?
+                </p>
+                <div class="padding-top row">
+                    <a class="waves-effect waves-light btn green darken-2" href="{{ url_for('delete_review', review_id=review._id) }}">Delete</a>
+                    <a class="waves-effect waves-light btn red darken-2" href="{{ url_for('get_books') }}">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}

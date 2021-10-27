@@ -287,6 +287,16 @@ def edit_review(review_id):
     return render_template("edit_review.html", review=review)
 
 
+@app.route("/confirm_review_delete/<review_id>")
+def confirm_review_delete(review_id):
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
+    review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+    return render_template(
+        "confirm_review_delete.html", review=review, user=user)
+
+
 # allows user to delete their reviews
 @app.route("/delete_review/<review_id>")
 def delete_review(review_id):
@@ -302,14 +312,14 @@ def delete_review(review_id):
     return redirect(url_for('my_reviews'))
 
 
-@app.route("/confirm_delete/<book_id>")
-def confirm_delete(book_id):
+@app.route("/confirm_book_delete/<book_id>")
+def confirm_book_delete(book_id):
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
     print(book)
-    return render_template("confirm_delete.html", book=book, user=user)
+    return render_template("confirm_book_delete.html", book=book, user=user)
 
 
 
