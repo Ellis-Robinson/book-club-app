@@ -109,7 +109,7 @@
                     <!--Checks if review belongs to user or if user is admin-->
                     {% if user["admin"] %}
 
-                    <a class="waves-effect waves-light btn-small red darken-2 modal-trigger" href="{{ url_for('delete_book', book_id=book._id) }}">Delete Book</a>
+                    <a class="waves-effect waves-light btn-small red darken-2 modal-trigger" href="{{ url_for('confirm_delete', book_id=book._id) }}">Delete Book</a>
 
                     {% endif %}
                 </div>

@@ -276,6 +276,17 @@ def delete_review(review_id):
     return redirect(url_for('my_reviews'))
 
 
+@app.route("/confirm_delete/<book_id>")
+def confirm_delete(book_id):
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
+    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+    print(book)
+    return render_template("confirm_delete.html", book=book, user=user)
+
+
+
 @app.route("/delete_book/<book_id>")
 def delete_book(book_id):
     user = mongo.db.users.find_one({
@@ -300,6 +311,8 @@ def delete_book(book_id):
         return redirect(url_for('get_books'))
     flash("Sorry, You are not autherised to do that")
     return redirect(url_for('get_books'))
+
+
 
 
 # allows admin users to add genre
