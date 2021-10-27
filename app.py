@@ -157,18 +157,8 @@ def add_book():
             mongo.db.users.update(
                 user, {"$push": {"books_read": str(new_book["_id"])}})
 
-            # finds book added into database
-            review = {
-                "book_reviewed": new_book["title"],
-                "review": request.form.get("review"),
-                "reviewed_by": session["user"],
-                "book_id": str(new_book["_id"]),
-                "rating": request.form.get("rating")
-            }
-            # adds review to collection
-            mongo.db.reviews.insert_one(review)
-            flash("Book Successfully Added")
-            return redirect(url_for('my_library'))
+            flash("Book Successfully Added, Now For The Review..")
+            return render_template('review_book.html', book=new_book)
 
         genres = mongo.db.genres.find().sort("genres", 1)
         return render_template("add_book.html", genres=genres, user=user)
