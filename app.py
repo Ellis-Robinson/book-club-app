@@ -19,6 +19,7 @@ mongo = PyMongo(app)
 
 
 # loads page with list of all books
+@app.route("/")
 @app.route("/get_books")
 def get_books():
     books = mongo.db.books.find().sort('title', 1)
@@ -31,7 +32,7 @@ def get_books():
         return render_template(
             "books.html", books=books,
             reviews=reviews, user=user, user_reviews=user_reviews)
-    
+
     return render_template(
         "books.html", books=books,
         reviews=reviews)
@@ -155,7 +156,7 @@ def add_book():
             # Adds book to users books read list
             mongo.db.users.update(
                 user, {"$push": {"books_read": str(new_book["_id"])}})
-                
+
             # finds book added into database
             review = {
                 "book_reviewed": new_book["title"],
@@ -236,7 +237,7 @@ def review_book(book_id):
                 user, {"$push": {"books_reviewed": str(book["_id"])}})
             flash("Book Successfully reviewed")
             return redirect(url_for("get_books"))
-            
+
         return render_template("review_book.html", book=book)
     flash("You Need To Be Logged In To Review Books.")
     return redirect(url_for('log_in'))
