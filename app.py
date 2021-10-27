@@ -301,6 +301,9 @@ def confirm_review_delete(review_id):
 # allows user to delete their reviews
 @app.route("/delete_review/<review_id>")
 def delete_review(review_id):
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)}) 
     book = {}
     books = mongo.db.books.find()
@@ -308,6 +311,8 @@ def delete_review(review_id):
         if str(b["_id"]) == review["book_id"]:
             book = b
     mongo.db.reviews.remove({"_id": ObjectId(review_id)})
+    mongo.db.users.update_one(
+        user, {"$pull": {"books_reviewed": str(book["_id"])}})
     flash("Review Successfully Removed")
     update_book_rating(book)
     return redirect(url_for('my_reviews'))
