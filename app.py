@@ -218,7 +218,7 @@ def review_book(book_id):
             review = {
                 "book_reviewed": request.form.get("book_reviewed"),
                 "review": request.form.get("review"),
-                "reviewed_by": request.form.get("reviewed_by"),
+                "reviewed_by": user["_id"],
                 "book_id": request.form.get("book_id"),
                 "rating": request.form.get("rating")
             }
