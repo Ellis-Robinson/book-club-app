@@ -22,9 +22,11 @@ mongo = PyMongo(app)
 @app.route("/")
 @app.route("/get_books")
 def get_books():
+    """Finds all books, reviews and users, to be used by frontend"""
     books = mongo.db.books.find().sort('title', 1)
     reviews = list(mongo.db.reviews.find())
     users = mongo.db.users.find()
+    # checks if in session, sends neccessary variables to frontend
     if session:
         user = mongo.db.users.find_one({
             "username": session["user"]
@@ -42,6 +44,7 @@ def get_books():
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
+    """Checks user input against db and returns findings"""
     query = request.form.get("query")
     books = list(mongo.db.books.find(
         {"$text": {"$search": query}}))
@@ -54,24 +57,26 @@ def search():
         "books.html", books=books, reviews=reviews, user=user)
 
 
-# allows user to create username and password
+
 @app.route("/sign_up", methods=["GET", "POST"])
 def sign_up():
+    """allows user to create username and password"""
     if request.method == "POST":
-        # checks if username already in database
         users = mongo.db.users.find()
         password = request.form.get("password")
         confirm_password = request.form.get("confirm_password")
-
+        # checks if username already in database
         for user in users:
             if user["username"] == request.form.get("username").lower():
                 flash("Username Taken, Please Try Another")
                 return redirect(url_for("sign_up"))
-
+        # checks both passwords match
         if password != confirm_password:
             flash("Passwords Did Not Match, Please Try Again")
             return redirect(url_for("sign_up"))
+        # creates user and adds to db
         register = {
+            "email": request.form.get("email"),
             "username": request.form.get("username").lower(),
             "password": generate_password_hash(request.form.get("password")),
             "admin": False,
@@ -88,6 +93,7 @@ def sign_up():
 
 @app.route("/log_in", methods=["GET", "POST"])
 def log_in():
+    """allows user to log in"""
     if request.method == "POST":
         # checks if user already exists in db
         existing_user = mongo.db.users.find_one({
@@ -95,8 +101,8 @@ def log_in():
 
         if existing_user:
             # checks if the password for user is correct
-            if check_password_hash(
-                    existing_user["password"], request.form.get("password")):
+            if check_password_hash(existing_user["password"],
+                                   request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
                 flash("Welcome back, {}".format(
                     request.form.get("username")))
@@ -112,9 +118,9 @@ def log_in():
     return render_template("log_in.html")
 
 
-# loads users page or redirects to log in page
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
+    """loads users page or redirects to log in page"""
     username = mongo.db.users.find_one(
         {"username": session["user"]})["username"]
     user = mongo.db.users.find_one(
@@ -127,17 +133,18 @@ def profile(username):
     return redirect(url_for("log_in"))
 
 
-# if use is logged in takes to add book page
-# otherwise redirects to log in page
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
+    """if use is logged in takes to add book page otherwise
+    redirects to log in page"""
     books = mongo.db.books.find()
     user = mongo.db.users.find_one({"username": session["user"]})
+    # checks if user in session
     if session["user"]:
 
         if request.method == "POST":
             is_series = "yes" if request.form.get("is_series") else "no"
-
+            # creates new book from user input
             new_book = {
                 "title": request.form.get("title").lower(),
                 "genre": request.form.get("genre").lower(),
@@ -161,7 +168,7 @@ def add_book():
 
             flash("Book Successfully Added, Now For The Review..")
             return render_template('review_book.html', book=new_book)
-
+        # gets genres from db
         genres = mongo.db.genres.find().sort("genres", 1)
         return render_template("add_book.html", genres=genres, user=user)
 
@@ -170,11 +177,14 @@ def add_book():
 
 @app.route("/edit_book/<book_id>", methods=["GET", "POST"])
 def edit_book(book_id):
+    """gets book current info, updates from users input"""
+    # finds book
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
     is_series = "yes" if request.form.get("is_series") else "no"
 
     if session["user"]:
         if request.method == "POST":
+            # updates from users input
             update = {
                 "title": request.form.get("title").lower(),
                 "genre": request.form.get("genre").lower(),
@@ -198,10 +208,11 @@ def edit_book(book_id):
     return redirect(url_for('log_in'))
 
 
-# if use is logged in takes to review book page
-# otherwise redirects to log in page
 @app.route("/review_book/<book_id>", methods=["GET", "POST"])
 def review_book(book_id):
+    """if use is logged in takes to review book page,
+    then stores review in db.
+    otherwise redirects to log in page"""
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
     user = mongo.db.users.find_one({
         "username": session["user"]
@@ -217,11 +228,12 @@ def review_book(book_id):
                     return redirect(url_for("get_books"))
 
         if request.method == "POST":
+            # creates review
             review = {
-                "book_reviewed": request.form.get("book_reviewed"),
+                "book_reviewed": book["title"],
                 "review": request.form.get("review"),
                 "reviewed_by": str(user["_id"]),
-                "book_id": request.form.get("book_id"),
+                "book_id": book["_id"],
                 "rating": request.form.get("rating")
             }
             mongo.db.reviews.insert_one(review)
@@ -238,13 +250,15 @@ def review_book(book_id):
     return redirect(url_for('log_in'))
 
 
-# finds mean rating for book
 @app.route("/update_book_rating")
 def update_book_rating(book):
+    """finds avarage rating for book and updates book in db"""
     reviews = mongo.db.reviews.find()
     list_of_ratings = []
     for review in reviews:
+        # checks reviews against book
         if review["book_id"] == str(book["_id"]):
+            # adds rating from review to list_of_ratings variable
             list_of_ratings.append(int(review["rating"]))
     if len(list_of_ratings) > 0:
         new_rating = sum(list_of_ratings) / len(list_of_ratings)
@@ -300,23 +314,27 @@ def confirm_review_delete(review_id):
         "confirm_review_delete.html", review=review, user=user)
 
 
-# allows user to delete their reviews
 @app.route("/delete_review/<review_id>")
 def delete_review(review_id):
+    """Delete review from database and removes associated
+    id's from documents in users collection"""
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
+    # finds the review
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)}) 
     book = {}
     books = mongo.db.books.find()
+    # finds the book linked to review
     for b in books:
         if str(b["_id"]) == review["book_id"]:
             book = b
+    # removed review from database
     mongo.db.reviews.remove({"_id": ObjectId(review_id)})
-    
+    # finds user who left the review
     reviewer = mongo.db.users.find_one(
         {"_id": ObjectId(review["reviewed_by"])})
-
+    # removes book from books_reviewed section of relevent user
     if review["reviewed_by"] == str(user["_id"]):
         mongo.db.users.update_one(
             user, {"$pull": {"books_reviewed": str(book["_id"])}})
