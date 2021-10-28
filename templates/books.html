@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col center-align shadow-background white-text s12 m6 offset-m3">
         <p>
-            Our aim is to help you decide youre next book, based on reviews submitted by books fellow book lovers.<br>
+            Our aim is to help you decide youre next book, based on reviews submitted by fellow book lovers.<br>
             Once registiered, you will be able to:
             <ul>
                 <li>Add books to the collection</li>
@@ -127,19 +127,19 @@
                     <li class="collection-item shadow-background">
                         <blockquote>"{{ review.review }}" {{review.rating}}/5 - {{ review.reviewed_by }}
                             <!-- Checks if review belongs to user-->
+                            {% if session["user"] %}
                             {% if review.reviewed_by == session["user"] %}
 
                             <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Review</a>
                             <!-- Checks if review belongs to user or if user is admin-->
                             {% endif %}
+
                             {% if user["admin"] == True or review.reviewed_by == session["user"] %}
 
                             <a href="{{ url_for('confirm_review_delete', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete Review</a>
-
+                            {% endif %}
+                            {% endif %}
                         </blockquote>
-
-                        {% endif %}
-
                     </li>
 
                     {% endif %}
