@@ -24,18 +24,20 @@ mongo = PyMongo(app)
 def get_books():
     books = mongo.db.books.find().sort('title', 1)
     reviews = list(mongo.db.reviews.find())
+    users = mongo.db.users.find()
     if session:
         user = mongo.db.users.find_one({
             "username": session["user"]
         })
         user_reviews = list(user["books_reviewed"])
+    
         return render_template(
             "books.html", books=books,
-            reviews=reviews, user=user, user_reviews=user_reviews)
+            reviews=reviews, user=user, users=users, user_reviews=user_reviews)
 
     return render_template(
         "books.html", books=books,
-        reviews=reviews)
+        reviews=reviews, users=users)
 
 
 @app.route("/search", methods=["GET", "POST"])
