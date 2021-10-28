@@ -258,45 +258,47 @@ def update_book_rating(book):
     for review in reviews:
         # checks reviews against book
         if review["book_id"] == str(book["_id"]):
-            # adds rating from review to list_of_ratings variable
+            # adds rating from reviews to list_of_ratings variable
             list_of_ratings.append(int(review["rating"]))
+    # checks at least one review exists
     if len(list_of_ratings) > 0:
+        # calculates avarage rating
         new_rating = sum(list_of_ratings) / len(list_of_ratings)
         print(round(new_rating))
+        # updates books rating
         mongo.db.books.update(
                 book, {
                     "$set": {"rating": round(new_rating)}})
 
 
-# shows all reviews user has posted
 @app.route("/my_reviews")
 def my_reviews():
-
+    """Gets all reviews user has posted"""
     reviews = mongo.db.reviews.find()
     return render_template("my_reviews.html", reviews=reviews)
 
 
-# allows user to edit their reviews
 @app.route("/edit_review/<review_id>", methods=["GET", "POST"])
 def edit_review(review_id):
+    """ allows user to edit their reviews """
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
     
     book = {}
-
+    # finds book associated with review
     books = mongo.db.books.find()
     for b in books:
         if str(b["_id"]) == review["book_id"]:
             book = b
 
     if request.method == "POST":
-        # updates the "review" field only
+        # updates "review" and "rating" fields 
         mongo.db.reviews.update(
             {"_id": ObjectId(review_id)}, {
                 "$set": {"review": request.form.get("review"),
                          "rating": request.form.get("rating")}})
 
         flash("Review Successfully Edited")
-
+        # updates book rating
         update_book_rating(book)
 
         return redirect(url_for('my_reviews'))
@@ -306,6 +308,7 @@ def edit_review(review_id):
 
 @app.route("/confirm_review_delete/<review_id>")
 def confirm_review_delete(review_id):
+    """ Checks if user definitely wants to delete the review"""
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
@@ -349,6 +352,7 @@ def delete_review(review_id):
 
 @app.route("/confirm_book_delete/<book_id>")
 def confirm_book_delete(book_id):
+    """ Checks the user definitely wants to delete the book """
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
@@ -357,9 +361,10 @@ def confirm_book_delete(book_id):
     return render_template("confirm_book_delete.html", book=book, user=user)
 
 
-
 @app.route("/delete_book/<book_id>")
 def delete_book(book_id):
+    """ deletes book, all associated reviews
+    removes book id from all documents in db"""
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
@@ -373,7 +378,7 @@ def delete_book(book_id):
         for review in reviews:
             if review["book_id"] == str(book["_id"]):
                 mongo.db.reviews.remove(review)
-
+        # removes book id from users books_read array
         for user in users:
             mongo.db.users.update_one(
                 user, {"$pull": {"books_read": str(book["_id"])}})
@@ -384,11 +389,9 @@ def delete_book(book_id):
     return redirect(url_for('get_books'))
 
 
-
-
-# allows admin users to add genre
 @app.route("/add_genre", methods=["GET", "POST"])
 def add_genre():
+    """allows admin users to add genre"""
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
@@ -409,7 +412,8 @@ def add_genre():
 
 @app.route("/edit_genre", methods=["GET", "POST"])
 def edit_genre():
-    # gets all genres in collection
+    """ allows admin to edit genre """
+    #gets all genres in collection
     genres = list(mongo.db.genres.find())
     if request.method == "POST":
 
@@ -429,6 +433,7 @@ def edit_genre():
 
 @app.route("/remove_user", methods=["GET", "POST"])
 def remove_user():
+    """ allows admin to remove user from db"""
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
@@ -453,6 +458,8 @@ def remove_user():
 
 @app.route("/my_library")
 def my_library():
+    """loads users library with books they have read
+     and books they want to read"""
     books = list(mongo.db.books.find())
     user = mongo.db.users.find_one({
         "username": session["user"]
@@ -478,6 +485,7 @@ def my_library():
 
 @app.route("/add_to_library/<book_id>", methods=["GET", "POST"])
 def add_to_library(book_id):
+    """ lets user add books to library """
     book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
     reviews = mongo.db.reviews.find()
     user = mongo.db.users.find_one({
@@ -523,6 +531,8 @@ def add_to_library(book_id):
 
 @app.route("/remove_from_books_read/<book_id>", methods=["GET", "POST"])
 def remove_from_books_read(book_id):
+    """ removes book from library and
+    id from books read array in user document in db """
     user = mongo.db.users.find_one({
         "username": session["user"]})
     if request.method == "POST":
@@ -536,6 +546,8 @@ def remove_from_books_read(book_id):
 
 @app.route("/remove_from_to_read/<book_id>", methods=["GET", "POST"])
 def remove_from_to_read(book_id):
+    """ removes book from library and
+    id from books to read array in user document in db """
     user = mongo.db.users.find_one({
         "username": session["user"]})
 
@@ -552,6 +564,7 @@ def remove_from_to_read(book_id):
 
 @app.route("/add_to_books_read/<book_id>", methods=["GET", "POST"])
 def add_to_books_read(book_id):
+    """ adds book to users books read section in library """
     user = mongo.db.users.find_one({
         "username": session["user"]})
 
@@ -568,6 +581,8 @@ def add_to_books_read(book_id):
 
 @app.route("/log_out")
 def log_out():
+    """ logs user out """
+    # removes user from session
     session.pop("user")
     flash("You have successfully logged out")
     return redirect(url_for("log_in"))
