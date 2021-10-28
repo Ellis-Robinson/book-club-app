@@ -220,7 +220,7 @@ def review_book(book_id):
             review = {
                 "book_reviewed": request.form.get("book_reviewed"),
                 "review": request.form.get("review"),
-                "reviewed_by": user["_id"],
+                "reviewed_by": str(user["_id"]),
                 "book_id": request.form.get("book_id"),
                 "rating": request.form.get("rating")
             }
@@ -314,7 +314,8 @@ def delete_review(review_id):
             book = b
     mongo.db.reviews.remove({"_id": ObjectId(review_id)})
     
-    reviewer = mongo.db.users.find_one({"_id": ObjectId(review["reviewed_by"])})
+    reviewer = mongo.db.users.find_one(
+        {"_id": ObjectId(review["reviewed_by"])})
 
     if review["reviewed_by"] == str(user["_id"]):
         mongo.db.users.update_one(
@@ -325,7 +326,7 @@ def delete_review(review_id):
 
     flash("Review Successfully Removed")
     update_book_rating(book)
-    return redirect(url_for('my_reviews'))
+    return redirect(url_for('get_books'))
 
 
 @app.route("/confirm_book_delete/<book_id>")
