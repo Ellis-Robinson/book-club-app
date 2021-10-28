@@ -210,7 +210,7 @@ def review_book(book_id):
         # checks if user has already reviewed book
         for review in reviews:
             if review["book_id"] == str(book["_id"]):
-                if review["reviewed_by"] == session["user"]:
+                if review["reviewed_by"] == str(user["_id"]):
                     flash("You Have Already Reviewed This Book")
                     return redirect(url_for("get_books"))
 
@@ -312,12 +312,12 @@ def delete_review(review_id):
             book = b
     mongo.db.reviews.remove({"_id": ObjectId(review_id)})
     
-    reviewer = mongo.db.users.find_one({"username": review["reviewed_by"]})
+    reviewer = mongo.db.users.find_one({"_id": ObjectId(review["reviewed_by"])})
 
-    if review["reviewed_by"] == user["username"]:
+    if review["reviewed_by"] == str(user["_id"]):
         mongo.db.users.update_one(
             user, {"$pull": {"books_reviewed": str(book["_id"])}})
-    elif review["reviewed_by"] == reviewer["username"]:
+    elif review["reviewed_by"] == str(reviewer["_id"]):
         mongo.db.users.update_one(
             reviewer, {"$pull": {"books_reviewed": str(book["_id"])}})
 
