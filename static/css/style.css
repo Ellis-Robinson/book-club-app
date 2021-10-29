@@ -32,6 +32,10 @@ main {
     padding-bottom: 5%
 }
 
+.fa-align-left {
+    padding-right: 4px;
+}
+
 
 .hidden {
     display: none;

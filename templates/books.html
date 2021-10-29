@@ -64,37 +64,39 @@
         </div>
         <div class="collapsible-body dark-shadow-background white-text">
             <div class="row">
-                <div class="card-content white-text col s9 shadow-background">
+                <div class="card-content white-text col s12 shadow-background">
                     <div class="row">
-                        <div class="col s3">
-                            <strong">Synopsis:</strong>
-                        </div>
-                        <div class="col s9">
+                        <div class="col s12">
+                            <strong>Synopsis:</strong> <br>
                             {{ book.synopsis }}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s3">
-                            <strong class="padding-right">Year Of Publishing:</strong>
-                        </div>
-                        <div class="col s9">
+                        <div class="col s12">
+                            <strong class="padding-right">Year Of Publishing:</strong> <br>
                             {{ book.year }}
                         </div>
                     </div>
                     {% if book["series_name"] %}
                     <div>
-                        <div class="col s3">
-                            <strong class="padding-right">Series:</strong>
-                        </div>
-                        <div class="col s9">
+                        <div class="col s12">
+                            <strong class="padding-right">Series:</strong> <br>
                             {{ book.series_name }}
                         </div>
                     </div>
                     {% endif %}
                 </div>
                 {% if session %}
+                <div class="col s12">
+                    <!--Checks user is admin-->
+                    {% if user["admin"] %}
+
+                    <a class="waves-effect waves-light btn-small red darken-2 modal-trigger" href="{{ url_for('confirm_book_delete', book_id=book._id) }}">Delete Book</a>
+
+                    {% endif %}
+                </div>
                 <!-- add to library button -->
-                <div class="col s3">
+                <div class="col s12">
                     <span>Have You Read This?</span>
                     <a href="{{ url_for('add_to_library', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Add to library</a>
                 </div>
@@ -107,53 +109,46 @@
                     <a href="{{ url_for('review_book', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Review</a>
                 </div>
                 {% endif %}
-                <div class="col s3">
-                    <!--Checks if review belongs to user or if user is admin-->
-                    {% if user["admin"] %}
-
-                    <a class="waves-effect waves-light btn-small red darken-2 modal-trigger" href="{{ url_for('confirm_book_delete', book_id=book._id) }}">Delete Book</a>
-
-                    {% endif %}
-                </div>
                 {% endif %}
             </div>
             <div>
                 <ul class="">
 
-                    <h6 class="s6"><i class="fas fa-align-left"></i>Reviews</h6>
+                    <h4 class="s6"><i class="fas fa-align-left"></i>Reviews</h6>
 
-                    {% for review in reviews %}
-                    <!-- Gets all reviews that match current book-->
-                    {% if review.book_id == book._id|string %}
+                        {% for review in reviews %}
+                        <!-- Gets all reviews that match current book-->
+                        {% if review.book_id == book._id|string %}
 
-                    <li class="collection-item shadow-background">
-                        <blockquote>"{{ review.review }}" {{review.rating}}/5 -
-                            {% for user in users %}
+                        <li class="collection-item shadow-background">
+                            <blockquote>"{{ review.review }}" {{review.rating}}/5
+                                {% for user in users %}
 
-                            {% if user["_id"]|string == review.reviewed_by %}
+                                {% if user["_id"]|string == review.reviewed_by %}
 
-                            {{ user["username"] }}
+                                {{ user["username"] }}
 
-                            {% endif %}
-                            {% endfor %}
-                            <!-- Checks if review belongs to user-->
-                            {% if session["user"] %}
-                            {% if review.reviewed_by == user["_id"]|string %}
+                                {% endif %}
+                                {% endfor %}
+                                <br>
+                                <!-- Checks if review belongs to user-->
+                                {% if session["user"] %}
+                                {% if review.reviewed_by == user["_id"]|string %}
 
-                            <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Review</a>
-                            <!-- Checks if review belongs to user or if user is admin-->
-                            {% endif %}
+                                <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Review</a>
+                                <!-- Checks if review belongs to user or if user is admin-->
+                                {% endif %}
 
-                            {% if user["admin"] == True or review.reviewed_by == user["_id"]|string %}
+                                {% if user["admin"] == True or review.reviewed_by == user["_id"]|string %}
 
-                            <a href="{{ url_for('confirm_review_delete', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete Review</a>
-                            {% endif %}
-                            {% endif %}
-                        </blockquote>
-                    </li>
+                                <a href="{{ url_for('confirm_review_delete', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete Review</a>
+                                {% endif %}
+                                {% endif %}
+                            </blockquote>
+                        </li>
 
-                    {% endif %}
-                    {% endfor %}
+                        {% endif %}
+                        {% endfor %}
 
                 </ul>
             </div>
