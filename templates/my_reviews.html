@@ -16,14 +16,14 @@
                     <i class="fas fa-align-left"></i>
                     <div class="padding-right"><strong>Book:</strong> {{ review.book_reviewed }}</div>
                     <span class="padding-right"><strong>Author:</strong> {{ book.author.capitalize() }}</span>
-                    <span><strong>Rating:</strong> {{ book.rating }}/5</span>
+                    <span><strong>Rating:</strong> {{ review.rating }}/5</span>
                 </div>
                 {% endif %}
                 {% endfor %}
                 <div class="collapsible-body white-text dark-shadow-background">
 
                     <div><i class="fas fa-align-left"></i>
-                        Review: {{ review.review }} - {{ review.rating }}/5
+                        Review: {{ review.review }}
                     </div>
                     <div>
                         <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn amber darken-2">Edit</a>
