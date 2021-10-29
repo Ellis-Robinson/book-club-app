@@ -7,6 +7,10 @@
 <div class="row">
     <form class="col s12 m6 offset-m3 dark-shadow-background center-align" method="POST" action="{{ url_for('sign_up') }}">
         <div class="row">
+            <div class="input-field col s12">
+                <input id="email" name="email" type="email" class="validate" required>
+                <label for="email">Email</label>
+            </div>
             <!--username imput field-->
             <div class="input-field col s12">
                 <input id="username" name="username" type="text" minlength="3" maxlength="15" pattern="^[a-zA-Z0-9_-]{3,15}$" class="validate" required>
