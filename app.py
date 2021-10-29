@@ -395,6 +395,8 @@ def add_genre():
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
+    # finds all genres
+    genres = mongo.db.genres.find()
     if request.method == "POST":
 
         genre = {
@@ -406,7 +408,7 @@ def add_genre():
 
     # checks if user is admin
     if user["admin"]:
-        return render_template("add_genre.html")
+        return render_template("add_genre.html", genres=genres)
     return redirect(url_for("get_books"))
 
 
