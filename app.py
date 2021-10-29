@@ -25,7 +25,7 @@ def get_books():
     """Finds all books, reviews and users, to be used by frontend"""
     books = mongo.db.books.find().sort('title', 1)
     reviews = list(mongo.db.reviews.find())
-    users = mongo.db.users.find()
+    users = list(mongo.db.users.find())
     # checks if in session, sends neccessary variables to frontend
     if session:
         user = mongo.db.users.find_one({

@@ -126,7 +126,7 @@
 
                                 {% if user["_id"]|string == review.reviewed_by %}
 
-                                {{ user["username"] }}
+                                - {{ user["username"].capitalize() }}
 
                                 {% endif %}
                                 {% endfor %}
