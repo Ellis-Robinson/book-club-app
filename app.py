@@ -52,9 +52,11 @@ def search():
     user = mongo.db.users.find_one({
             "username": session["user"]
         })
+    user_reviews = list(user["books_reviewed"])
 
     return render_template(
-        "books.html", books=books, reviews=reviews, user=user)
+        "books.html", books=books, reviews=reviews,
+        user=user, user_reviews=user_reviews)
 
 
 
