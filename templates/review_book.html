@@ -3,13 +3,10 @@
 
 <h3 class="center-align white-text text-shadow large-heading"> Review Book </h3>
 
-<div class="row center-align">
-    <h5 class="white-text text-shadow">{{ book.title }}</h5>
-</div>
-
-
 <div class="row">
     <form class="col s12 m8 offset-m2 dark-shadow-background white-text center-align" method="POST" action="{{ url_for('review_book', book_id=book._id) }}">
+        <div class="padding-top"><u>{{ book.title }}</u></div>
+        <div class="padding-top">{{ book.synopsis }}</div>
         <!-- review input -->
         <div class="row padding-top">
             <div class="input-field white-text col m10 offset-m1">
