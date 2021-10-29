@@ -396,7 +396,7 @@ def add_genre():
         "username": session["user"]
     })
     # finds all genres
-    genres = mongo.db.genres.find()
+    genres = mongo.db.genres.find().sort('name', 1)
     if request.method == "POST":
 
         genre = {
