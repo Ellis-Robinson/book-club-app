@@ -41,12 +41,12 @@
             </div>
         </nav>
         <!--collapsable nav-->
-        <ul class="sidenav amber darken-4" id="mobile-nav">
+        <ul class="sidenav green-gradient" id="mobile-nav">
             {% if session.user %}
             <li><a href="{{ url_for('get_books') }}">Search Books</a></li>
             <li><a href="{{ url_for('my_library') }}">My Library</a></li>
             <li><a href="{{ url_for('my_reviews') }}">My Reviews</a></li>
-            <li><a href="{{ url_for('profile', username=session['user']) }}">My Profile></a></li>
+            <li><a href="{{ url_for('profile', username=session['user']) }}">My Profile</a></li>
             <li><a href="{{ url_for('log_out') }}">Log out</a></li>
             {% else %}
             <li><a href="{{ url_for('log_in') }}">Log in</a></li>
