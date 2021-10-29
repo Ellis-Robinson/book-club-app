@@ -169,7 +169,7 @@ def add_book():
             flash("Book Successfully Added, Now For The Review..")
             return render_template('review_book.html', book=new_book)
         # gets genres from db
-        genres = mongo.db.genres.find().sort("genres", 1)
+        genres = mongo.db.genres.find().sort("name", 1)
         return render_template("add_book.html", genres=genres, user=user)
 
     return redirect(url_for('log_in'))
@@ -233,7 +233,7 @@ def review_book(book_id):
                 "book_reviewed": book["title"],
                 "review": request.form.get("review"),
                 "reviewed_by": str(user["_id"]),
-                "book_id": book["_id"],
+                "book_id": str(book["_id"]),
                 "rating": request.form.get("rating")
             }
             mongo.db.reviews.insert_one(review)
