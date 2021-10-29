@@ -448,7 +448,7 @@ def remove_user():
     })
     if user["admin"]:
 
-        users = mongo.db.users.find()
+        users = list(mongo.db.users.find())
         if request.method == "POST":
             # links selected user with correct user in database and removes
             for user in users:
@@ -555,8 +555,8 @@ def remove_from_books_read(book_id):
 
 @app.route("/remove_from_to_read/<book_id>", methods=["GET", "POST"])
 def remove_from_to_read(book_id):
-    """ removes book from library and
-    id from books to read array in user document in db """
+    """removes book from library and
+    id from books to read array in user document in db"""
     user = mongo.db.users.find_one({
         "username": session["user"]})
 
@@ -573,15 +573,17 @@ def remove_from_to_read(book_id):
 
 @app.route("/add_to_books_read/<book_id>", methods=["GET", "POST"])
 def add_to_books_read(book_id):
-    """ adds book to users books read section in library """
+    """adds book to users books read section in library
+    and removes it from users books to read section"""
     user = mongo.db.users.find_one({
         "username": session["user"]})
 
     if request.method == "POST":
 
-        # adds book id to users books_read array
+        # adds book id to users books_read array and removes it from books_to_read array
         mongo.db.users.update(
-                user, {"$push": {"books_read": str(book_id)}})
+                user, {"$push": {"books_read": str(book_id)},
+                       "$pull": {"books_to_read": str(book_id)}})
 
         flash("Book added to books read list")
         return redirect(url_for("my_library"))
