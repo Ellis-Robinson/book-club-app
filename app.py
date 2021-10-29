@@ -276,8 +276,13 @@ def update_book_rating(book):
 @app.route("/my_reviews")
 def my_reviews():
     """Gets all reviews user has posted"""
-    reviews = mongo.db.reviews.find()
-    return render_template("my_reviews.html", reviews=reviews)
+    user = mongo.db.users.find_one({
+        "username": session["user"]
+    })
+    books = list(mongo.db.books.find())
+    reviews = list(mongo.db.reviews.find())
+    return render_template("my_reviews.html", reviews=reviews,
+                           user=user, books=books)
 
 
 @app.route("/edit_review/<review_id>", methods=["GET", "POST"])
@@ -329,7 +334,7 @@ def delete_review(review_id):
     # finds the review
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)}) 
     book = {}
-    books = mongo.db.books.find()
+    books = list(mongo.db.books.find())
     # finds the book linked to review
     for b in books:
         if str(b["_id"]) == review["book_id"]:
