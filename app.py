@@ -475,13 +475,13 @@ def my_library():
     })
 
     books_read = []
-    # Creates list of book objects, from object ids
+    # Creates list of book objects, from object ids in users books_read list
     for book_id in user["books_read"]:
         books_read.append(mongo.db.books.find_one(
             {"_id": ObjectId(book_id)}))
 
     books_to_read = []
-    # Creates list of book objects, from object ids
+    # Creates list of book objects, from object ids in users books_to_read list
     for book_id in user["books_to_read"]:
         books_to_read.append(mongo.db.books.find_one(
             {"_id": ObjectId(book_id)}))
