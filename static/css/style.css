@@ -14,7 +14,11 @@ main {
 }
 
 .shadow-bottom {
-    box-shadow: 0px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 0px 2px rgba(0, 0, 0, 0.5);
+}
+
+.shadow-top {
+    box-shadow: 0px -2px rgba(0, 0, 0, 0.5);
 }
 
 /* nav bar */
@@ -22,7 +26,11 @@ main {
     font-family: Martel600;
 }
 
-/* Padding */
+/* spacing */
+
+.margin-bottom {
+    margin-bottom: 5%;
+}
 
 .padding-right {
     padding-right: 5%;
@@ -106,5 +114,5 @@ form textarea {
 }
 
 .footer-copyright>div {
-    height: 35px
+    height: 40px
 }
