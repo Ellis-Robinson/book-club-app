@@ -155,7 +155,7 @@ def add_book():
                 "synopsis": request.form.get("synopsis").lower(),
                 "is_series": is_series,
                 "series_name": request.form.get("series_name"),
-                "rating": request.form.get("rating"),
+                "rating": "",
                 "added_by": session["user"]
             }
             # Checks if title matches a book in database
