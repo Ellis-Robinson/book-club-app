@@ -402,7 +402,7 @@ def add_genre():
         }
         mongo.db.genres.insert_one(genre)
         flash("Genre Successfully Added")
-        return redirect(url_for("get_books"))
+        return redirect(url_for("add_genre"))
 
     # checks if user is admin
     if user["admin"]:
