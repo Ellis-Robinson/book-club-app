@@ -18,7 +18,7 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
-# loads page with list of all books
+
 @app.route("/")
 @app.route("/get_books")
 def get_books():
@@ -49,15 +49,15 @@ def search():
     books = list(mongo.db.books.find(
         {"$text": {"$search": query}}))
     reviews = list(mongo.db.reviews.find())
-    user = mongo.db.users.find_one({
+    if session:
+        user = mongo.db.users.find_one({
             "username": session["user"]
         })
-    user_reviews = list(user["books_reviewed"])
-
-    return render_template(
-        "books.html", books=books, reviews=reviews,
+        user_reviews = list(user["books_reviewed"])
+        return render_template("books.html", books=books, reviews=reviews,
         user=user, user_reviews=user_reviews)
-
+    return render_template(
+        "books.html", books=books, reviews=reviews)
 
 
 @app.route("/sign_up", methods=["GET", "POST"])
