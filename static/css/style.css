@@ -138,6 +138,22 @@ form textarea {
         font-size: 11px;
     }
 
+    /*collapsibles*/
+    .collapsible-body,
+    .collapsible-header {
+        padding: 10px;
+    }
+
+    .collapsible-header>.col {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .collapsible-body>.row,
+    .collapsible-body>.row>form>.row {
+        margin-bottom: 5px;
+    }
+
     /*user profile*/
     .card-title i {
         font-size: 30px;
@@ -189,5 +205,10 @@ form textarea {
     .reset-btn {
         padding: 10.5px;
         top: 1px;
+    }
+
+    .remove-btn {
+        height: 22px;
+        line-height: 0;
     }
 }
