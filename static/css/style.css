@@ -129,13 +129,17 @@ form textarea {
     height: 40px
 }
 
-/* media queries */
+/* -----media queries----- */
 
 @media screen and (max-width: 600px) {
 
     /*genral*/
     body {
         font-size: 11px;
+    }
+
+    .row {
+        margin-bottom: 10px;
     }
 
     /*collapsibles*/
@@ -185,6 +189,12 @@ form textarea {
         font-size: 1.5rem;
     }
 
+    .book-title,
+    .book-title>span {
+        margin-top: 20px;
+        font-size: 16px;
+    }
+
     /*buttons*/
     .btn-small {
         font-size: 10px;
@@ -211,11 +221,12 @@ form textarea {
         height: 22px;
     }
 
-    .add-book-btn,
-    .add-genre,
     .remove-btn,
-    .edit-genre-btn,
-    .remove-user-btn {
+    .line-height-0 {
         line-height: 0;
+    }
+
+    .edit-book-btn {
+        margin-bottom: 10px;
     }
 }
