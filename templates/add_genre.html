@@ -10,14 +10,14 @@
                 <input id="name" name="name" type="text" class="validate">
                 <label for="name">Genre</label>
             </div>
-            <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Add Genre
+            <button class="btn waves-effect add-genre waves-light green darken-2" type="submit" name="action">Add Genre
                 <i class="fas fa-plus"></i>
             </button>
     </form>
 </div>
 <div class="row">
     <div class="col s12 m6 offset-m3 shadow-background white-text center-align">
-        <h3><u>Current Genres</u></h3>
+        <h3 class="medium-heading"><u>Current Genres</u></h3>
         <ul>
             {% for genre in genres %}
             <li>{{ genre.name.capitalize() }}</li>

@@ -209,6 +209,13 @@ form textarea {
 
     .remove-btn {
         height: 22px;
+    }
+
+    .add-book-btn,
+    .add-genre,
+    .remove-btn,
+    .edit-genre-btn,
+    .remove-user-btn {
         line-height: 0;
     }
 }

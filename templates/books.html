@@ -137,9 +137,9 @@
                             {% if review.reviewed_by == user["_id"]|string %}
 
                             <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Review</a>
-                            <!-- Checks if review belongs to user or if user is admin-->
-                            {% endif %}
 
+                            {% endif %}
+                            <!-- Checks if review belongs to user or if user is admin-->
                             {% if user["admin"] == True or review.reviewed_by == user["_id"]|string %}
 
                             <a href="{{ url_for('confirm_review_delete', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete Review</a>
