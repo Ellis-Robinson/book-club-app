@@ -35,8 +35,8 @@
             <label for="query">Search Books</label>
         </div>
         <div class="padding-bottom">
-            <a href="{{ url_for('get_books') }}" class="waves-effect waves-light btn-small red darken-2 btn">Reset</a>
-            <button type="submit" class="waves-effect waves-light btn-small green darken-2">
+            <a href="{{ url_for('get_books') }}" class="waves-effect waves-light btn-small red darken-2 btn reset-btn">Reset</a>
+            <button type="submit" class="waves-effect waves-light btn-small green darken-2 search-btn">
                 <i class="fas fa-search left"></i> Search
             </button>
         </div>
@@ -114,41 +114,41 @@
             <div>
                 <ul class="">
 
-                    <h4 class="s6"><i class="fas fa-align-left"></i>Reviews</h6>
+                    <h6 class="s6 small-heading"><i class="fas fa-align-left"></i>Reviews</h6>
 
-                        {% for review in reviews %}
-                        <!-- Gets all reviews that match current book-->
-                        {% if review.book_id == book._id|string %}
+                    {% for review in reviews %}
+                    <!-- Gets all reviews that match current book-->
+                    {% if review.book_id == book._id|string %}
 
-                        <li class="collection-item shadow-background">
-                            <blockquote>"{{ review.review }}" {{review.rating}}/5
-                                {% for user in users %}
+                    <li class="collection-item shadow-background">
+                        <blockquote>"{{ review.review }}" {{review.rating}}/5
+                            {% for user in users %}
 
-                                {% if user["_id"]|string == review.reviewed_by %}
+                            {% if user["_id"]|string == review.reviewed_by %}
 
-                                - {{ user["username"].capitalize() }}
+                            - {{ user["username"].capitalize() }}
 
-                                {% endif %}
-                                {% endfor %}
-                                <br>
-                                <!-- Checks if review belongs to user-->
-                                {% if session["user"] %}
-                                {% if review.reviewed_by == user["_id"]|string %}
+                            {% endif %}
+                            {% endfor %}
+                            <br>
+                            <!-- Checks if review belongs to user-->
+                            {% if session["user"] %}
+                            {% if review.reviewed_by == user["_id"]|string %}
 
-                                <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Review</a>
-                                <!-- Checks if review belongs to user or if user is admin-->
-                                {% endif %}
+                            <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Review</a>
+                            <!-- Checks if review belongs to user or if user is admin-->
+                            {% endif %}
 
-                                {% if user["admin"] == True or review.reviewed_by == user["_id"]|string %}
+                            {% if user["admin"] == True or review.reviewed_by == user["_id"]|string %}
 
-                                <a href="{{ url_for('confirm_review_delete', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete Review</a>
-                                {% endif %}
-                                {% endif %}
-                            </blockquote>
-                        </li>
+                            <a href="{{ url_for('confirm_review_delete', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete Review</a>
+                            {% endif %}
+                            {% endif %}
+                        </blockquote>
+                    </li>
 
-                        {% endif %}
-                        {% endfor %}
+                    {% endif %}
+                    {% endfor %}
 
                 </ul>
             </div>

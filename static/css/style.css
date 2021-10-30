@@ -133,6 +133,11 @@ form textarea {
 
 @media screen and (max-width: 600px) {
 
+    /*genral*/
+    body {
+        font-size: 11px;
+    }
+
     /*user profile*/
     .card-title i {
         font-size: 30px;
@@ -151,7 +156,38 @@ form textarea {
         margin-top: 0px
     }
 
+    /*headings*/
+    .large-heading {
+        font-size: 3.5rem;
+    }
+
     .medium-heading {
         font-size: 2.5rem;
+    }
+
+    .small-heading {
+        font-size: 1.5rem;
+    }
+
+    /*buttons*/
+    .btn-small {
+        font-size: 10px;
+        padding: 4px;
+    }
+
+    .waves-effect {
+        display: inline;
+        padding: 4px
+    }
+
+    .search-btn {
+        line-height: 0px;
+        padding-right: 0px;
+        padding-left: 14px;
+    }
+
+    .reset-btn {
+        padding: 10.5px;
+        top: 1px;
     }
 }
