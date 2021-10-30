@@ -100,22 +100,23 @@
                     <span>Have You Read This?</span>
                     <a href="{{ url_for('add_to_library', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Add to library</a>
                 </div>
-                {% if book._id|string in user_reviews %}
-                <div>
-                    You've already reviewed this book!
-                </div>
-                {% else %}
-                <div>
-                    <a href="{{ url_for('review_book', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Review</a>
-                </div>
-                {% endif %}
                 {% endif %}
             </div>
             <div>
-                <ul class="">
+                <ul>
 
                     <h6 class="s6 small-heading"><i class="fas fa-align-left"></i>Reviews</h6>
-
+                    {% if session %}
+                    {% if book._id|string in user_reviews %}
+                    <div>
+                        You've already reviewed this book!
+                    </div>
+                    {% else %}
+                    <div>
+                        <a href="{{ url_for('review_book', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Review</a>
+                    </div>
+                    {% endif %}
+                    {% endif %}
                     {% for review in reviews %}
                     <!-- Gets all reviews that match current book-->
                     {% if review.book_id == book._id|string %}
