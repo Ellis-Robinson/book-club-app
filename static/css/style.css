@@ -142,6 +142,10 @@ form textarea {
         margin-bottom: 10px;
     }
 
+    .switch {
+        padding-top: 10px;
+    }
+
     /*collapsibles*/
     .collapsible-body,
     .collapsible-header {
@@ -226,7 +230,8 @@ form textarea {
         line-height: 0;
     }
 
-    .edit-book-btn {
+    .edit-book-btn,
+    .btn-floating {
         margin-bottom: 10px;
     }
 }
