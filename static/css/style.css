@@ -142,38 +142,26 @@ form textarea {
     display: none;
 }
 
-/*
-.ratings>label:before {
-    content: "";
-    background: gold;
-    width: 30px;
-    height: 30px;
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-    align-self: center;
-}*/
+.ratings>span {
+    margin-right: 5px;
+}
 
 .ratings>label {
     border: 2px solid black;
     display: flex;
     justify-content: center;
-    height: 40px;
-    width: 40px;
+    height: 30px;
+    width: 30px;
     clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
     float: right;
     background-color: grey;
     border-radius: 50%;
 }
 
+
 .ratings:not(:checked)>label:hover,
 .ratings:not(:checked)>label:hover~label {
     background-color: gold !important;
-    cursor: pointer;
-}
-
-.ratings>input:checked+label:hover,
-.ratings>label:checked~input:hover~label,
-.ratings>input:checked~label:hover~label {
-    background-color: grey;
     cursor: pointer;
 }
 
