@@ -14,42 +14,16 @@
                 <label for="review">Review</label>
             </div>
         </div>
-        <!-- rating input -->
-        <div class="row padding-top">
-            <div class="row rating">
-                Rating:
-
-                <p>
-                    <label>
-                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="1" />
-                        <span>1</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="2" />
-                        <span>2</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="3" />
-                        <span>3</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="4" />
-                        <span>4</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="5" />
-                        <span>5</span>
-                    </label>
-                </p>
-
+        <div class="row">
+            <div class="col m8 offset-m2 ratings-outer">
+                <fieldset class="ratings padding-bottom">
+                    Rating:
+                    <label class="full" for="star-rating-5"></label> <input type="radio" id="star-rating-5" name="rating" value="5">
+                    <label class="full" for="star-rating-4"></label> <input type="radio" id="star-rating-4" name="rating" value="4">
+                    <label class="full" for="star-rating-3"></label> <input type="radio" id="star-rating-3" name="rating" value="3">
+                    <label class="full" for="star-rating-2"></label> <input type="radio" id="star-rating-2" name="rating" value="2">
+                    <label class="full" for="star-rating-1"></label> <input type="radio" id="star-rating-1" name="rating" value="1">
+                </fieldset>
             </div>
         </div>
         <!-- submit button -->
