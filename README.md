@@ -70,26 +70,31 @@
 ## Technologies
 
 ### Languages
-HTML5
-CSS3
-Python
+- HTML5
+- CSS3
+- Python
 
 ### Libraries, Frameworks and programs
-GitHub
-GitPod
-FontAwesome
-Materialise
-Flask
-MongoDB
-Werkzeug
-Heruko
-JQuery
-AmIResponsive
-RandomKeyGen
-Jinja
+- GitHub
+- GitPod
+- FontAwesome
+- Materialise
+- Flask
+- MongoDB
+- Werkzeug
+- Heruko
+- JQuery
+- AmIResponsive
+- RandomKeyGen
+- Jinja
 
 ## Testing
 
 ## Bugs and Fixes
 
 ## Deployment
+
+## Credits
+
+- stars - https://bennettfeely.com/
+- star rating - BananaCoding https://www.youtube.com/watch?v=8qCJahxZ9nQ
