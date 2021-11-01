@@ -164,11 +164,11 @@ def change_password():
 
             flash("Password Successfully Updated. Please Log Back In..")
             return redirect(url_for("log_in"))
-        else:
-            flash("One or More Passwords Incorrect. Please Try Again..")
-            return redirect(url_for("edit_account", user=user))
+        flash("One or More Passwords Incorrect. Please Try Again..")
+        return redirect(url_for("edit_account", user=user))
 
     return render_template("edit_account.html", user=user)
+
 
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
