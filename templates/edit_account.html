@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="large-heading center-align white-text text-shadow medium-heading">{{ user["username"].capitalize() }}'s
+    Account Details
+</h3>
+
+<div class="row center-align">
+    <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST" action="{{ url_for('edit_account', username=session['user']) }}">
+        <!--email field-->
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="email" name="email" type="email" class="validate" value="{{user['email']}}">
+                <label for="email">Email</label>
+            </div>
+        </div>
+        <!--username field-->
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="username" name="username" type="text" class="validate" value="{{user['username'].capitalize()}}">
+                <label for="username">Username</label>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light amber darken-2 line-height-0" type="submit" name="action">Edit
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </form>
+    <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST" action="">
+        <!--password field-->
+        <div class="row">
+            <div class="input-field col s12" required>
+                <input id="current-password" name="current-password" type="text" class="validate" value="">
+                <label for="current-password">Current Password</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12" required>
+                <input id="new-password" name="new-password" type="text" class="validate" value="">
+                <label for="new-password">New Password</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12" required>
+                <input id="confirm-new-password" name="confirm-new-password" type="text" class="validate" value="">
+                <label for="confirm-new-password">Confirm New Password</label>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn waves-effect waves-light amber darken-2 line-height-0" type="submit" name="action">Edit Password
+                <i class="fas fa-edit"></i>
+            </button>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}
