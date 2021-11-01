@@ -19,7 +19,7 @@
 
             So please, come in and join the club!
         </p>
-        <a href="{{ url_for('sign_up') }}" class="btn-floating btn-large green darken-4 pulse"><i class="fas fa-book-open"></i></a>
+        <a href="{{ url_for('sign_up') }}" class="btn-floating btn-large green darken-4 pulse margin-bottom"><i class="fas fa-book-open"></i></a>
     </div>
 </div>
 {% endif %}
@@ -49,121 +49,117 @@
     <a href="{{ url_for('add_book') }}" class="waves-effect waves-light green darken-4 btn">Add Book!</a>
 </div>
 {% endif %}
-
-<ul class="collapsible row">
-    {% for book in books %}
-    <li>
-        <div class="collapsible-header white-text dark-shadow-background">
-            <i class="fas fa-book"></i>
-            <div class="col s12">
-                <span class="padding-right"><strong>Name:</strong> {{ book.title.capitalize() }}</span>
-                <span class="padding-right"><strong>Genre:</strong> {{ book.genre.capitalize() }}</span>
-                <span class="padding-right"><strong>Author:</strong> {{ book.author.capitalize() }}</span>
-                <span><strong>Rating:</strong>
-                    {{ book.rating }}/5
-                </span>
-            </div>
-        </div>
-        <div class="collapsible-body dark-shadow-background white-text">
-            <div class="row">
-                <div class="card-content white-text col s12 shadow-background">
-                    <div class="row">
-                        <div class="col s12">
-                            <strong>Synopsis:</strong> <br>
-                            {{ book.synopsis }}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col s12">
-                            <strong class="padding-right">Year Of Publishing:</strong> <br>
-                            {{ book.year }}
-                        </div>
-                    </div>
-                    {% if book["series_name"] %}
-                    <div class="row">
-                        <div class="col s12">
-                            <strong class="padding-right">Series:</strong> <br>
-                            {{ book.series_name }}
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-                {% if session %}
+<div class="large-scroll">
+    <ul class="collapsible row">
+        {% for book in books %}
+        <li>
+            <div class="collapsible-header white-text dark-shadow-background">
+                <i class="fas fa-book"></i>
                 <div class="col s12">
-                    <!--Checks user is admin-->
-                    {% if user["admin"] %}
-
-                    <a href="{{ url_for('edit_book', book_id=book._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Book</a>
-                    <a href="{{ url_for('confirm_book_delete', book_id=book._id) }}" class="waves-effect waves-light btn-small red darken-2 modal-trigger">Delete Book</a>
-
-                    {% endif %}
+                    <span class="padding-right"><strong>Name:</strong> {{ book.title.capitalize() }}</span>
+                    <span class="padding-right"><strong>Genre:</strong> {{ book.genre.capitalize() }}</span>
+                    <span class="padding-right"><strong>Author:</strong> {{ book.author.capitalize() }}</span>
+                    <span><strong>Rating:</strong>
+                        {{ book.rating }}/5
+                    </span>
                 </div>
-                <!-- add to library button -->
-                <div class="col s12">
-                    <span>Have You Read This?</span>
-                    <a href="{{ url_for('add_to_library', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Add to library</a>
-                </div>
-                {% endif %}
             </div>
-            <div>
-                <ul>
-
-                    <h4 class="s6 small-heading"><i class="fas fa-align-left"></i>Reviews</h4>
+            <div class="collapsible-body dark-shadow-background white-text">
+                <div class="row">
+                    <div class="card-content white-text col s12 shadow-background">
+                        <div class="row">
+                            <div class="col s12">
+                                <strong>Synopsis:</strong> <br>
+                                {{ book.synopsis }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <strong class="padding-right">Year Of Publishing:</strong> <br>
+                                {{ book.year }}
+                            </div>
+                        </div>
+                        {% if book["series_name"] %}
+                        <div class="row">
+                            <div class="col s12">
+                                <strong class="padding-right">Series:</strong> <br>
+                                {{ book.series_name }}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
                     {% if session %}
-                    {% if book._id|string in user_reviews %}
-                    <div>
-                        You've already reviewed this book!
-                    </div>
-                    {% else %}
-                    <div>
-                        <a href="{{ url_for('review_book', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Review</a>
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                    <div class="scroll">
-                        {% for review in reviews %}
-                        <!-- Gets all reviews that match current book-->
-                        {% if review.book_id == book._id|string %}
+                    <div class="col s12">
+                        <!--Checks user is admin-->
+                        {% if user["admin"] %}
 
-                        <li class="collection-item shadow-background">
-                            <blockquote>"{{ review.review }}" {{review.rating}}/5
-                                {% for user in users %}
-
-                                {% if user["_id"]|string == review.reviewed_by %}
-
-                                - {{ user["username"].capitalize() }}
-
-                                {% endif %}
-                                {% endfor %}
-                                <br>
-                                <!-- Checks if review belongs to user-->
-                                {% if session["user"] %}
-                                {% if review.reviewed_by == user["_id"]|string %}
-
-                                <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Review</a>
-
-                                {% endif %}
-                                <!-- Checks if review belongs to user or if user is admin-->
-                                {% if user["admin"] == True or review.reviewed_by == user["_id"]|string %}
-
-                                <a href="{{ url_for('confirm_review_delete', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete Review</a>
-                                {% endif %}
-                                {% endif %}
-                            </blockquote>
-                        </li>
+                        <a href="{{ url_for('edit_book', book_id=book._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Book</a>
+                        <a href="{{ url_for('confirm_book_delete', book_id=book._id) }}" class="waves-effect waves-light btn-small red darken-2 modal-trigger">Delete Book</a>
 
                         {% endif %}
-                        {% endfor %}
                     </div>
-                </ul>
+                    <!-- add to library button -->
+                    <div class="col s12">
+                        <span>Have You Read This?</span>
+                        <a href="{{ url_for('add_to_library', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Add to library</a>
+                    </div>
+                    {% endif %}
+                </div>
+                <div>
+                    <ul>
+
+                        <h4 class="s6 small-heading"><i class="fas fa-align-left"></i>Reviews</h4>
+                        {% if session %}
+                        {% if book._id|string in user_reviews %}
+                        <div>
+                            You've already reviewed this book!
+                        </div>
+                        {% else %}
+                        <div>
+                            <a href="{{ url_for('review_book', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Review</a>
+                        </div>
+                        {% endif %}
+                        {% endif %}
+                        <div class="scroll">
+                            {% for review in reviews %}
+                            <!-- Gets all reviews that match current book-->
+                            {% if review.book_id == book._id|string %}
+
+                            <li class="collection-item shadow-background">
+                                <blockquote>"{{ review.review }}" {{review.rating}}/5
+                                    {% for user in users %}
+
+                                    {% if user["_id"]|string == review.reviewed_by %}
+
+                                    - {{ user["username"].capitalize() }}
+
+                                    {% endif %}
+                                    {% endfor %}
+                                    <br>
+                                    <!-- Checks if review belongs to user-->
+                                    {% if session["user"] %}
+                                    {% if review.reviewed_by == user["_id"]|string %}
+
+                                    <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn-small amber darken-4">Edit Review</a>
+
+                                    {% endif %}
+                                    <!-- Checks if review belongs to user or if user is admin-->
+                                    {% if user["admin"] == True or review.reviewed_by == user["_id"]|string %}
+
+                                    <a href="{{ url_for('confirm_review_delete', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete Review</a>
+                                    {% endif %}
+                                    {% endif %}
+                                </blockquote>
+                            </li>
+
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </li>
-
-    </div>
-
-    </li>
-    {% endfor %}
-</ul>
-
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

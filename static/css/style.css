@@ -28,6 +28,13 @@ main {
     overflow-y: auto;
 }
 
+.large-scroll {
+    height: fit-content;
+    max-height: 90vh;
+    overflow-y: auto;
+    margin-bottom: 5%;
+}
+
 .hidden {
     display: none;
 }
