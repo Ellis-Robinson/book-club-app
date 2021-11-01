@@ -1,4 +1,5 @@
 import os
+from operator import itemgetter
 from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
@@ -516,13 +517,15 @@ def my_library():
     for book_id in user["books_read"]:
         books_read.append(mongo.db.books.find_one(
             {"_id": ObjectId(book_id)}))
-
+    # Orders list by title of dictionaries
+    books_read = sorted(books_read, key=itemgetter('title'))
     books_to_read = []
     # Creates list of book objects, from object ids in users books_to_read list
     for book_id in user["books_to_read"]:
         books_to_read.append(mongo.db.books.find_one(
             {"_id": ObjectId(book_id)}))
-
+    # Orders list by title of dictionaries
+    books_to_read = sorted(books_to_read, key=itemgetter('title'))
     reviews = list(mongo.db.reviews.find())
     return render_template(
         "my_library.html", books=books, reviews=reviews,
