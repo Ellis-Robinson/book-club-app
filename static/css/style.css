@@ -112,6 +112,10 @@ h6 {
     background-image: linear-gradient(rgb(46, 125, 50), rgb(40, 162, 46))
 }
 
+.input-field>label {
+    background-color: transparent !important;
+}
+
 /* forms */
 .rating>p {
     display: inline;
@@ -152,7 +156,7 @@ form textarea {
     margin-right: 5px;
 }
 
-.ratings>label {
+.ratings>.full {
     border: 2px solid black;
     display: flex;
     justify-content: center;
@@ -165,8 +169,8 @@ form textarea {
 }
 
 
-.ratings:not(:checked)>label:hover,
-.ratings:not(:checked)>label:hover~label {
+.ratings:not(:checked)>.full:hover,
+.ratings:not(:checked)>.full:hover~.full {
     background-color: gold !important;
     cursor: pointer;
 }
