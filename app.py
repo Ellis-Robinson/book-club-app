@@ -134,13 +134,16 @@ def profile(username):
 
 @app.route("/edit_account/<username>", methods=["GET", "POST"])
 def edit_account(username):
+    """updates users username and email address"""
     user = mongo.db.users.find_one(
         {"username": username})
     if request.method == "POST":
+        # updates selected fields
         mongo.db.users.update_one(
             user, {"$set": {"email": request.form.get("email"),
                             "username": request.form.get("username").lower()}})
         flash("Account Details Updated, Please Log Back In..")
+        # logs user out
         session.pop('user')
         return redirect(url_for("log_in"))
     return render_template("edit_account.html", user=user)
