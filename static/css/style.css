@@ -24,8 +24,12 @@ main {
 
 .scroll {
     height: fit-content;
-    max-height: 500px;
+    max-height: 50vh;
     overflow-y: auto;
+}
+
+.hidden {
+    display: none;
 }
 
 /* nav bar */
@@ -60,9 +64,8 @@ main {
     padding-right: 4px;
 }
 
-
-.hidden {
-    display: none;
+.collapsible-header>div>span {
+    display: inline-block;
 }
 
 /* headings */
@@ -218,6 +221,10 @@ form textarea {
     .collapsible-body>.row,
     .collapsible-body>.row>form>.row {
         margin-bottom: 5px;
+    }
+
+    .collapsible-header>div>span {
+        display: inline-block;
     }
 
     /*user profile*/
