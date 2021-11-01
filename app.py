@@ -122,8 +122,6 @@ def log_in():
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
     """loads users page or redirects to log in page"""
-    username = mongo.db.users.find_one(
-        {"username": session["user"]})["username"]
     user = mongo.db.users.find_one(
         {"username": session["user"]})
 
@@ -132,6 +130,13 @@ def profile(username):
             "user_profile.html", username=username, user=user)
 
     return redirect(url_for("log_in"))
+
+
+@app.route("/edit_account/username", methods=["GET", "POST"])
+def edit_account():
+    user = mongo.db.users.find_one(
+        {"username": session["user"]})
+    return render_template("edit_account.html", user=user)
 
 
 @app.route("/add_book", methods=["GET", "POST"])
@@ -291,9 +296,9 @@ def edit_review(review_id):
     book = {}
     # finds book associated with review
     books = mongo.db.books.find()
-    for b in books:
-        if str(b["_id"]) == review["book_id"]:
-            book = b
+    for doc in books:
+        if str(doc["_id"]) == review["book_id"]:
+            book = doc
 
     if request.method == "POST":
         # updates "review" and "rating" fields
@@ -308,7 +313,7 @@ def edit_review(review_id):
 
         return redirect(url_for('my_reviews'))
 
-    return render_template("edit_review.html", review=review)
+    return render_template("edit_review.html", review=review, book=book)
 
 
 @app.route("/confirm_review_delete/<review_id>")
