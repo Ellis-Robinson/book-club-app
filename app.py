@@ -136,6 +136,13 @@ def profile(username):
 def edit_account():
     user = mongo.db.users.find_one(
         {"username": session["user"]})
+    if request.method == "POST":
+        mongo.db.users.update_one(
+            user, {"$set": {"email": request.form.get("email"),
+                            "username": request.form.get("username").lower()}})
+        flash("Account Details Updated, Please Log Back In..")
+        session.pop('user')
+        return redirect(url_for("log_in"))
     return render_template("edit_account.html", user=user)
 
 

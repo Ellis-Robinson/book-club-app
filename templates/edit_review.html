@@ -4,7 +4,7 @@
 <h3 class="center-align white-text text-shadow large-heading"> Edit Review </h3>
 
 <div class="row">
-    <form class="col s12 m8 offset-m2 dark-shadow-background center-align" method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
+    <form class="col s12 m8 offset-m2 dark-shadow-background center-align white-text" method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
         <!--book info-->
         <div class="padding-top"><u>{{ book.title }}</u></div>
         <div class="padding-top">{{ book.synopsis }}</div>
