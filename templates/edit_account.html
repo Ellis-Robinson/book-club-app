@@ -27,23 +27,23 @@
             </button>
         </div>
     </form>
-    <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST" action="">
+    <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST" action="{{ url_for('change_password') }}">
         <!--password field-->
         <div class="row">
             <div class="input-field col s12" required>
-                <input id="current-password" name="current-password" type="text" minlength="8" maxlength="20" pattern="^[a-zA-Z0-9]{3,15}$" class="validate" value="">
+                <input id="current-password" name="current-password" type="password" minlength="8" maxlength="20" pattern="^[a-zA-Z0-9]{3,15}$" class="validate" value="">
                 <label for="current-password">Current Password</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12" required>
-                <input id="new-password" name="new-password" type="text" minlength="8" maxlength="20" pattern="^[a-zA-Z0-9]{3,15}$" class="validate" value="">
+                <input id="new-password" name="new-password" type="password" minlength="8" maxlength="20" pattern="^[a-zA-Z0-9]{3,15}$" class="validate" value="">
                 <label for="new-password">New Password</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12" required>
-                <input id="confirm-new-password" name="confirm-new-password" type="text" minlength="8" maxlength="20" pattern="^[a-zA-Z0-9]{3,15}$" class="validate" value="">
+                <input id="confirm-new-password" name="confirm-new-password" type="password" minlength="8" maxlength="20" pattern="^[a-zA-Z0-9]{3,15}$" class="validate" value="">
                 <label for="confirm-new-password">Confirm New Password</label>
             </div>
         </div>

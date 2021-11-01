@@ -146,6 +146,30 @@ def edit_account():
     return render_template("edit_account.html", user=user)
 
 
+@app.route("/change_password", methods=["GET", "POST"])
+def change_password():
+    """updates users password and logs them out"""
+    if request.method == "POST":
+        user = mongo.db.users.find_one({"username": session["user"]})
+        password = request.form.get("current-password")
+        new_password = request.form.get("new-password")
+        confirm_new_password = request.form.get("confirm-new-password")
+        # checks all passwords are correct
+        if (check_password_hash(user["password"], password) and
+                new_password == confirm_new_password):
+            # updates users password
+            mongo.db.users.update_one(
+                user, {"$set": {"password": generate_password_hash(
+                       request.form.get("new-password"))}})
+
+            flash("Password Successfully Updated. Please Log Back In..")
+            return redirect(url_for("log_in"))
+        else:
+            flash("One or More Passwords Incorrect. Please Try Again..")
+            return redirect(url_for("edit_account", user=user))
+
+    return render_template("edit_account.html", user=user)
+
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
     """if use is logged in takes to add book page otherwise
