@@ -18,7 +18,6 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
-
 @app.route("/")
 @app.route("/get_books")
 def get_books():
@@ -32,7 +31,7 @@ def get_books():
             "username": session["user"]
         })
         user_reviews = list(user["books_reviewed"])
-    
+
         return render_template(
             "books.html", books=books,
             reviews=reviews, user=user, users=users, user_reviews=user_reviews)
@@ -55,7 +54,7 @@ def search():
         })
         user_reviews = list(user["books_reviewed"])
         return render_template("books.html", books=books, reviews=reviews,
-        user=user, user_reviews=user_reviews)
+                               user=user, user_reviews=user_reviews)
     return render_template(
         "books.html", books=books, reviews=reviews)
 
@@ -244,7 +243,7 @@ def review_book(book_id):
             flash("Book Successfully reviewed")
 
             update_book_rating(book)
-            
+
             return redirect(url_for("get_books"))
 
         return render_template("review_book.html", book=book)
@@ -289,7 +288,6 @@ def my_reviews():
 def edit_review(review_id):
     """ allows user to edit their reviews """
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-    
     book = {}
     # finds book associated with review
     books = mongo.db.books.find()
@@ -298,7 +296,7 @@ def edit_review(review_id):
             book = b
 
     if request.method == "POST":
-        # updates "review" and "rating" fields 
+        # updates "review" and "rating" fields
         mongo.db.reviews.update(
             {"_id": ObjectId(review_id)}, {
                 "$set": {"review": request.form.get("review"),
@@ -422,7 +420,7 @@ def add_genre():
 @app.route("/edit_genre", methods=["GET", "POST"])
 def edit_genre():
     """ allows admin to edit genre """
-    #gets all genres in collection
+    # gets all genres in collection
     genres = list(mongo.db.genres.find())
     if request.method == "POST":
 

@@ -5,9 +5,9 @@
 
 <div class="row">
     <form class="col s12 m8 offset-m2 dark-shadow-background center-align" method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
-        <div class="row center-align book-title">
-            <span class="white-text text-shadow">{{ review.book_reviewed }}</span>
-        </div>
+        <!--book info-->
+        <div class="padding-top"><u>{{ book.title }}</u></div>
+        <div class="padding-top">{{ book.synopsis }}</div>
         <!-- review input -->
         <div class="row padding-top">
             <div class="input-field col s12 m10 offset-m1">
@@ -17,40 +17,17 @@
                 <label for="review">Review</label>
             </div>
         </div>
-        <!-- rating input -->
-        <div class="row padding-top">
-            <div class="row rating white-text">
-                Rating:
-                <p>
-                    <label>
-                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="1" />
-                        <span>1</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="2" />
-                        <span>2</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="3" />
-                        <span>3</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="4" />
-                        <span>4</span>
-                    </label>
-                </p>
-                <p>
-                    <label>
-                        <input tabindex="0" class="with-gap" name="rating" type="radio" value="5" />
-                        <span>5</span>
-                    </label>
-                </p>
+        <!--star rating section-->
+        <div class="row">
+            <div class="col m8 offset-m2 ratings-outer">
+                <fieldset class="ratings padding-bottom" required>
+                    <span class="white-text">Rating:</span>
+                    <label class="full" for="star-rating-5"></label> <input type="radio" id="star-rating-5" name="rating" value="5" required>
+                    <label class="full" for="star-rating-4"></label> <input type="radio" id="star-rating-4" name="rating" value="4">
+                    <label class="full" for="star-rating-3"></label> <input type="radio" id="star-rating-3" name="rating" value="3">
+                    <label class="full" for="star-rating-2"></label> <input type="radio" id="star-rating-2" name="rating" value="2">
+                    <label class="full" for="star-rating-1"></label> <input type="radio" id="star-rating-1" name="rating" value="1">
+                </fieldset>
             </div>
         </div>
         <div class="row">

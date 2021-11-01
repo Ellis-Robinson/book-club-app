@@ -5,6 +5,7 @@
 
 <div class="row">
     <form class="col s12 m8 offset-m2 dark-shadow-background white-text center-align" method="POST" action="{{ url_for('review_book', book_id=book._id) }}">
+        <!--book info-->
         <div class="padding-top"><u>{{ book.title }}</u></div>
         <div class="padding-top">{{ book.synopsis }}</div>
         <!-- review input -->
@@ -14,6 +15,7 @@
                 <label for="review">Review</label>
             </div>
         </div>
+        <!--star rating section-->
         <div class="row">
             <div class="col m8 offset-m2 ratings-outer">
                 <fieldset class="ratings padding-bottom" required>
