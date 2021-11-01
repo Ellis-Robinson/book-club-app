@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h3 class="large-heading center-align white-text text-shadow medium-heading"> {{ username.capitalize() }}'s Profile </h3>
+<h3 class="large-heading center-align white-text text-shadow medium-heading"> {{ user["username"].capitalize() }}'s Profile </h3>
 
 <div class="row">
     <a href="{{ url_for('get_books') }}">
@@ -66,7 +66,23 @@
         </div>
     </a>
 </div>
-
+<div class="row">
+    <a href="{{ url_for('edit_account', username=session['user']) }}">
+        <div class="col s6 l4 offset-l1">
+            <div class="card shadow-background">
+                <div class="card-content white-text text-shadow center-align">
+                    <span class="card-title">
+                        <i class="fas fa-user large-icon"></i>
+                        <i class="fas fa-edit"></i>
+                    </span>
+                    <h4>
+                        Edit Account
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
 {% if user["admin"] %}
 
 <h3 class="center-align white-text text-shadow"> Admin Section </h3>
