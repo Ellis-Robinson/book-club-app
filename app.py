@@ -234,31 +234,35 @@ def edit_book(book_id):
         book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
         is_series = "yes" if request.form.get("is_series") else "no"
         user = mongo.db.users.find_one({"username": session["user"]})
-        # checks if book belongs to user or if user admin
-        if book["added_by"] == user["username"] or user["admin"]:
-            if request.method == "POST":
-                # updates from users input
-                update = {
-                    "title": request.form.get("title").lower(),
-                    "genre": request.form.get("genre").lower(),
-                    "author": request.form.get("author").lower(),
-                    "year": request.form.get("year").lower(),
-                    "synopsis": request.form.get("synopsis").lower(),
-                    "is_series": is_series,
-                    "series_name": request.form.get("series_name"),
-                    "rating": request.form.get("rating"),
-                    "added_by": session["user"]
-                }
+        if book:
 
-                mongo.db.books.update(book, update)
-                flash("Book Successfully Edited")
-                return redirect(url_for("my_library"))
+            # checks if book belongs to user or if user admin
+            if book["added_by"] == user["username"] or user["admin"]:
+                if request.method == "POST":
+                    # updates from users input
+                    update = {
+                        "title": request.form.get("title").lower(),
+                        "genre": request.form.get("genre").lower(),
+                        "author": request.form.get("author").lower(),
+                        "year": request.form.get("year").lower(),
+                        "synopsis": request.form.get("synopsis").lower(),
+                        "is_series": is_series,
+                        "series_name": request.form.get("series_name"),
+                        "rating": request.form.get("rating"),
+                        "added_by": session["user"]
+                    }
 
-            genres = mongo.db.genres.find().sort("genres", 1)
+                    mongo.db.books.update(book, update)
+                    flash("Book Successfully Edited")
+                    return redirect(url_for("my_library"))
 
-            return render_template("edit_book.html", book=book, genres=genres)
-        flash("You can only edit books you've added")
-        return render_template("401.html")
+                genres = mongo.db.genres.find().sort("genres", 1)
+
+                return render_template("edit_book.html", book=book, genres=genres)
+            flash("You can only edit books you've added")
+            return render_template("401.html")
+        flash("Book no longer in our database")
+        return redirect(url_for("get_books"))
 
     flash("You need to be logged in to do that")
     return redirect(url_for("log_in"))
