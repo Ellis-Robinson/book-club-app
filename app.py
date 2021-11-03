@@ -621,50 +621,55 @@ def my_library():
     flash("You need to be logged in to do that")
     return redirect(url_for("log_in"))
 
+
 @app.route("/add_to_library/<book_id>", methods=["GET", "POST"])
 def add_to_library(book_id):
     """ lets user add books to library """
-    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-    reviews = mongo.db.reviews.find()
-    user = mongo.db.users.find_one({
-        "username": session["user"]})
-    books_read = user["books_read"]
-    books_to_read = user["books_to_read"]
+    # checks if user is logged in
+    if "user" in session:
+        book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+        reviews = mongo.db.reviews.find()
+        user = mongo.db.users.find_one({
+            "username": session["user"]})
+        books_read = user["books_read"]
+        books_to_read = user["books_to_read"]
 
-    if request.method == "POST":
-        if request.form.get("read_book"):
-            # checks if book already in 'books read' list
-            for books in books_read:
-                if books == str(book["_id"]):
-                    flash("Book already in library")
-                    return redirect(url_for("get_books"))
+        if request.method == "POST":
+            if request.form.get("read_book"):
+                # checks if book already in 'books read' list
+                for books in books_read:
+                    if books == str(book["_id"]):
+                        flash("Book already in library")
+                        return redirect(url_for("get_books"))
 
-            # Embeds book in users 'books_read' list
-            mongo.db.users.update_one(
-                user, {"$push": {"books_read": str(book["_id"])}})
+                # Embeds book in users 'books_read' list
+                mongo.db.users.update_one(
+                    user, {"$push": {"books_read": str(book["_id"])}})
 
-            flash("Book Added To Library")
-            return redirect(url_for("get_books"))
+                flash("Book Added To Library")
+                return redirect(url_for("get_books"))
 
-        if request.form.get("to_read_book"):
-            # checks if book already in users 'to read' list
-            for books in books_to_read:
-                if books == str(book["_id"]):
-                    flash("Book already in library")
-                    return redirect(url_for("get_books"))
-            # checks if book already in 'books read' list
-            for books in books_read:
-                if books == str(book["_id"]):
-                    flash("Book already in library")
-                    return redirect(url_for("get_books"))
-            # Embeds book in users 'books_to_read' list
-            mongo.db.users.update_one(
-                user, {"$push": {"books_to_read": str(book["_id"])}})
-            flash("Book Added To Library")
-            return redirect(url_for("get_books"))
+            if request.form.get("to_read_book"):
+                # checks if book already in users 'to read' list
+                for books in books_to_read:
+                    if books == str(book["_id"]):
+                        flash("Book already in library")
+                        return redirect(url_for("get_books"))
+                # checks if book already in 'books read' list
+                for books in books_read:
+                    if books == str(book["_id"]):
+                        flash("Book already in library")
+                        return redirect(url_for("get_books"))
+                # Embeds book in users 'books_to_read' list
+                mongo.db.users.update_one(
+                    user, {"$push": {"books_to_read": str(book["_id"])}})
+                flash("Book Added To Library")
+                return redirect(url_for("get_books"))
 
-    return render_template("add_to_library.html",
-                           book=book, user=user, reviews=reviews)
+        return render_template("add_to_library.html",
+                               book=book, user=user, reviews=reviews)
+    flash("You need to be logged in to do that")
+    return redirect(url_for("log_in"))
 
 
 @app.route("/remove_from_books_read/<book_id>", methods=["GET", "POST"])
@@ -704,18 +709,24 @@ def remove_from_to_read(book_id):
 def add_to_books_read(book_id):
     """adds book to users books read section in library
     and removes it from users books to read section"""
-    user = mongo.db.users.find_one({
-        "username": session["user"]})
+    book = mongo.db.books.find_one({"_id": book_id})
+    # checks if book exists
+    if book:
+        user = mongo.db.users.find_one({
+            "username": session["user"]})
 
-    if request.method == "POST":
+        if request.method == "POST":
 
-        # adds book id to users books_read array and removes it from books_to_read array
-        mongo.db.users.update(
-                user, {"$push": {"books_read": str(book_id)},
-                       "$pull": {"books_to_read": str(book_id)}})
+            # adds book id to users books_read array
+            # removes book from books_to_read array
+            mongo.db.users.update(
+                    user, {"$push": {"books_read": str(book_id)},
+                        "$pull": {"books_to_read": str(book_id)}})
 
-        flash("Book added to books read list")
+            flash("Book added to books read list")
+            return redirect(url_for("my_library"))
         return redirect(url_for("my_library"))
+    flash("Book no longer in database")
     return redirect(url_for("my_library"))
 
 
