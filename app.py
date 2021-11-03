@@ -593,30 +593,33 @@ def remove_user():
 def my_library():
     """loads users library with books they have read
      and books they want to read"""
-    books = list(mongo.db.books.find())
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
+    # checks if user is logged in
+    if "user" in session:
+        books = list(mongo.db.books.find())
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
 
-    books_read = []
-    # Creates list of book objects, from object ids in users books_read list
-    for book_id in user["books_read"]:
-        books_read.append(mongo.db.books.find_one(
-            {"_id": ObjectId(book_id)}))
-    # Orders list by title of dictionaries
-    books_read = sorted(books_read, key=itemgetter('title'))
-    books_to_read = []
-    # Creates list of book objects, from object ids in users books_to_read list
-    for book_id in user["books_to_read"]:
-        books_to_read.append(mongo.db.books.find_one(
-            {"_id": ObjectId(book_id)}))
-    # Orders list by title of dictionaries
-    books_to_read = sorted(books_to_read, key=itemgetter('title'))
-    reviews = list(mongo.db.reviews.find())
-    return render_template(
-        "my_library.html", books=books, reviews=reviews,
-        books_read=books_read, books_to_read=books_to_read, user=user)
-
+        books_read = []
+        # Creates list of book objects, from object ids in users books_read list
+        for book_id in user["books_read"]:
+            books_read.append(mongo.db.books.find_one(
+                {"_id": ObjectId(book_id)}))
+        # Orders list by title of dictionaries
+        books_read = sorted(books_read, key=itemgetter('title'))
+        books_to_read = []
+        # Creates list of book objects, from object ids in users books_to_read list
+        for book_id in user["books_to_read"]:
+            books_to_read.append(mongo.db.books.find_one(
+                {"_id": ObjectId(book_id)}))
+        # Orders list by title of dictionaries
+        books_to_read = sorted(books_to_read, key=itemgetter('title'))
+        reviews = list(mongo.db.reviews.find())
+        return render_template(
+            "my_library.html", books=books, reviews=reviews,
+            books_read=books_read, books_to_read=books_to_read, user=user)
+    flash("You need to be logged in to do that")
+    return redirect(url_for("log_in"))
 
 @app.route("/add_to_library/<book_id>", methods=["GET", "POST"])
 def add_to_library(book_id):
