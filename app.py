@@ -139,16 +139,19 @@ def edit_account(username):
     if "user" in session:
         user = mongo.db.users.find_one(
             {"username": username})
-        if request.method == "POST":
-            # updates selected fields
-            mongo.db.users.update_one(
-                user, {"$set": {"email": request.form.get("email"),
-                                "username": request.form.get("username").lower()}})
-            flash("Account Details Updated, Please Log Back In..")
-            # logs user out
-            session.pop('user')
-            return redirect(url_for("log_in"))
-        return render_template("edit_account.html", user=user)
+        # checks account belongs to session user
+        if session["user"] == user["username"]:
+            if request.method == "POST":
+                # updates selected fields
+                mongo.db.users.update_one(
+                    user, {"$set": {"email": request.form.get("email"),
+                                    "username": request.form.get("username").lower()}})
+                flash("Account Details Updated, Please Log Back In..")
+                # logs user out
+                session.pop('user')
+                return redirect(url_for("log_in"))
+            return render_template("edit_account.html", user=user)
+        return render_template("401.html")
     flash("You Need To Be Logged In To Do That")
     return render_template("log_in.html")
 
@@ -218,7 +221,7 @@ def add_book():
         genres = mongo.db.genres.find().sort("name", 1)
         return render_template("add_book.html", genres=genres, user=user)
 
-    flash("You need to be logged in to do that")
+    flash("You need to be logged in to add books")
     return redirect(url_for("log_in"))
 
 
@@ -254,6 +257,7 @@ def edit_book(book_id):
             genres = mongo.db.genres.find().sort("genres", 1)
 
             return render_template("edit_book.html", book=book, genres=genres)
+        flash("You can only edit books you've added")
         return render_template("401.html")
 
     flash("You need to be logged in to do that")
