@@ -265,13 +265,12 @@ def review_book(book_id):
     """if use is logged in takes to review book page,
     then stores review in db.
     otherwise redirects to log in page"""
-    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
-    reviews = mongo.db.reviews.find()
-
-    if session["user"]:
+    if "user" in session:
+        book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        reviews = mongo.db.reviews.find()
         # checks if user has already reviewed book
         for review in reviews:
             if review["book_id"] == str(book["_id"]):
@@ -281,9 +280,6 @@ def review_book(book_id):
 
         if request.method == "POST":
             # creates review
-
-            
-
             review = {
                 "book_reviewed": book["title"],
                 "review": request.form.get("review"),
@@ -294,14 +290,14 @@ def review_book(book_id):
             mongo.db.reviews.insert_one(review)
             mongo.db.users.update_one(
                 user, {"$push": {"books_reviewed": str(book["_id"])}})
-            flash("Book Successfully reviewed")
+            flash("Book successfully reviewed")
 
             update_book_rating(book)
 
             return redirect(url_for("get_books"))
 
         return render_template("review_book.html", book=book)
-    flash("You Need To Be Logged In To Review Books.")
+    flash("You need to be logged in to review books.")
     return redirect(url_for('log_in'))
 
 
