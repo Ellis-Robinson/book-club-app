@@ -562,26 +562,31 @@ def edit_genre():
 @app.route("/remove_user", methods=["GET", "POST"])
 def remove_user():
     """ allows admin to remove user from db"""
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
-    if user["admin"]:
+    # checks if user is logged in
+    if "user" in session:
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        # checks if user admin
+        if user["admin"]:
 
-        users = list(mongo.db.users.find())
-        if request.method == "POST":
-            # links selected user with correct user in database and removes
-            for user in users:
-                if user["username"] == request.form.get("selected_user"):
-                    selected_user = user
-                    mongo.db.users.remove(selected_user)
+            users = list(mongo.db.users.find())
+            if request.method == "POST":
+                # links selected user with correct user in database and removes
+                for user in users:
+                    if user["username"] == request.form.get("selected_user"):
+                        selected_user = user
+                        mongo.db.users.remove(selected_user)
 
-            flash("User Successfully Deleted")
-            return redirect(url_for("remove_user"))
+                flash("User Successfully Deleted")
+                return redirect(url_for("remove_user"))
 
-        return render_template("remove_user.html", users=users)
+            return render_template("remove_user.html", users=users)
 
-    flash("You Are Not Authorised To Do That!")
-    return redirect(url_for("get_books"))
+        flash("Only admin can remove a user")
+        return render_template("401.html")
+    flash("You need to be logged in to do that")
+    return redirect(url_for("log_in"))
 
 
 @app.route("/my_library")
