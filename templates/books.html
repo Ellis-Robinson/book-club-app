@@ -2,7 +2,7 @@
 {% block content %}
 
 
-{% if not session %}
+{% if "user" not in session %}
 <h3 class="center-align white-text text-shadow large-heading">Welcome to Book Club</h3>
 
 <div class="row">
@@ -24,7 +24,7 @@
 </div>
 {% endif %}
 
-{% if session %}
+{% if "user" in session %}
 <h1 class="center-align white-text text-shadow large-heading"> <strong>All Books</strong> </h1>
 {% endif %}
 
@@ -88,7 +88,7 @@
                         </div>
                         {% endif %}
                     </div>
-                    {% if session %}
+                    {% if "user" in session %}
                     <div class="col s12">
                         <!--Checks user is admin-->
                         {% if book.added_by == session["user"] or user["admin"] == True %}
@@ -109,7 +109,7 @@
                     <ul>
 
                         <h4 class="s6 small-heading"><i class="fas fa-align-left"></i>Reviews</h4>
-                        {% if session %}
+                        {% if "user" in session %}
                         {% if book._id|string in user_reviews %}
                         <div>
                             You've already reviewed this book!
