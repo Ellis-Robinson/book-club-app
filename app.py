@@ -274,38 +274,43 @@ def review_book(book_id):
     """if use is logged in takes to review book page,
     then stores review in db.
     otherwise redirects to log in page"""
+    # checks if user is logged in
     if "user" in session:
         book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-        user = mongo.db.users.find_one({
-            "username": session["user"]
-        })
-        reviews = mongo.db.reviews.find()
-        # checks if user has already reviewed book
-        for review in reviews:
-            if review["book_id"] == str(book["_id"]):
-                if review["reviewed_by"] == str(user["_id"]):
-                    flash("You Have Already Reviewed This Book")
-                    return redirect(url_for("get_books"))
+        # checks if book exists in database
+        if book:
+            user = mongo.db.users.find_one({
+                "username": session["user"]
+            })
+            reviews = mongo.db.reviews.find()
+            # checks if user has already reviewed book
+            for review in reviews:
+                if review["book_id"] == str(book["_id"]):
+                    if review["reviewed_by"] == str(user["_id"]):
+                        flash("You Have Already Reviewed This Book")
+                        return redirect(url_for("get_books"))
 
-        if request.method == "POST":
-            # creates review
-            review = {
-                "book_reviewed": book["title"],
-                "review": request.form.get("review"),
-                "reviewed_by": str(user["_id"]),
-                "book_id": str(book["_id"]),
-                "rating": request.form.get("rating")
-            }
-            mongo.db.reviews.insert_one(review)
-            mongo.db.users.update_one(
-                user, {"$push": {"books_reviewed": str(book["_id"])}})
-            flash("Book successfully reviewed")
+            if request.method == "POST":
+                # creates review
+                review = {
+                    "book_reviewed": book["title"],
+                    "review": request.form.get("review"),
+                    "reviewed_by": str(user["_id"]),
+                    "book_id": str(book["_id"]),
+                    "rating": request.form.get("rating")
+                }
+                mongo.db.reviews.insert_one(review)
+                mongo.db.users.update_one(
+                    user, {"$push": {"books_reviewed": str(book["_id"])}})
+                flash("Book successfully reviewed")
 
-            update_book_rating(book)
+                update_book_rating(book)
 
-            return redirect(url_for("get_books"))
+                return redirect(url_for("get_books"))
 
-        return render_template("review_book.html", book=book)
+            return render_template("review_book.html", book=book)
+        flash("Book no longer in out database")
+        return render_template("books.html")
     flash("You need to be logged in to review books.")
     return redirect(url_for('log_in'))
 
@@ -409,6 +414,7 @@ def confirm_review_delete(review_id):
     flash("You need to be logged in to do that")
     return render_template("log_in.html")
 
+
 @app.route("/delete_review/<review_id>")
 def delete_review(review_id):
     """Delete review from database and removes associated
@@ -446,12 +452,23 @@ def delete_review(review_id):
 @app.route("/confirm_book_delete/<book_id>")
 def confirm_book_delete(book_id):
     """ Checks the user definitely wants to delete the book """
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
-    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-    print(book)
-    return render_template("confirm_book_delete.html", book=book, user=user)
+    # checks if user is logged in
+    if "user" in session:
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+        # checks if book exists in database
+        if book:
+            # checks if user admin
+            if user["admin"]:
+                return render_template(
+                    "confirm_book_delete.html", book=book, user=user)
+            flash("Only admin can delete books")
+            return render_template("401.html")
+        flash("Book no longer in our database")
+    flash("You need to be logged in to do that")
+    return render_template("log_in.html")
 
 
 @app.route("/delete_book/<book_id>")
@@ -485,24 +502,29 @@ def delete_book(book_id):
 @app.route("/add_genre", methods=["GET", "POST"])
 def add_genre():
     """allows admin users to add genre"""
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
-    # finds all genres
-    genres = mongo.db.genres.find().sort('name', 1)
-    if request.method == "POST":
+    # checks if user is logged in
+    if "user" in session:
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        # checks if user is admin
+        if user["admin"]:
+            # finds all genres
+            genres = mongo.db.genres.find().sort('name', 1)
+            if request.method == "POST":
 
-        genre = {
-            "name": request.form.get("name").lower(),
-        }
-        mongo.db.genres.insert_one(genre)
-        flash("Genre Successfully Added")
-        return redirect(url_for("add_genre"))
+                genre = {
+                    "name": request.form.get("name").lower(),
+                }
+                mongo.db.genres.insert_one(genre)
+                flash("Genre Successfully Added")
+                return redirect(url_for("add_genre"))
 
-    # checks if user is admin
-    if user["admin"]:
-        return render_template("add_genre.html", genres=genres)
-    return redirect(url_for("get_books"))
+            return render_template("add_genre.html", genres=genres)
+        flash("Only admin can add genres")
+        return render_template("401.html")
+    flash("You need to be logged in to do that")
+    return redirect(url_for("log_in"))
 
 
 @app.route("/edit_genre", methods=["GET", "POST"])
