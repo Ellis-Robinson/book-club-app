@@ -144,8 +144,9 @@ def edit_account(username):
             if request.method == "POST":
                 # updates selected fields
                 mongo.db.users.update_one(
-                    user, {"$set": {"email": request.form.get("email"),
-                                    "username": request.form.get("username").lower()}})
+                    user, {"$set": {
+                           "email": request.form.get("email"),
+                           "username": request.form.get("username").lower()}})
                 flash("Account Details Updated, Please Log Back In..")
                 # logs user out
                 session.pop('user')
@@ -234,8 +235,8 @@ def edit_book(book_id):
         book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
         is_series = "yes" if request.form.get("is_series") else "no"
         user = mongo.db.users.find_one({"username": session["user"]})
+        # checks if book exists
         if book:
-
             # checks if book belongs to user or if user admin
             if book["added_by"] == user["username"] or user["admin"]:
                 if request.method == "POST":
@@ -333,13 +334,16 @@ def update_book_rating(book):
 @app.route("/my_reviews")
 def my_reviews():
     """Gets all reviews user has posted"""
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
-    books = list(mongo.db.books.find())
-    reviews = list(mongo.db.reviews.find())
-    return render_template("my_reviews.html", reviews=reviews,
-                           user=user, books=books)
+    if "user" in session:
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        books = list(mongo.db.books.find())
+        reviews = list(mongo.db.reviews.find())
+        return render_template("my_reviews.html", reviews=reviews,
+                               user=user, books=books)
+    flash("You need to be logged in to do that")
+    return render_template("log_in.html")
 
 
 @app.route("/edit_review/<review_id>", methods=["GET", "POST"])
