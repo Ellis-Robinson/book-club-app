@@ -369,7 +369,7 @@ def edit_review(review_id):
                     mongo.db.reviews.update(
                         {"_id": ObjectId(review_id)},
                         {"$set": {"review": request.form.get("review"),
-                            "rating": request.form.get("rating")}})
+                                  "rating": request.form.get("rating")}})
 
                     flash("Review Successfully Edited")
                     # updates book rating
@@ -377,7 +377,8 @@ def edit_review(review_id):
 
                     return redirect(url_for('my_reviews'))
 
-                return render_template("edit_review.html", review=review, book=book)
+                return render_template(
+                    "edit_review.html", review=review, book=book)
             flash("You can only edit your own reviews")
             return render_template("401.html")
         flash("Sorry, this review no longer exists")
@@ -389,13 +390,24 @@ def edit_review(review_id):
 @app.route("/confirm_review_delete/<review_id>")
 def confirm_review_delete(review_id):
     """ Checks if user definitely wants to delete the review"""
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
-    review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-    return render_template(
-        "confirm_review_delete.html", review=review, user=user)
-
+    # checks if user is logged in
+    if "user" in session:
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+        # checks if review exists
+        if review:
+            # checks if user admin or review belongs to user
+            if review["reviewed_by"] == str(user["_id"]) or user["admin"]:
+                return render_template(
+                    "confirm_review_delete.html", review=review, user=user)
+            flash("You can only delete your own reviews")
+            return render_template("401.html")
+        flash("Sorry, this review no longer exists")
+        return render_template("books.html")
+    flash("You need to be logged in to do that")
+    return render_template("log_in.html")
 
 @app.route("/delete_review/<review_id>")
 def delete_review(review_id):
@@ -405,7 +417,8 @@ def delete_review(review_id):
         "username": session["user"]
     })
     # finds the review
-    review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)}) 
+    review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+
     book = {}
     books = list(mongo.db.books.find())
     # finds the book linked to review
