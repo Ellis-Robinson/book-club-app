@@ -27,7 +27,7 @@ def get_books():
     reviews = list(mongo.db.reviews.find())
     users = list(mongo.db.users.find())
     # checks if in session, sends neccessary variables to frontend
-    if session:
+    if "user" in session:
         user = mongo.db.users.find_one({
             "username": session["user"]
         })
@@ -70,11 +70,11 @@ def sign_up():
         # checks if username already in database
         for user in users:
             if user["username"] == request.form.get("username").lower():
-                flash("Username Taken, Please Try Another")
+                flash("Username taken, please try another")
                 return redirect(url_for("sign_up"))
         # checks both passwords match
         if password != confirm_password:
-            flash("Passwords Did Not Match, Please Try Again")
+            flash("Passwords did not match, please try again")
             return redirect(url_for("sign_up"))
         # creates user and adds to db
         register = {
@@ -123,66 +123,71 @@ def log_in():
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
     """loads users page or redirects to log in page"""
-    user = mongo.db.users.find_one(
-        {"username": session["user"]})
-
-    if session["user"]:
-        return render_template(
-            "user_profile.html", username=username, user=user)
-
+    if "user" in session:
+        user = mongo.db.users.find_one(
+            {"username": session["user"]})
+        if session["user"]:
+            return render_template(
+                "user_profile.html", username=username, user=user)
+    flash("You need to be logged in to do that")
     return redirect(url_for("log_in"))
 
 
 @app.route("/edit_account/<username>", methods=["GET", "POST"])
 def edit_account(username):
     """updates users username and email address"""
-    user = mongo.db.users.find_one(
-        {"username": username})
-    if request.method == "POST":
-        # updates selected fields
-        mongo.db.users.update_one(
-            user, {"$set": {"email": request.form.get("email"),
-                            "username": request.form.get("username").lower()}})
-        flash("Account Details Updated, Please Log Back In..")
-        # logs user out
-        session.pop('user')
-        return redirect(url_for("log_in"))
-    return render_template("edit_account.html", user=user)
+    if "user" in session:
+        user = mongo.db.users.find_one(
+            {"username": username})
+        if request.method == "POST":
+            # updates selected fields
+            mongo.db.users.update_one(
+                user, {"$set": {"email": request.form.get("email"),
+                                "username": request.form.get("username").lower()}})
+            flash("Account Details Updated, Please Log Back In..")
+            # logs user out
+            session.pop('user')
+            return redirect(url_for("log_in"))
+        return render_template("edit_account.html", user=user)
+    flash("You Need To Be Logged In To Do That")
+    return render_template("log_in.html")
 
 
 @app.route("/change_password", methods=["GET", "POST"])
 def change_password():
     """updates users password and logs them out"""
-    if request.method == "POST":
-        user = mongo.db.users.find_one({"username": session["user"]})
-        password = request.form.get("current-password")
-        new_password = request.form.get("new-password")
-        confirm_new_password = request.form.get("confirm-new-password")
-        # checks all passwords are correct
-        if (check_password_hash(user["password"], password) and
-                new_password == confirm_new_password):
-            # updates users password
-            mongo.db.users.update_one(
-                user, {"$set": {"password": generate_password_hash(
-                       request.form.get("new-password"))}})
+    if "user" in session:
+        if request.method == "POST":
+            user = mongo.db.users.find_one({"username": session["user"]})
+            password = request.form.get("current-password")
+            new_password = request.form.get("new-password")
+            confirm_new_password = request.form.get("confirm-new-password")
+            # checks all passwords are correct
+            if (check_password_hash(user["password"], password) and
+                    new_password == confirm_new_password):
+                # updates users password
+                mongo.db.users.update_one(
+                    user, {"$set": {"password": generate_password_hash(
+                        request.form.get("new-password"))}})
 
-            flash("Password Successfully Updated. Please Log Back In..")
-            return redirect(url_for("log_in"))
-        flash("One or More Passwords Incorrect. Please Try Again..")
-        return redirect(url_for("edit_account", user=user))
+                flash("Password Successfully Updated. Please Log Back In..")
+                return redirect(url_for("log_in"))
+            flash("One or More Passwords Incorrect. Please Try Again..")
+            return redirect(url_for("edit_account", user=user))
 
-    return render_template("edit_account.html", user=user)
+        return render_template("edit_account.html", user=user)
+    flash("You need to be logged in to do that")
+    return redirect(url_for("log_in"))
 
 
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
     """if use is logged in takes to add book page otherwise
     redirects to log in page"""
-    books = mongo.db.books.find()
-    user = mongo.db.users.find_one({"username": session["user"]})
     # checks if user in session
-    if session["user"]:
-
+    if "user" in session:
+        books = mongo.db.books.find()
+        user = mongo.db.users.find_one({"username": session["user"]})
         if request.method == "POST":
             is_series = "yes" if request.form.get("is_series") else "no"
             # creates new book from user input
@@ -213,40 +218,46 @@ def add_book():
         genres = mongo.db.genres.find().sort("name", 1)
         return render_template("add_book.html", genres=genres, user=user)
 
-    return redirect(url_for('log_in'))
+    flash("You need to be logged in to do that")
+    return redirect(url_for("log_in"))
 
 
 @app.route("/edit_book/<book_id>", methods=["GET", "POST"])
 def edit_book(book_id):
     """gets book current info, updates from users input"""
-    # finds book
-    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-    is_series = "yes" if request.form.get("is_series") else "no"
 
-    if session["user"]:
-        if request.method == "POST":
-            # updates from users input
-            update = {
-                "title": request.form.get("title").lower(),
-                "genre": request.form.get("genre").lower(),
-                "author": request.form.get("author").lower(),
-                "year": request.form.get("year").lower(),
-                "synopsis": request.form.get("synopsis").lower(),
-                "is_series": is_series,
-                "series_name": request.form.get("series_name"),
-                "rating": request.form.get("rating"),
-                "added_by": session["user"]
-            }
+    if "user" in session:
+        # finds book
+        book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
+        is_series = "yes" if request.form.get("is_series") else "no"
+        user = mongo.db.users.find_one({"username": session["user"]})
+        # checks if book belongs to user or if user admin
+        if book["added_by"] == user["username"] or user["admin"]:
+            if request.method == "POST":
+                # updates from users input
+                update = {
+                    "title": request.form.get("title").lower(),
+                    "genre": request.form.get("genre").lower(),
+                    "author": request.form.get("author").lower(),
+                    "year": request.form.get("year").lower(),
+                    "synopsis": request.form.get("synopsis").lower(),
+                    "is_series": is_series,
+                    "series_name": request.form.get("series_name"),
+                    "rating": request.form.get("rating"),
+                    "added_by": session["user"]
+                }
 
-            mongo.db.books.update(book, update)
-            flash("Book Successfully Edited")
-            return redirect(url_for("my_library"))
+                mongo.db.books.update(book, update)
+                flash("Book Successfully Edited")
+                return redirect(url_for("my_library"))
 
-        genres = mongo.db.genres.find().sort("genres", 1)
+            genres = mongo.db.genres.find().sort("genres", 1)
 
-        return render_template("edit_book.html", book=book, genres=genres)
+            return render_template("edit_book.html", book=book, genres=genres)
+        return render_template("401.html")
 
-    return redirect(url_for('log_in'))
+    flash("You need to be logged in to do that")
+    return redirect(url_for("log_in"))
 
 
 @app.route("/review_book/<book_id>", methods=["GET", "POST"])
@@ -270,6 +281,9 @@ def review_book(book_id):
 
         if request.method == "POST":
             # creates review
+
+            
+
             review = {
                 "book_reviewed": book["title"],
                 "review": request.form.get("review"),
