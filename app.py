@@ -530,22 +530,33 @@ def add_genre():
 @app.route("/edit_genre", methods=["GET", "POST"])
 def edit_genre():
     """ allows admin to edit genre """
-    # gets all genres in collection
-    genres = list(mongo.db.genres.find())
-    if request.method == "POST":
+    # checks if user is logged in
+    if "user" in session:
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        # checks if user is admin
+        if user["admin"]:
+            # gets all genres in collection
+            genres = list(mongo.db.genres.find())
+            if request.method == "POST":
 
-        new_genre = {
-            "name": request.form.get("new_genre")
-        }
-        # links selected genre with correct genre in database and updates
-        for genre in genres:
-            if genre["name"] == request.form.get("current_genre"):
-                current_genre = genre
-                mongo.db.genres.update(current_genre, new_genre)
+                new_genre = {
+                    "name": request.form.get("new_genre")
+                }
+                # links selected genre with correct genre in database and updates
+                for genre in genres:
+                    if genre["name"] == request.form.get("current_genre"):
+                        current_genre = genre
+                        mongo.db.genres.update(current_genre, new_genre)
 
-        flash("genre successfully edited")
-        return redirect(url_for("edit_genre"))
-    return render_template("edit_genre.html", genres=genres)
+                flash("genre successfully edited")
+                return redirect(url_for("edit_genre"))
+            return render_template("edit_genre.html", genres=genres)
+        flash("Only admin can edit genres")
+        return render_template("401.html")
+    flash("You need to be logged in to do that")
+    return redirect(url_for("log_in"))
 
 
 @app.route("/remove_user", methods=["GET", "POST"])
