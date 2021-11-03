@@ -349,29 +349,39 @@ def my_reviews():
 @app.route("/edit_review/<review_id>", methods=["GET", "POST"])
 def edit_review(review_id):
     """ allows user to edit their reviews """
+    # cheks if user is logged in
     if "user" in session:
+        user = mongo.db.users.find_one({"username": session["user"]})
         review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-        book = {}
-        # finds book associated with review
-        books = mongo.db.books.find()
-        for doc in books:
-            if str(doc["_id"]) == review["book_id"]:
-                book = doc
+        # checks if review exists in database
+        if review:
+            # checks if review belongs to user
+            if review["reviewed_by"] == str(user["_id"]):
+                book = {}
+                # finds book associated with review
+                books = mongo.db.books.find()
+                for doc in books:
+                    if str(doc["_id"]) == review["book_id"]:
+                        book = doc
 
-        if request.method == "POST":
-            # updates "review" and "rating" fields
-            mongo.db.reviews.update(
-                {"_id": ObjectId(review_id)}, {
-                    "$set": {"review": request.form.get("review"),
+                if request.method == "POST":
+                    # updates "review" and "rating" fields
+                    mongo.db.reviews.update(
+                        {"_id": ObjectId(review_id)},
+                        {"$set": {"review": request.form.get("review"),
                             "rating": request.form.get("rating")}})
 
-            flash("Review Successfully Edited")
-            # updates book rating
-            update_book_rating(book)
+                    flash("Review Successfully Edited")
+                    # updates book rating
+                    update_book_rating(book)
 
-            return redirect(url_for('my_reviews'))
+                    return redirect(url_for('my_reviews'))
 
-        return render_template("edit_review.html", review=review, book=book)
+                return render_template("edit_review.html", review=review, book=book)
+            flash("You can only edit your own reviews")
+            return render_template("401.html")
+        flash("Sorry, this review no longer exists")
+        render_template("books.html")
     flash("You need to be logged in to do that")
     return render_template("log_in.html")
 
