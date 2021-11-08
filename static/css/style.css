@@ -42,6 +42,10 @@ main {
     display: none;
 }
 
+blockquote {
+    border-left: 5px solid #2c8931;
+}
+
 /* nav bar */
 .brand-logo {
     font-family: Martel600;
@@ -56,6 +60,10 @@ main {
 
 .margin-bottom {
     margin-bottom: 5%;
+}
+
+.small-margin-bottom {
+    margin-bottom: 4px;
 }
 
 .padding-right {
@@ -77,6 +85,7 @@ main {
 .collapsible-header>div>span {
     display: inline-block;
 }
+
 
 /* headings */
 

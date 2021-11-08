@@ -89,7 +89,7 @@
                         {% endif %}
                     </div>
                     {% if "user" in session %}
-                    <div class="col s12">
+                    <div class="small-margin-bottom">
                         <!--Checks user is admin-->
                         {% if book.added_by == session["user"] or user["admin"] == True %}
 
@@ -99,8 +99,7 @@
                         {% endif %}
                     </div>
                     <!-- add to library button -->
-                    <div class="col s12">
-                        <span>Have You Read This?</span>
+                    <div>
                         <a href="{{ url_for('add_to_library', book_id=book._id) }}" class="waves-effect waves-light btn-small green darken-2">Add to library</a>
                     </div>
                     {% endif %}
