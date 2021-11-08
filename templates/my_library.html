@@ -44,7 +44,7 @@
                 <form action="{{ url_for('remove_from_books_read', book_id=book._id) }}" method="POST">
                     <div class="row">
                         <div class="col s3">
-                            <button class="btn-small waves-effect waves-light green darken-2 remove-btn" type="submit" name="action">Remove</button>
+                            <button class="btn-small waves-effect waves-light red darken-2 remove-btn" type="submit" name="action">Remove</button>
                         </div>
                     </div>
                 </form>
@@ -94,19 +94,19 @@
                         </div>
                         {% endif %}
                     </div>
-                    <div class="col s9">
+                    <div class="row">
                         <form action="{{ url_for('remove_from_to_read', book_id=book._id) }}" method="POST">
-                            <div class="col s3 m5">
-                                <div class="row">
-                                    <button class="btn waves-effect waves-light red darken-2" type="submit" name="action">remove from to read?
+                            <div class="row">
+                                <div>
+                                    <button class="btn-small waves-effect waves-light red darken-2 remove-btn" type="submit" name="action">remove
                                     </button>
                                 </div>
                             </div>
                         </form>
                         <form action="{{ url_for('add_to_books_read', book_id=book._id) }}" method="POST">
-                            <div class="col s3 m5">
-                                <div class="row">
-                                    <button class="btn waves-effect waves-light green darken-2" type="submit" name="action">Add to books read?
+                            <div class="row">
+                                <div>
+                                    <button class="btn-small waves-effect waves-light green darken-2 add-to-read-btn" type="submit" name="action">Add to books read?
                                     </button>
                                 </div>
                             </div>

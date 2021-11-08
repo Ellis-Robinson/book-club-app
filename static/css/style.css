@@ -306,11 +306,13 @@ form textarea {
         top: 1px;
     }
 
-    .remove-btn {
+    .remove-btn,
+    .add-to-read-btn {
         height: 22px;
     }
 
     .remove-btn,
+    .add-to-read-btn,
     .line-height-0 {
         line-height: 0;
     }
@@ -318,5 +320,9 @@ form textarea {
     .edit-book-btn,
     .btn-floating {
         margin-bottom: 10px;
+    }
+
+    .add-to-read-btn {
+        width: 120px;
     }
 }
