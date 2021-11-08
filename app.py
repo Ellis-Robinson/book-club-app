@@ -24,7 +24,7 @@ mongo = PyMongo(app)
 def get_books():
     """ finds all books, reviews and users from the database.
 
-    Returns: 
+    Returns:
         books.html page and passes variables based on logged in status """
 
     books = mongo.db.books.find().sort('title', 1)
@@ -50,8 +50,8 @@ def get_books():
 def search():
     """ takes the users input and checks it against the books in database.
 
-    Returns: 
-        books.html page with books that match the users input. 
+    Returns:
+        books.html page with books that match the users input.
         Passes variables depending on logged in status """
 
     query = request.form.get("query")
@@ -75,8 +75,8 @@ def sign_up():
     """ allows user to create account with an email address, username and password.
     hashes users password for extra security.
     Stores the users profile information in users collection in database.
-    
-    Returns: 
+
+    Returns:
         log_in.html page """
 
     if request.method == "POST":
@@ -114,9 +114,9 @@ def log_in():
     """ Checks user inputs against data in users collection,
     including checking hashed password.
     logs the user in if correct input
-    
-    Returns: 
-        calls 'profile' view, and passes specific users username, as a variable """
+
+    Returns:
+        'profile' view """
 
     if request.method == "POST":
         # checks if user already exists in db
@@ -128,16 +128,14 @@ def log_in():
             if check_password_hash(existing_user["password"],
                                    request.form.get("password")):
                 session["user"] = request.form.get("username").lower()
-                flash("Welcome back, {}".format(
-                    request.form.get("username")))
+                flash(f"Welcome back, {session['user'].capitalize()}")
                 return redirect(url_for("profile", username=session["user"]))
 
-            else:
-                flash("Incorrect Username/Password")
-                return redirect(url_for("log_in"))
-        else:
             flash("Incorrect Username/Password")
             return redirect(url_for("log_in"))
+
+        flash("Incorrect Username/Password")
+        return redirect(url_for("log_in"))
 
     return render_template("log_in.html")
 
@@ -146,12 +144,15 @@ def log_in():
 def profile(username):
     """ loads users profile page allowing them access to more site features.
 
-        username (str): user input on 'username' section of log_in form, passed from log_in view.
+        username (str): user input on 'username' section of log_in form,
+            passed from log_in view.
 
-    Returns: 
-        user_profile.html page, if the user has passed log in checks in current session.
-        
-        calls log_in view, if user has not passed log in checks in current session """
+    Returns:
+        user_profile.html page.
+        if the user has passed log in checks in current session.
+
+        'log_in' view.
+        if user has not passed log in checks in current session """
 
     if "user" in session:
         user = mongo.db.users.find_one(
@@ -166,13 +167,15 @@ def profile(username):
 @app.route("/edit_account/<username>", methods=["GET", "POST"])
 def edit_account(username):
     """ allows user to edit their username and email address.
-        
+
         username (str): session['user'], taken from user_profile.html
-    
-    Returns: 
-        'log_in' view if user not currently logged in, or succefully changed username/email
-        
-        '401.html' if logged in as different user """
+
+    Returns:
+        'log_in' view
+        if user not currently logged in, or succefully changed username/email
+
+        '401.html'
+        if logged in as different user """
 
     if "user" in session:
         user = mongo.db.users.find_one(
@@ -198,11 +201,13 @@ def edit_account(username):
 @app.route("/change_password", methods=["GET", "POST"])
 def change_password():
     """ updates users password and logs them out
-    
-    Returns: 
-        'log_in' view if password successfully updated.
-        
-        'edit_account.html' if passwords dont pass, match criteria """
+
+    Returns:
+        'log_in' view
+        if password successfully updated.
+
+        'edit_account.html'
+        if passwords dont pass, match criteria """
 
     if "user" in session:
         if request.method == "POST":
@@ -231,13 +236,16 @@ def change_password():
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
     """ takes user input and adds information to books collection in database
-    
-    Returns:
-        'log_in' view if user not currently logged in, otherwise.
-        
-        'add_book.html' if user logged in, or if user input matches book in database.
 
-        'review_book.html' if book successfully added to databse """
+    Returns:
+        'log_in' view
+        if user not currently logged in, otherwise.
+
+        'add_book.html'
+        if user logged in, or if user input matches book in database.
+
+        'review_book.html'
+        if book successfully added to databse """
 
     # checks if user in session
     if "user" in session:
@@ -280,17 +288,22 @@ def add_book():
 @app.route("/edit_book/<book_id>", methods=["GET", "POST"])
 def edit_book(book_id):
     """ updates one or more fields from a document in books collection in database.
-    
-        book_id (ObjectId): '_id' field of book dictionary, passed from frontend. 
+
+        book_id (ObjectId): '_id' field of book dictionary,
+        passed from frontend.
 
     Returns:
-        'log_in' view if user not currently logged in.
+        'log_in' view
+        if user not currently logged in.
 
-        'my_library' view if book successfully edited.
+        'my_library' view
+        if book successfully edited.
 
-        '401.html' if incorrect user logged in.
+        '401.html'
+        if incorrect user logged in.
 
-        '404.html' if book doesnt exist in database """
+        '404.html'
+        if book doesnt exist in database """
 
     if "user" in session:
         # finds book
@@ -321,7 +334,8 @@ def edit_book(book_id):
 
                 genres = mongo.db.genres.find().sort("genres", 1)
 
-                return render_template("edit_book.html", book=book, genres=genres)
+                return render_template("edit_book.html",
+                                       book=book, genres=genres)
             flash("You can only edit books you've added")
             return render_template("401.html")
         flash("Book no longer in our database")
@@ -336,14 +350,17 @@ def review_book(book_id):
     """ creates a document in 'reviews' collection in database.
 
     book_id (ObjectId): '_id' field of book dictionary, passed from frontend.
-    
+
     Returns:
-        'log_in' view if user not currently logged in.
-        
-        'get_books' view if review successfully added to databse,
+        'log_in' view
+        if user not currently logged in.
+
+        'get_books' view
+        if review successfully added to databse,
         or user has already reviewed book
 
-        '404.html' if book doesnt exist in database """
+        '404.html'
+        if book doesnt exist in database """
     # checks if user is logged in
     if "user" in session:
         book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
@@ -388,7 +405,7 @@ def review_book(book_id):
 @app.route("/update_book_rating")
 def update_book_rating(book):
     """ finds avarage rating for book and updates book document in database
-    
+
     book (dic): document from 'books' collection """
 
     reviews = mongo.db.reviews.find()
@@ -412,11 +429,13 @@ def update_book_rating(book):
 @app.route("/my_reviews")
 def my_reviews():
     """ gets all reviews created by the user
-    
+
     Returns:
-        'log_in' view if user not currently logged in.
-        
-        'my_reviews.html' with variables for all books and reviews in database """
+        'log_in' view
+        if user not currently logged in.
+
+        'my_reviews.html'
+        with variables for all books and reviews in database """
 
     if "user" in session:
         user = mongo.db.users.find_one({
@@ -434,16 +453,21 @@ def my_reviews():
 def edit_review(review_id):
     """ edits 'review' and/or 'rating' fields for document in 'reviews' collection.
 
-    review_id (ObjectId): '_id' field of 'review' dictionary, passed from frontend.
-    
+    review_id (ObjectId): '_id' field of 'review' dictionary,
+        passed from frontend.
+
     Returns:
-        'log_in' view if user not currently logged in.
+        'log_in' view
+        if user not currently logged in.
 
-        'my_reviews' if review successfully updated.
+        'my_reviews'
+        if review successfully updated.
 
-        '401.html' if incorrect user logged in.
+        '401.html'
+        if incorrect user logged in.
 
-        '404.html' if review doesnt exist in database """
+        '404.html'
+        if review doesnt exist in database """
 
     # cheks if user is logged in
     if "user" in session:
@@ -487,16 +511,21 @@ def edit_review(review_id):
 def confirm_review_delete(review_id):
     """ Checks if user definitely wants to delete the review.
 
-    review_id (ObjectId): '_id' field of 'review' dictionary, passed from frontend.
-    
+    review_id (ObjectId): '_id' field of 'review' dictionary,
+        passed from frontend.
+
     Returns:
-        'log_in' view if user not currently logged in.
+        'log_in' view
+        if user not currently logged in.
 
-        'confirm_review_delete.html' if user logged to correct account.
+        'confirm_review_delete.html'
+        if user logged to correct account.
 
-        '401.html' if incorrect user logged in.
+        '401.html'
+        if incorrect user logged in.
 
-        '404.html' if review doesnt exist in database """
+        '404.html'
+        if review doesnt exist in database """
 
     # checks if user is logged in
     if "user" in session:
@@ -522,11 +551,13 @@ def confirm_review_delete(review_id):
 def delete_review(review_id):
     """ delete review from database and removes associated
     id's from documents in users collection.
-    
-    review_id (ObjectId): '_id' field of 'review' dictionary, passed from frontend.
-    
+
+    review_id (ObjectId): '_id' field of 'review' dictionary,
+        passed from frontend.
+
     Returns:
-        'get_books' view if book is successfully deleted """
+        'get_books'
+        view if book is successfully deleted """
 
     user = mongo.db.users.find_one({
         "username": session["user"]
@@ -537,9 +568,9 @@ def delete_review(review_id):
     book = {}
     books = list(mongo.db.books.find())
     # finds the book linked to review
-    for b in books:
-        if str(b["_id"]) == review["book_id"]:
-            book = b
+    for doc in books:
+        if str(doc["_id"]) == review["book_id"]:
+            book = doc
     # removed review from database
     mongo.db.reviews.remove({"_id": ObjectId(review_id)})
     # finds user who left the review
@@ -563,15 +594,19 @@ def confirm_book_delete(book_id):
     """ Checks the user definitely wants to delete the book.
 
     book_id (ObjectId): '_id' field of 'book' dictionary, passed from frontend.
-    
+
     Returns:
-        'log_in' view if user not currently logged in.
+        'log_in' view
+        if user not currently logged in.
 
-        'confirm_book_delete.html' if user logged to correct account.
+        'confirm_book_delete.html'
+        if user logged to correct account.
 
-        '401.html' if incorrect user logged in.
+        '401.html'
+        if incorrect user logged in.
 
-        '404.html' if review doesnt exist in database """
+        '404.html'
+        if review doesnt exist in database """
 
     # checks if user is logged in
     if "user" in session:
@@ -597,7 +632,7 @@ def confirm_book_delete(book_id):
 def delete_book(book_id):
     """ deletes book and all associated reviews,
     removes book id from all documents in database.
-    
+
     book_id (ObjectId): '_id' field of 'book' dictionary, passed from frontend.
 
     Returns:
@@ -630,13 +665,16 @@ def delete_book(book_id):
 @app.route("/add_genre", methods=["GET", "POST"])
 def add_genre():
     """ adds new document to 'genres' collection in database.
-    
-    Returns:
-        'log_in' view if user not currently logged in.
-        
-        '401.html' if incorrect user logged in.
 
-        'add_genre.html' if correct user logged in """
+    Returns:
+        'log_in' view
+        if user not currently logged in.
+
+        '401.html'
+        if incorrect user logged in.
+
+        'add_genre.html'
+        if correct user logged in """
 
     # checks if user is logged in
     if "user" in session:
@@ -666,13 +704,16 @@ def add_genre():
 @app.route("/edit_genre", methods=["GET", "POST"])
 def edit_genre():
     """ updates document in 'genres' collection in database.
-    
+
     Returns:
-        'log_in' view if user not currently logged in.
-        
-        '401.html' if incorrect user logged in.
-        
-        'add_genre.html' if correct user logged in """
+        'log_in' view
+        if user not currently logged in.
+
+        '401.html'
+        if incorrect user logged in.
+
+        'add_genre.html'
+        if correct user logged in """
 
     # checks if user is logged in
     if "user" in session:
@@ -688,7 +729,8 @@ def edit_genre():
                 new_genre = {
                     "name": request.form.get("new_genre")
                 }
-                # links selected genre with correct genre in database and updates
+                # links selected genre with correct genre in database
+                # and updates
                 for genre in genres:
                     if genre["name"] == request.form.get("current_genre"):
                         current_genre = genre
@@ -706,13 +748,16 @@ def edit_genre():
 @app.route("/remove_user", methods=["GET", "POST"])
 def remove_user():
     """ removes document from 'users' collection in database.
-    
+
     Returns:
-        'log_in' view if user not currently logged in.
-        
-        '401.html' if incorrect user logged in.
-        
-        'remove_user.html' if correct user logged in """
+        'log_in' view
+        if user not currently logged in.
+
+        '401.html'
+        if incorrect user logged in.
+
+        'remove_user.html'
+        if correct user logged in """
 
     # checks if user is logged in
     if "user" in session:
@@ -745,11 +790,13 @@ def remove_user():
 def my_library():
     """ loads users library with books they have read
      and books they want to read
-     
+
      Returns:
-        'log_in' view if user not currently logged in.
-        
-        'my_library.html' if user is logged in """
+        'log_in' view
+        if user not currently logged in.
+
+        'my_library.html'
+        if user is logged in """
 
     # checks if user is logged in
     if "user" in session:
@@ -759,14 +806,16 @@ def my_library():
         })
 
         books_read = []
-        # Creates list of book objects, from object ids in users books_read list
+        # Creates list of book objects
+        # from object ids in users books_read list
         for book_id in user["books_read"]:
             books_read.append(mongo.db.books.find_one(
                 {"_id": ObjectId(book_id)}))
         # Orders list by title of dictionaries
         books_read = sorted(books_read, key=itemgetter('title'))
         books_to_read = []
-        # Creates list of book objects, from object ids in users books_to_read list
+        # Creates list of book objects,
+        # from object ids in users books_to_read list
         for book_id in user["books_to_read"]:
             books_to_read.append(mongo.db.books.find_one(
                 {"_id": ObjectId(book_id)}))
@@ -787,11 +836,14 @@ def add_to_library(book_id):
     book_id (ObjectId): '_id' field of book dictionary, passed from frontend.
 
     Returns:
-        'log_in' view if user not currently logged in.
+        'log_in' view
+        if user not currently logged in.
 
-        'add_to_library.html' if user logged in.
+        'add_to_library.html'
+        if user logged in.
 
-        'get_books' view, if book already in users library """
+        'get_books' view
+        if book already in users library """
 
     # checks if user is logged in
     if "user" in session:
@@ -844,9 +896,9 @@ def add_to_library(book_id):
 def remove_from_books_read(book_id):
     """ removes 'book' from library and
     id from books read array in user document in database.
-    
+
     book_id (ObjectId): '_id' field of book dictionary, passed from frontend.
-    
+
     Returns:
         'my_library' view """
 
@@ -865,7 +917,7 @@ def remove_from_books_read(book_id):
 def remove_from_to_read(book_id):
     """ removes 'book' from library and
     id from books to read array in user document in db
-    
+
     book_id (ObjectId): '_id' field of book dictionary, passed from frontend.
 
     Returns:
@@ -889,7 +941,7 @@ def remove_from_to_read(book_id):
 def add_to_books_read(book_id):
     """ adds book to users books read section in library
     and removes it from users books to read section
-    
+
     book_id (ObjectId): '_id' field of book dictionary, passed from frontend.
 
     Returns:
@@ -907,7 +959,7 @@ def add_to_books_read(book_id):
             # removes book from books_to_read array
             mongo.db.users.update(
                     user, {"$push": {"books_read": str(book_id)},
-                        "$pull": {"books_to_read": str(book_id)}})
+                           "$pull": {"books_to_read": str(book_id)}})
 
             flash("Book added to books read list")
             return redirect(url_for("my_library"))
@@ -919,7 +971,7 @@ def add_to_books_read(book_id):
 @app.route("/log_out")
 def log_out():
     """ logs user out
-    
+
     Returns:
         'log_in' view """
 
