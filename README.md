@@ -40,12 +40,12 @@
 - As a registired user I want to be able to Add books
 - As a registired user I want to be able to vote books up or down
 
-##### Admin
+<!--##### Admin
 
 - As an admin I want to be able to delete any review
 - As an admin I want to be able to remove any user
 - As an admin I want to be able to add genres 
-- As an admin I want to be able to edit genres
+- As an admin I want to be able to edit genres -->
 
 ### Design
 
