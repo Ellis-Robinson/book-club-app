@@ -1,6 +1,7 @@
 /* genreal */
 
 body {
+    /*sets main background image for all html pages*/
     background-color: rgb(218 140 67);
     background-image: url("https://www.wallpaperflare.com/static/767/594/322/books-library-bokeh-depth-of-field-wallpaper.jpg");
     background-repeat: no-repeat;
@@ -23,12 +24,14 @@ main {
 }
 
 .scroll {
+    /*sets a scroll area 50% of the screen height*/
     height: fit-content;
     max-height: 50vh;
     overflow-y: auto;
 }
 
 .large-scroll {
+    /*sets a scroll area 90% of the screen height*/
     height: fit-content;
     max-height: 90vh;
     overflow-y: auto;
@@ -167,6 +170,7 @@ form textarea {
 }
 
 .ratings>.full {
+    /*sets star shape, size and starting color*/
     border: 2px solid black;
     display: flex;
     justify-content: center;
