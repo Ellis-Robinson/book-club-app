@@ -325,7 +325,7 @@ def edit_book(book_id):
             flash("You can only edit books you've added")
             return render_template("401.html")
         flash("Book no longer in our database")
-        return redirect(url_for("get_books"))
+        return render_template("404.html")
 
     flash("You need to be logged in to do that")
     return redirect(url_for("log_in"))
