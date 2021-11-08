@@ -22,12 +22,16 @@ mongo = PyMongo(app)
 @app.route("/")
 @app.route("/get_books")
 def get_books():
-    """Finds all books, reviews and users, to be used by frontend"""
+    """ finds all books, reviews and users from the database.
+
+    Returns: 
+        books.html page and passes variables based on logged in status """
+
     books = mongo.db.books.find().sort('title', 1)
     reviews = list(mongo.db.reviews.find())
     users = list(mongo.db.users.find())
-    # checks if in session, sends neccessary variables to frontend
     if "user" in session:
+        # checks if in session, sends neccessary variables to frontend
         user = mongo.db.users.find_one({
             "username": session["user"]
         })
@@ -44,12 +48,18 @@ def get_books():
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
-    """Checks user input against db and returns findings"""
+    """ takes the users input and checks it against the books in database.
+
+    Returns: 
+        books.html page with books that match the users input. 
+        Passes variables depending on logged in status"""
+
     query = request.form.get("query")
     books = list(mongo.db.books.find(
         {"$text": {"$search": query}}))
     reviews = list(mongo.db.reviews.find())
-    if session:
+    # checks if user is logged in.
+    if "user" in session:
         user = mongo.db.users.find_one({
             "username": session["user"]
         })
@@ -62,7 +72,13 @@ def search():
 
 @app.route("/sign_up", methods=["GET", "POST"])
 def sign_up():
-    """allows user to create username and password"""
+    """ allows user to create account with an email address, username and password.
+    hashes users password for extra security.
+    Stores the users profile information in users collection in database.
+    
+    Returns: 
+        log_in.html page"""
+
     if request.method == "POST":
         users = mongo.db.users.find()
         password = request.form.get("password")
@@ -95,7 +111,13 @@ def sign_up():
 
 @app.route("/log_in", methods=["GET", "POST"])
 def log_in():
-    """allows user to log in"""
+    """Checks user inputs against data in users collection,
+    including checking hashed password.
+    logs the user in if correct input
+    
+    Returns: 
+        calls 'profile' function, and passes specific users username, as a variable"""
+
     if request.method == "POST":
         # checks if user already exists in db
         existing_user = mongo.db.users.find_one({
@@ -122,7 +144,15 @@ def log_in():
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
-    """loads users page or redirects to log in page"""
+    """ loads users profile page allowing them access to more site features.
+
+        username (str): user input on 'username' section of log_in form, passed from log_in function.
+
+    Returns: 
+        user_profile.html page, if the user has passed log in checks in current session.
+        
+        calls log_in function, if user has not passed log in checks in current session"""
+
     if "user" in session:
         user = mongo.db.users.find_one(
             {"username": session["user"]})
@@ -135,7 +165,15 @@ def profile(username):
 
 @app.route("/edit_account/<username>", methods=["GET", "POST"])
 def edit_account(username):
-    """updates users username and email address"""
+    """ allows user to edit their username and email address.
+        
+        username (str): session['user'], taken from user_profile.html
+    
+    Returns: 
+        'log_in' function if user not currently logged in, or succefully changed username/email
+        
+        '401.html' if logged in as different user"""
+
     if "user" in session:
         user = mongo.db.users.find_one(
             {"username": username})
@@ -159,7 +197,13 @@ def edit_account(username):
 
 @app.route("/change_password", methods=["GET", "POST"])
 def change_password():
-    """updates users password and logs them out"""
+    """ updates users password and logs them out
+    
+    Returns: 
+        'log_in' function if password successfully updated.
+        
+        'edit_account.html' if passwords dont pass, match criteria"""
+
     if "user" in session:
         if request.method == "POST":
             user = mongo.db.users.find_one({"username": session["user"]})
@@ -186,8 +230,15 @@ def change_password():
 
 @app.route("/add_book", methods=["GET", "POST"])
 def add_book():
-    """if use is logged in takes to add book page otherwise
-    redirects to log in page"""
+    """ takes user input and adds information to books collection in database
+    
+    Returns:
+        'log_in' function if user not currently logged in, otherwise.
+        
+        'add_book.html' if user logged in, or if user input matches book in database.
+
+        'review_book.html' if book successfully added to databse"""
+
     # checks if user in session
     if "user" in session:
         books = mongo.db.books.find()
@@ -228,7 +279,18 @@ def add_book():
 
 @app.route("/edit_book/<book_id>", methods=["GET", "POST"])
 def edit_book(book_id):
-    """gets book current info, updates from users input"""
+    """ updates one or more fields from a document in books collection in database.
+    
+        book_id (ObjectId): '_id' field of book document, passed from 'books.html' 
+
+    Returns:
+        'log_in' function if user not currently logged in.
+
+        'my_library' function if book successfully edited.
+
+        '401.html' if incorrect user logged in.
+
+        '404.html' if book doesnt exist in database."""
 
     if "user" in session:
         # finds book
