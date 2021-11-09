@@ -72,7 +72,7 @@ Althought the final product differs from these first designs, the layout and pag
 
 ## Features
 ---  
-####Nav bar
+#### Nav bar
 
 All pages have the same nav bar located at the top of the screen.
     
@@ -119,6 +119,8 @@ This is where the user can search all the books in the database.
     - Above the list of books is an 'Add Book' button. This takes the user to a page to add a book tot he databse.
 
     - Below each book, after it has been clicked, is an 'Add to Library' button. This takes the user to a page where they can chose to add the selected book to one of two lists in their library.
+
+    - If the book has been added by the user, there is an 'Edit book' button which takes them to a page to edit that book.
 
     - Above the reviews for each book, if the user has not reviewed it yet, there is a 'Review' button. This takes the user to a page where they can review the book.
 
@@ -211,6 +213,27 @@ This page has the review the user is trying to delete shown
     - A 'Delete' button, which removes the reviews from the database and takes the user to the home page.
 
     - A 'Cancel' button, which takes the user back to the home page.
+
+#### Edit Account
+
+This page has two forms; one for email and username update and one for password update.
+
+    - 'Email' input
+    - 'Username' input
+    - 'Edit' button which updates the database with the new username and/or email address, logs the user out, and takes them to the log in page.
+
+    - 'Current Password' input
+    - 'New Password' input
+    - 'Confirm New Password' input
+    - 'Edit Password' button which updates the database with the new password, logs the user out and takes them to the log in page. 
+
+#### Footer
+
+Each page has the same footer, which contains three social media links at the bottom right:
+    - Instagram
+    - Facebook
+    - Twitter
+Each one will open its respective social media page in a new tab.
 
 ### future features
 
