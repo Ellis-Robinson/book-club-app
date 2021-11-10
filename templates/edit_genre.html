@@ -8,7 +8,7 @@
         <div class="row center-align">
             <div class="input-field col s12">
                 <select id="current_genre" name="current_genre" class="validate" required>
-                    <option value="" disabled selected>Choose the Genre To Edit</option>
+                    <option disabled selected>Choose the Genre To Edit</option>
                     {% for genre in genres %}
                     <option value="{{ genre.name }}">{{ genre.name.capitalize() }}</option>
                     {% endfor %}
