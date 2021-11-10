@@ -6,23 +6,22 @@ This is a book review app on which users can create an account, add books, revie
 
 # Contents
 
-- User Experience
-    - Strategy
-    - User Stories
-    - Design
-    - Features
-- Technologies
-    - Languages
-    - Libraries, Frameworks and programs
-- Testing
-- Bugs and Fixes
-- Deployment
-- Credits
+- [User Experience](#user-experience)
+    - [Strategy](#strategy)
+    - [User Stories](#user-stories)
+    - [Design](#design)
+    - [Features](#features)
+- [Technologies](#technologies)
+    - [Languages](#languages)
+    - [Libraries, Frameworks and programs](#libraries-frameworks-and-programs)
+- [Testing](#testing)
+- [Bugs and Fixes](#bugs-and-fixes)
+- [Deployment](#deployment)
+- [Credits](#credits)
 
 # User Experience
 
 ## Strategy
----
 ### User goals
 - Review books they have read
 - Find their next book based off description and reviews
@@ -33,7 +32,6 @@ This is a book review app on which users can create an account, add books, revie
 - Build a media presence to increase the nember of user to increase the range of books and reviews.
 
 ## User Stories
----  
 ### First time users
 1. As a user I want to know what the app is for
 2.  As a user I want to be able to make an account
@@ -46,7 +44,6 @@ This is a book review app on which users can create an account, add books, revie
 7. As a registired user I want to be able to vote books up or down
 
 ## Design
----
 ### Color scheme and imagery
 
 At first I simply wantd a clean and light design, but as it developed I wanted it to feel remenicent of a classic study, or warm cluttered library; Deep browns and green, with imagry of books. The layout was to be functional and professional, whilst still maintaining a warm and cosy feel. 
@@ -61,8 +58,8 @@ At first I simply wantd a clean and light design, but as it developed I wanted i
 ### Typography
 
 Fitting with the 'classic' astetic, I chose two main fonts: 
-- ![Italianno](docs/README-imgs/font-italianno.png)
-- ![Martel600](docs/README-imgs/font-martel.png)
+    ![Italianno](docs/README-imgs/font-italianno.png)
+    ![Martel600](docs/README-imgs/font-martel.png)
 
 
 ### Wireframes
@@ -76,7 +73,6 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 ![Data Structure](docs/README-imgs/data-structure.png)
 
 ## Features
----  
 - ## Nav bar
 
     **All pages have the same nav bar located at the top of the screen.**
@@ -251,7 +247,6 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 # Technologies
 
 ## Languages
----
 - #### HTML5: 
     >HTML5 is a markup language used for structuring and presenting content on the World Wide Web. It is the fifth and last major HTML version that is a World Wide Web Consortium (W3C) recommendation. [Read more..](https://en.wikipedia.org/wiki/HTML5)
 
@@ -268,7 +263,6 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
     This was used to create the majority of logic in the application and is responsible for communicating between the database and the webpage. 
 
 ## Libraries, Frameworks and programs
----
 - #### GitHub:
     >GitHub, Inc. is a provider of Internet hosting for software development and version control using Git. It offers the distributed version control and source code management (SCM) functionality of Git, plus its own features. It provides access control and several collaboration features such as bug tracking, feature requests, task management, continuous integration and wikis for every project. [Read more..](https://en.wikipedia.org/wiki/GitHub)
 
@@ -328,6 +322,8 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
     A tool to quickly show how your site or app will look across different devices.[Link to site](http://ami.responsivedesign.is/)
 
 # Testing
+
+
 # Bugs and Fixes
 # Deployment
 # Credits
