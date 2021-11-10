@@ -7,7 +7,7 @@
     <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST" action="{{ url_for('add_book') }}">
         <div class="row">
             <div class="input-field col s12 ">
-                <input id="title" name="title" type="text" class="validate">
+                <input id="title" name="title" type="text" maxlength="50" pattern="^[a-zA-Z0-9_-]{1,50}$" class="validate" required>
                 <label for="title">Title</label>
             </div>
         </div>
@@ -24,19 +24,19 @@
         </div>
         <div class="row">
             <div class="input-field col s12 ">
-                <input id="author" name="author" type="text" class="validate" required>
+                <input id="author" name="author" type="text" maxlength="30" pattern="^[a-zA-Z0-9_-]{1,20}$" class="validate" required>
                 <label for="author">Author</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12 ">
-                <input id="year" name="year" type="text" placeholder="" pattern="[0-9]{4}" class="validate" required>
+                <input id="year" name="year" type="text" maxlength="4" pattern="[0-9]{4}" class="validate" required>
                 <label for="year">Year of Publishing</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12 ">
-                <textarea id="synopsis" name="synopsis" class="materialize-textarea" required></textarea>
+                <textarea id="synopsis" name="synopsis" minlength="15" pattern="^[a-zA-Z0-9_-]$" class="materialize-textarea" required></textarea>
                 <label for="synopsis">Synopsis</label>
             </div>
         </div>
@@ -54,7 +54,7 @@
         </div>
         <div class="row">
             <div class="input-field col s12 ">
-                <input id="series_name" name="series_name" type="text" class="validate">
+                <input id="series_name" name="series_name" type="text" minlength="3" maxlength="30" pattern="^[a-zA-Z0-9_-]{3,30}$" class="validate">
                 <label for="series_name">Name of Series</label>
             </div>
         </div>
