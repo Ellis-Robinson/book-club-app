@@ -65,10 +65,15 @@ Fitting with the 'classic' astetic, I chose two main fonts:
 - ![Martel600](docs/README-imgs/font-martel.png)
 
 
-### wireframes
+### Wireframes
 
 Althought the final product differs from these first designs, the layout and pages are mostly the same.
 [link to wireframs](docs/README-imgs/wireframes)
+
+### Database
+
+The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines the relationship between different documents within.
+![Data Structure](docs/README-imgs/data-structure.png)
 
 ## Features
 ---  
