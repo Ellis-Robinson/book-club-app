@@ -28,7 +28,7 @@
                     </div>
                     <div>
                         <a href="{{ url_for('edit_review', review_id=review._id) }}" class="waves-effect waves-light btn-small amber darken-2">Edit</a>
-                        <a href="{{ url_for('delete_review', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete</a>
+                        <a href="{{ url_for('confirm_review_delete', review_id=review._id) }}" class="waves-effect waves-light btn-small red darken-2">Delete</a>
                     </div>
                 </div>
             </li>
