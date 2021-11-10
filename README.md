@@ -238,28 +238,89 @@ Althought the final product differs from these first designs, the layout and pag
 
 - ## future features
 
+    - A 'contact us' page 
+    - Pagination 
+    - Links to allow bookshop purchaces via the app
+    - Links to single pages for each book with more information and links to similar books
+
 # Technologies
 
 ## Languages
 ---
-- HTML5
-- CSS3
-- Python
+- #### HTML5: 
+    >HTML5 is a markup language used for structuring and presenting content on the World Wide Web. It is the fifth and last major HTML version that is a World Wide Web Consortium (W3C) recommendation. [Read more..](https://en.wikipedia.org/wiki/HTML5)
+
+    This was used to create all the pages on the front end.
+
+- #### CSS3:
+    >Cascading Style Sheets (CSS) is a style sheet language used for describing the presentation of a document written in a markup language such as HTML. [Read more..](https://en.wikipedia.org/wiki/CSS#CSS_3)
+
+    This was used to create custom styles for the HTML pages, as well as suppliment some of the frameworks used.
+
+- #### Python:
+    >Python is an interpreted high-level general-purpose programming language. Its design philosophy emphasizes code readability with its use of significant indentation. Its language constructs as well as its object-oriented approach aim to help programmers write clear, logical code for small and large-scale projects. [Read more..](https://en.wikipedia.org/wiki/Python)
+
+    This was used to create the majority of logic in the application and is responsible for communicating between the database and the webpage. 
 
 ## Libraries, Frameworks and programs
 ---
-- GitHub
-- GitPod
-- FontAwesome
-- Materialise
-- Flask
-- MongoDB
-- Werkzeug
-- Heruko
-- JQuery
-- AmIResponsive
-- RandomKeyGen
-- Jinja
+- #### GitHub:
+    >GitHub, Inc. is a provider of Internet hosting for software development and version control using Git. It offers the distributed version control and source code management (SCM) functionality of Git, plus its own features. It provides access control and several collaboration features such as bug tracking, feature requests, task management, continuous integration and wikis for every project. [Read more..](https://en.wikipedia.org/wiki/GitHub)
+
+    This was used for version control, all stages of the project are documented on my github account.
+
+- #### GitPod:
+    >Gitpod is a container-based development platform that puts developer experience first. Gitpod provisions ready-to-code developer environments in the cloud accessible through your browser (on your computer or tablet) and your local IDE. [Read more..](https://www.gitpod.io/docs)
+
+    This was used as the development enviroment for the entire project.
+
+- #### FontAwesome:
+    >Font Awesome is a font and icon toolkit based on CSS and Less. [Read more..](https://en.wikipedia.org/wiki/Font_Awesome)
+
+    This was used for a number of icons throughout the app, to increase the UX and intuitivness.
+
+- #### Materialise:
+    >Created and designed by Google, Material Design is a design language that combines the classic principles of successful design along with innovation and technology. [Read more..](https://materializecss.com/about.html)
+
+    This was used as a mix of HTML, CSS and JavaScript for a lot of the features on the app, including; colors, buttons, collapsibles, nav bars and form elements. 
+
+- #### Flask:
+    >Flask is a micro web framework written in Python. It is classified as a microframework because it does not require particular tools or libraries.[2] It has no database abstraction layer, form validation, or any other components where pre-existing third-party libraries provide common functions. However, Flask supports extensions that can add application features as if they were implemented in Flask itself. [Read more..](https://en.wikipedia.org/wiki/Flask_(web_framework))
+
+    This was used for the creation of the app itself.
+
+- #### MongoDB:
+    >MongoDB is a source-available cross-platform document-oriented database program. Classified as a NoSQL database program, MongoDB uses JSON-like documents with optional schemas. [Read more..](https://en.wikipedia.org/wiki/MongoDB)
+
+    This was used as the main database for the app.
+
+- #### Werkzeug:
+    >Werkzeug is a comprehensive WSGI web application library. It began as a simple collection of various utilities for WSGI applications and has become one of the most advanced WSGI utility libraries. [Read more..](https://werkzeug.palletsprojects.com/en/2.0.x/)
+
+    This was used to create secure passwords for users accounts.
+
+- #### Heruko:
+    >Heroku is a cloud platform as a service (PaaS) supporting several programming languages. One of the first cloud platforms, Heroku has been in development since June 2007, when it supported only the Ruby programming language, but now supports Java, Node.js, Scala, Clojure, Python, PHP, and Go. [Read more..](https://en.wikipedia.org/wiki/Heroku)
+
+    This was used to host the app.
+
+- #### JQuery:
+    >jQuery is a JavaScript library designed to simplify HTML DOM tree traversal and manipulation, as well as event handling, CSS animation, and Ajax. [Read more..](https://en.wikipedia.org/wiki/JQuery)
+
+    This was used in conjuncture with some of the materialize components.
+
+- #### RandomKeyGen:
+    >Our free mobile-friendly tool offers a variety of randomly generated keys and passwords you can use to secure any application, service or device. [Read more..](https://randomkeygen.com/)
+
+    This was used to create secure codes for the app
+
+- #### Jinja:
+    >Jinja is a fast, expressive, extensible templating engine. Special placeholders in the template allow writing code similar to Python syntax. Then the template is passed data to render the final document.[Read more..](https://jinja.palletsprojects.com/en/3.0.x/)
+
+    This was used to add logic to the HTML and dynamically populate each page with the appropriate data from the database. 
+
+- #### AmIResponsive:
+    A tool to quickly show how your site or app will look across different devices.[Link to site](http://ami.responsivedesign.is/)
 
 # Testing
 # Bugs and Fixes
