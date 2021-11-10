@@ -7,7 +7,7 @@ $(document).ready(function() {
 $("label").click(function() {
     $(this).parent().find("label").css({
         "background-color": "grey"
-    })
+    });
     $(this).css({
         "background-color": "gold"
     });
