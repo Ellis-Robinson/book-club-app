@@ -27,7 +27,7 @@ def get_books():
     Returns:
         books.html page and passes variables based on logged in status """
 
-    books = mongo.db.books.find().sort('title', 1)
+    books = list(mongo.db.books.find().sort('title', 1))
     reviews = list(mongo.db.reviews.find())
     users = list(mongo.db.users.find())
     if "user" in session:
