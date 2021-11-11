@@ -322,12 +322,120 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 
 # Testing
 
-    - [validation](docs/TESTING-imgs/validation)
-    - [lighthouse](docs/TESTING-imgs/lighthouse)
-    - [user stories](docs/TESTING-imgs/user-stories)
+- [validation](docs/TESTING-imgs/validation)
+- [lighthouse](docs/TESTING-imgs/lighthouse)
+- [user stories](docs/TESTING-imgs/user-stories)
 
-# Bugs and Fixes
 # Deployment
+
+## Initial creation
+
+I created the repository using the following steps:
+ 1. Logging into my [GitHub](https://github.com/Ellis-Robinson) account and clickng the green button near the top left of the page displaying the text **NEW.**
+ 2. This took me to a page with the option to create a new repository. Under *repository template* I clicked on the *code institute* template.
+ I chose a name for the repository suitable for the project and then clicked the *create repository* button.
+ 3. I opened the new repository and clicked the green *gitpod* button to create a new workplace in Gitpod for writing and editing my code to develop the site.
+
+## Github Pages
+
+My project was deployed to GitHub pages using the following steps:
+ 1. Logging in to my [GitHub](https://github.com/Ellis-Robinson) account and opening the relevant repository.
+ 2. Click on the settings button, located just above the green **GITPOD** button.
+ 3. In settings scroll down to the **GitHub Pages** section.
+ 4. Under **source** click the dropdown button labelled **None** and select **Master Branch.**
+ 5. The page will automatically refresh itself and after a few moments the published site link will be availible to click 
+ on the **GitHub Page** section.
+
+## Forking the GitHub Repository
+
+Forking a repository enables us to make a copy of the original repository on our GitHub account so we can view it and make changes with out affecting the original work.
+This is done using the following steps:
+ 1. Log in to [GitHub](https://github.com/Ellis-Robinson) account and select the relevant repository.
+ 2. To the top right of the page there are three the buttons, the furthest right says **Fork.** Click on this button.
+ 3. A copy of the original repository will now be in your account.
+
+## Making a Clone
+
+To make a clone of my project use the following steps:
+ 1. Go to my [account](https://github.com/Ellis-Robinson) and locate relevant repository.
+ 2. Next to the green **Gitpod** button, click on **CODE.**
+ 3. Click on **Download Zip.**
+ 4. Once dowloaded, you can extract the zip file's contents and save to a desktop and run the website locally.
+
+ ## MongoDB
+
+ - Create and account
+ - Create a cluster
+ - Select your region (or the closest one)
+ - Go to Database Access and Add new database user
+ - In drop down menu select 'read and write to any database'
+ - In main menue, select Network Access and Add IP address
+ - In collections section of your cluster select 'Create Database'
+ - Create your first collection when prompted, then add your requiered collections
+ - Insert documents via the 'Insert Document' button
+ 
+ ## Setting up the app
+
+ - Within you work inviroment terminal:
+    - instal Flask. 'pip3 instal Flask' 
+    - Create files. 
+        - 'touch app .py'
+        - 'touch env .py'
+        - 'touch .gitignore'
+- Within the .gitignore file add:
+    - env .py
+    - __ pycache __/
+- Within the env .py file, import operating systems, and enviroment variables:
+    - 'import os'
+    - 'os.environ.setdefault("IP". "0.0.0.0")'
+    - 'os.environ.setdefault("PORT", "5000")'
+    - 'os.environ.setdefault("SERCRET_KEY", "YOUR SECRET KEY")' I used [RandomKeyGen](https://randomkeygen.com/) to get my secret key.
+    - 'os.environ.setdefault("MONGO_URI", "YOUR MONGO URI")' 
+        - To get you monmgo URI go to; Cluster > Overview > Connect > Connect your application. Choose the version of Python you are using, then you can copy and past the sting thats displayed. You will have to update the <database name> and <password>.
+    - 'os.environ.setdefault("MONGO_DBNAME", "YOUR DATABASE NAME")
+
+- Within the app .py file, import opperating systems and flask requirements:
+    - 'import os'
+    - 'from flask import Flask, flash, render_template, redirect, request, session, url_for'
+    - 'if os.path.exists("env,py"): import env' 
+    - Create app variable:
+        - 'app = Flask (__ name __)
+
+## Deploying to Heroku
+
+- Set up the files that Heroku will need. In the terminal of your work enviroment type:
+    - 'pip3 freeze --lead > requirements.txt
+    - 'echo web: python app .py > Procfile'
+
+- Push files to github before deploying to Heroku
+
+- On Heroku:
+    - Create a new app
+    - pick deployment method 'Github' for automatic deployment
+    - find your repo and connect to app
+    - go to settings > Reveal Config vars
+        - Add IP, PORT, SECRET_KEY, MONGO_URI and MONGO_DBNAME
+    - enable auto deployment
+    - deploy
+
+## Connect Flask to MongoDB
+
+- In the terminal of your work enviroment:
+    - 'pip3 install flask-pymongo'
+    - 'pip3 install dnspython'
+    - pip3 freeze -- local > requirements.txt
+
+- In yopur app-py file:
+    - 'from flask_pymongo import PyMongo
+    - 'from bson.objectid import ObjectId'
+    - 'app.config["MONGO_DBNAME"] = os.environ.get["MONGO_DBNAME"]
+    - 'app.config["MONGO_URI"] = os.environ.get["MONGO_URI"]
+    - 'app.secret_key = os.environ.get["SECRET_KEY"]
+    - 'mongo = PyMongo(app)'
+    
+ 
+
+
 # Credits
 
 - Code
