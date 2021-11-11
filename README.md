@@ -322,7 +322,9 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 
 # Testing
 
-Find the testing results [here](docs/TESTING-imgs)
+    - [validation](docs/TESTING-imgs/validation)
+    - [lighthouse](docs/TESTING-imgs/lighthouse)
+    - [user stories](docs/TESTING-imgs/user-stories)
 
 # Bugs and Fixes
 # Deployment

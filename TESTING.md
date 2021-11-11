@@ -155,24 +155,24 @@ Testing was done throughout the project via chrome development tools. I also use
 
 1. As a user I want to know what the app is for
 
-![user story 1](docs/TESTING-imgs/userstories/testing-user-stories-1.png)
+![user story 1](docs/TESTING-imgs/user-stories/testing-user-stories-1.png)
 
 2. As a user I want to be able to make an account
     
-![user story 2](docs/TESTING-imgs/userstories/testing-user-stories-2.png)
+![user story 2](docs/TESTING-imgs/user-stories/testing-user-stories-2.png)
 
 3. As a registired user I want to be able to write reviews
 
-![user story 3](docs/TESTING-imgs/userstories/testing-user-stories-3.png)
+![user story 3](docs/TESTING-imgs/user-stories/testing-user-stories-3.png)
 
 4. As a registired user I want to be able to edit my reviews
 
-![user story 4](docs/TESTING-imgs/userstories/testing-user-stories-4.png)
+![user story 4](docs/TESTING-imgs/user-stories/testing-user-stories-4.png)
 
 5. As a registired user I want to be able to delete my reviews
 
-![user story 5](docs/TESTING-imgs/userstories/testing-user-stories-5.png)
+![user story 5](docs/TESTING-imgs/user-stories/testing-user-stories-5.png)
 
 6. As a registired user I want to be able to Add books
 
-![user story 6](docs/TESTING-imgs/userstories/testing-user-stories-6.png)
+![user story 6](docs/TESTING-imgs/user-stories/testing-user-stories-6.png)
