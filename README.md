@@ -2,7 +2,11 @@
 
 As part of my full-stack software development diploma, I have created an application utilising database storage. The focus has been on the back-end programming, allowing users to store and manipulate data via the frontend.  
  
-This is a book review app on which users can create an account, add books, review books and save a list of books they have read and that they want to read. 
+This is a book review app on which users can create an account, add books, review books and save a list of books they have read and that they want to read.
+
+![Am I Responsive](docs/README-imgs/book-club-am-i-responsive.png)
+
+You can view the app [Here](http://ellis-book-club-app.herokuapp.com/get_books)
 
 # Contents
 
@@ -57,8 +61,9 @@ At first I simply wantd a clean and light design, but as it developed I wanted i
 ### Typography
 
 Fitting with the 'classic' astetic, I chose two main fonts: 
-    ![Italianno](docs/README-imgs/font-italianno.png)
-    ![Martel600](docs/README-imgs/font-martel.png)
+    
+![Italianno](docs/README-imgs/font-italianno.png)
+![Martel600](docs/README-imgs/font-martel.png)
 
 
 ### Wireframes
