@@ -41,7 +41,6 @@ This is a book review app on which users can create an account, add books, revie
 4. As a registired user I want to be able to edit my reviews
 5. As a registired user I want to be able to delete my reviews
 6. As a registired user I want to be able to Add books
-7. As a registired user I want to be able to vote books up or down
 
 ## Design
 ### Color scheme and imagery
@@ -323,6 +322,7 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 
 # Testing
 
+Find the testing results [here](docs/TESTING-imgs)
 
 # Bugs and Fixes
 # Deployment
