@@ -459,6 +459,8 @@ To make a clone of my project use the following steps:
 
     classic study - https://www.pinterest.co.uk/pin/368310075752357476/
 
+    favicon - https://favicon.io/favicon-converter/
+
 
 - data
 
