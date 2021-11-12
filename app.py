@@ -629,28 +629,35 @@ def delete_book(book_id):
 
     Returns:
         'get_books' view """
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
-    users = list(mongo.db.users.find())
-
-    if user["admin"]:
+    # checks if user is logged in
+    if "user" in session:
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        users = list(mongo.db.users.find())
         book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
-        reviews = mongo.db.reviews.find()
-        mongo.db.books.remove(book)
-        # finds reviews connected to book via book id
-        for review in reviews:
-            if review["book_id"] == str(book["_id"]):
-                mongo.db.reviews.remove(review)
-        # removes book id from users books_read array
-        for user in users:
-            mongo.db.users.update_one(
-                user, {"$pull": {"books_read": str(book["_id"])}})
+        # checks if book exists
+        if book:
+            if user["admin"]:
+                reviews = mongo.db.reviews.find()
+                mongo.db.books.remove(book)
+                # finds reviews connected to book via book id
+                for review in reviews:
+                    if review["book_id"] == str(book["_id"]):
+                        mongo.db.reviews.remove(review)
+                # removes book id from users books_read array
+                for user in users:
+                    mongo.db.users.update_one(
+                        user, {"$pull": {"books_read": str(book["_id"])}})
 
-        flash("Book Successfully Removed")
-        return redirect(url_for('get_books'))
-    flash("Sorry, You are not autherised to do that")
-    return redirect(url_for('get_books'))
+                flash("Book Successfully Removed")
+                return redirect(url_for('get_books'))
+            flash("Sorry, You are not autherised to do that")
+            return redirect(url_for('get_books'))
+        flash("Book no longer in our database")
+        return render_template("404.html")
+    flash("You need to be logged in to do that")
+    return render_template("log_in.html")
 
 
 @app.route("/add_genre", methods=["GET", "POST"])
