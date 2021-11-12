@@ -23,7 +23,6 @@ mongo = PyMongo(app)
 @app.route("/get_books")
 def get_books():
     """ finds all books, reviews and users from the database.
-
     Returns:
         books.html page and passes variables based on logged in status """
 
@@ -53,7 +52,6 @@ def search():
     Returns:
         books.html page with books that match the users input.
         Passes variables depending on logged in status """
-
     query = request.form.get("query")
     books = list(mongo.db.books.find(
         {"$text": {"$search": query}}))
@@ -78,7 +76,6 @@ def sign_up():
 
     Returns:
         log_in.html page """
-
     if request.method == "POST":
         users = mongo.db.users.find()
         password = request.form.get("password")
@@ -117,7 +114,6 @@ def log_in():
 
     Returns:
         'profile' view """
-
     if request.method == "POST":
         # checks if user already exists in db
         existing_user = mongo.db.users.find_one({
@@ -153,7 +149,6 @@ def profile(username):
 
         'log_in' view.
         if user has not passed log in checks in current session """
-
     if "user" in session:
         user = mongo.db.users.find_one(
             {"username": session["user"]})
@@ -176,7 +171,6 @@ def edit_account(username):
 
         '401.html'
         if logged in as different user """
-
     if "user" in session:
         user = mongo.db.users.find_one(
             {"username": username})
@@ -208,7 +202,6 @@ def change_password():
 
         'edit_account.html'
         if passwords dont pass, match criteria """
-
     if "user" in session:
         if request.method == "POST":
             user = mongo.db.users.find_one({"username": session["user"]})
@@ -246,7 +239,6 @@ def add_book():
 
         'review_book.html'
         if book successfully added to databse """
-
     # checks if user in session
     if "user" in session:
         books = mongo.db.books.find()
@@ -304,7 +296,6 @@ def edit_book(book_id):
 
         '404.html'
         if book doesnt exist in database """
-
     if "user" in session:
         # finds book
         book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
@@ -407,7 +398,6 @@ def update_book_rating(book):
     """ finds avarage rating for book and updates book document in database
 
     book (dic): document from 'books' collection """
-
     reviews = mongo.db.reviews.find()
     list_of_ratings = []
     for review in reviews:
@@ -436,7 +426,6 @@ def my_reviews():
 
         'my_reviews.html'
         with variables for all books and reviews in database """
-
     if "user" in session:
         user = mongo.db.users.find_one({
             "username": session["user"]
@@ -468,7 +457,6 @@ def edit_review(review_id):
 
         '404.html'
         if review doesnt exist in database """
-
     # cheks if user is logged in
     if "user" in session:
         user = mongo.db.users.find_one({"username": session["user"]})
@@ -526,7 +514,6 @@ def confirm_review_delete(review_id):
 
         '404.html'
         if review doesnt exist in database """
-
     # checks if user is logged in
     if "user" in session:
         user = mongo.db.users.find_one({
@@ -558,35 +545,41 @@ def delete_review(review_id):
     Returns:
         'get_books'
         view if book is successfully deleted """
-
-    user = mongo.db.users.find_one({
-        "username": session["user"]
-    })
-    # finds the review
-    review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-
-    book = {}
-    books = list(mongo.db.books.find())
-    # finds the book linked to review
-    for doc in books:
-        if str(doc["_id"]) == review["book_id"]:
-            book = doc
-    # removed review from database
-    mongo.db.reviews.remove({"_id": ObjectId(review_id)})
-    # finds user who left the review
-    reviewer = mongo.db.users.find_one(
-        {"_id": ObjectId(review["reviewed_by"])})
-    # removes book from books_reviewed section of relevent user
-    if review["reviewed_by"] == str(user["_id"]):
-        mongo.db.users.update_one(
-            user, {"$pull": {"books_reviewed": str(book["_id"])}})
-    elif review["reviewed_by"] == str(reviewer["_id"]):
-        mongo.db.users.update_one(
-            reviewer, {"$pull": {"books_reviewed": str(book["_id"])}})
-
-    flash("Review Successfully Removed")
-    update_book_rating(book)
-    return redirect(url_for('get_books'))
+    if "user" in session:
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        # finds the review
+        review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+        # checks if review exists
+        if review:
+            # finds the book linked to review
+            book = mongo.db.books.find_one(
+                {"_id": ObjectId(review["book_id"])})
+            # checks if review belongs to user or if user admin
+            if review["reviewed_by"] == str(user["_id"]) or user["admin"]:
+                # removed review from database
+                mongo.db.reviews.remove({"_id": ObjectId(review_id)})
+                # finds user who left the review
+                reviewer = mongo.db.users.find_one(
+                    {"_id": ObjectId(review["reviewed_by"])})
+                # removes book from books_reviewed section of relevent user
+                if review["reviewed_by"] == str(user["_id"]):
+                    mongo.db.users.update_one(
+                        user, {"$pull": {"books_reviewed": str(book["_id"])}})
+                elif review["reviewed_by"] == str(reviewer["_id"]):
+                    mongo.db.users.update_one(
+                        reviewer, {"$pull": {
+                                   "books_reviewed": str(book["_id"])}})
+                flash("Review Successfully Removed")
+                update_book_rating(book)
+                return redirect(url_for('get_books'))
+            flash("You can only delete your own reviews")
+            return render_template("401.html")
+        flash("Sorry, this review no longer exists")
+        return render_template("404.html")
+    flash("You need to be logged in to do that")
+    return render_template("log_in.html")
 
 
 @app.route("/confirm_book_delete/<book_id>")
@@ -607,7 +600,6 @@ def confirm_book_delete(book_id):
 
         '404.html'
         if review doesnt exist in database """
-
     # checks if user is logged in
     if "user" in session:
         user = mongo.db.users.find_one({
@@ -637,7 +629,6 @@ def delete_book(book_id):
 
     Returns:
         'get_books' view """
-
     user = mongo.db.users.find_one({
         "username": session["user"]
     })
@@ -675,7 +666,6 @@ def add_genre():
 
         'add_genre.html'
         if correct user logged in """
-
     # checks if user is logged in
     if "user" in session:
         user = mongo.db.users.find_one({
@@ -714,7 +704,6 @@ def edit_genre():
 
         'add_genre.html'
         if correct user logged in """
-
     # checks if user is logged in
     if "user" in session:
         user = mongo.db.users.find_one({
@@ -758,7 +747,6 @@ def remove_user():
 
         'remove_user.html'
         if correct user logged in """
-
     # checks if user is logged in
     if "user" in session:
         user = mongo.db.users.find_one({
@@ -797,7 +785,6 @@ def my_library():
 
         'my_library.html'
         if user is logged in """
-
     # checks if user is logged in
     if "user" in session:
         books = list(mongo.db.books.find())
@@ -844,7 +831,6 @@ def add_to_library(book_id):
 
         'get_books' view
         if book already in users library """
-
     # checks if user is logged in
     if "user" in session:
         book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
@@ -901,7 +887,6 @@ def remove_from_books_read(book_id):
 
     Returns:
         'my_library' view """
-
     user = mongo.db.users.find_one({
         "username": session["user"]})
     if request.method == "POST":
@@ -922,7 +907,6 @@ def remove_from_to_read(book_id):
 
     Returns:
         'my_library' view """
-
     user = mongo.db.users.find_one({
         "username": session["user"]})
 
@@ -942,12 +926,11 @@ def add_to_books_read(book_id):
     """ adds book to users books read section in library
     and removes it from users books to read section
 
-    book_id (ObjectId): '_id' field of book dictionary, passed from frontend.
+    book_id (string): '_id' field of book dictionary, passed from frontend.
 
     Returns:
         'my_library' view """
-
-    book = mongo.db.books.find_one({"_id": book_id})
+    book = mongo.db.books.find_one({"_id": ObjectId(book_id)})
     # checks if book exists
     if book:
         user = mongo.db.users.find_one({
@@ -974,7 +957,6 @@ def log_out():
 
     Returns:
         'log_in' view """
-
     # removes user from session
     session.pop("user")
     flash("You have successfully logged out")
