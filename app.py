@@ -981,6 +981,18 @@ def log_out():
     return redirect(url_for("log_in"))
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    '''redirects to custom 404 page when 404 error found'''
+    return render_template('404.html', error=error), 400
+
+
+@app.errorhandler(401)
+def unauthorized_access(error):
+    '''redirects to custom 401 page when 401 error found'''
+    return render_template('401.html', error=error), 401
+
+
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
