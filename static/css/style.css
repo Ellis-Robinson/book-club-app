@@ -138,6 +138,10 @@ h6 {
     background-color: transparent !important;
 }
 
+.no-background {
+    background-color: transparent !important;
+}
+
 /* forms */
 .rating>p {
     display: inline;
