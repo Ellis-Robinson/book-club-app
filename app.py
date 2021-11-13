@@ -741,6 +741,45 @@ def edit_genre():
     return redirect(url_for("log_in"))
 
 
+@app.route("/remove_genre", methods=["GET", "POST"])
+def remove_genre():
+    """ removes document in 'genres' collection in database.
+
+    Returns:
+        'log_in' view
+        if user not currently logged in.
+
+        '401.html'
+        if incorrect user logged in.
+
+        'remove_genre.html'
+        if correct user logged in """
+    # checks if user is logged in
+    if "user" in session:
+        user = mongo.db.users.find_one({
+            "username": session["user"]
+        })
+        # checks if user is admin
+        if user["admin"]:
+            # gets all genres in collection
+            genres = list(mongo.db.genres.find())
+            if request.method == "POST":
+                # links selected genre with correct genre in database
+                # and updates
+                for genre in genres:
+                    if genre["name"] == request.form.get("current_genre"):
+                        mongo.db.genres.remove(genre)
+                        break
+
+                flash("genre successfully deleted")
+                return redirect(url_for("remove_genre"))
+            return render_template("remove_genre.html", genres=genres)
+        flash("Only admin can edit genres")
+        return render_template("401.html")
+    flash("You need to be logged in to do that")
+    return redirect(url_for("log_in"))
+
+
 @app.route("/remove_user", methods=["GET", "POST"])
 def remove_user():
     """ removes document from 'users' collection in database.
