@@ -176,3 +176,15 @@ Testing was done throughout the project via chrome development tools. I also use
 6. As a registired user I want to be able to Add books
 
 ![user story 6](docs/TESTING-imgs/user-stories/testing-user-stories-6.png)
+
+7. As an admin I want to be able to add genres
+
+![user story 7](docs/TESTING-imgs/user-stories/testing-user-stories-7.png)
+
+8. As an admin I want to be able to edit genres
+
+![user story 8](docs/TESTING-imgs/user-stories/testing-user-stories-8.png)
+
+9. As an admin I want to be able to remove users
+
+![user story 9](docs/TESTING-imgs/user-stories/testing-user-stories-9.png)
