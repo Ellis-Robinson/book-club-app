@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3 class="center-align white-text text-shadow large-heading"> Remove Genre </h3>
+
+<div class="row">
+    <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST" action="{{ url_for('remove_genre') }}">
+        <div class="row center-align">
+            <div class="input-field col s12">
+                <select id="current_genre" name="current_genre" class="validate" required>
+                    <option disabled selected>Choose the Genre To Remove</option>
+                    {% for genre in genres %}
+                    <option value="{{ genre.name }}">{{ genre.name.capitalize() }}</option>
+                    {% endfor %}
+                </select>
+                <label for="current_genre">Current Genre</label>
+            </div>
+        </div>
+        <div class="row center-align">
+            <button class="btn waves-effect waves-light line-height-0 red darken-2" type="submit" name="action">Delete Genre
+                <i class="fas fa-remove"></i>
+            </button>
+        </div>
+    </form>
+</div>
+<div class="row">
+    <div class="col s12 m6 offset-m3 shadow-background white-text center-align">
+        <h3 class="medium-heading"><u>Current Genres</u></h3>
+        <ul>
+            {% for genre in genres %}
+            <li>{{ genre.name.capitalize() }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}
