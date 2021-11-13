@@ -46,6 +46,11 @@ You can view the app [Here](http://ellis-book-club-app.herokuapp.com/get_books)
 5. As a registired user I want to be able to delete my reviews
 6. As a registired user I want to be able to Add books
 
+### Admin Users
+7. As an admin I want to be able to add genres
+8. As an admin I want to be able to edit genres
+9. As an admin I want to be able to remove users
+
 ## Design
 ### Color scheme and imagery
 
