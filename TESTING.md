@@ -127,7 +127,7 @@ Testing was done throughout the project via chrome development tools. I also use
 
 ![add.book.html](docs/TESTING-imgs/lighthouse/lighthouse-my_reviews-mobile.png)
 
-- ### remove_user.html deskptop
+- ### remove_user.html desktop
 
 ![add.book.html](docs/TESTING-imgs/lighthouse/lighthouse-remove_user-desktop.png)
 
@@ -161,19 +161,19 @@ Testing was done throughout the project via chrome development tools. I also use
     
 ![user story 2](docs/TESTING-imgs/user-stories/testing-user-stories-2.png)
 
-3. As a registired user I want to be able to write reviews
+3. As a registered user I want to be able to write reviews
 
 ![user story 3](docs/TESTING-imgs/user-stories/testing-user-stories-3.png)
 
-4. As a registired user I want to be able to edit my reviews
+4. As a registered user I want to be able to edit my reviews
 
 ![user story 4](docs/TESTING-imgs/user-stories/testing-user-stories-4.png)
 
-5. As a registired user I want to be able to delete my reviews
+5. As a registered user I want to be able to delete my reviews
 
 ![user story 5](docs/TESTING-imgs/user-stories/testing-user-stories-5.png)
 
-6. As a registired user I want to be able to Add books
+6. As a registered user I want to be able to Add books
 
 ![user story 6](docs/TESTING-imgs/user-stories/testing-user-stories-6.png)
 
