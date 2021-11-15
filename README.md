@@ -32,19 +32,19 @@ You can view the app [Here](http://ellis-book-club-app.herokuapp.com/get_books)
 
 ### Site owner goals
 - Have an intuitive site
-- Have the site look clean and unmuddled
-- Build a media presence to increase the nember of user to increase the range of books and reviews.
+- Have the site look clear
+- Build a media presence to increase the number of user to increase the range of books and reviews
 
 ## User Stories
 ### First time users
 1. As a user I want to know what the app is for
 2.  As a user I want to be able to make an account
     
-### Registired Users
-3. As a registired user I want to be able to write reviews
-4. As a registired user I want to be able to edit my reviews
-5. As a registired user I want to be able to delete my reviews
-6. As a registired user I want to be able to Add books
+### Registered Users
+3. As a registered user I want to be able to write reviews
+4. As a registered user I want to be able to edit my reviews
+5. As a registered user I want to be able to delete my reviews
+6. As a registered user I want to be able to Add books
 
 ### Admin Users
 7. As an admin I want to be able to add genres
@@ -54,7 +54,7 @@ You can view the app [Here](http://ellis-book-club-app.herokuapp.com/get_books)
 ## Design
 ### Color scheme and imagery
 
-At first I simply wantd a clean and light design, but as it developed I wanted it to feel remenicent of a classic study, or warm cluttered library; Deep browns and green, with imagry of books. The layout was to be functional and professional, whilst still maintaining a warm and cosy feel. 
+At first I simply wanted a clean and light design, but as it developed I wanted it to feel reminiscent of a classic study, or warm cluttered library; Deep browns and green, with imagery of books. The layout was to be functional and professional, whilst still maintaining a warm and cosy feel. 
 
 
 ![Stacks of books](docs/README-imgs/large-selection-of-books.jpg)
@@ -65,7 +65,7 @@ At first I simply wantd a clean and light design, but as it developed I wanted i
 
 ### Typography
 
-Fitting with the 'classic' astetic, I chose two main fonts: 
+Fitting with the 'classic' aesthetic, I chose two main fonts: 
     
 ![Italianno](docs/README-imgs/font-italianno.png)
 ![Martel600](docs/README-imgs/font-martel.png)
@@ -73,8 +73,8 @@ Fitting with the 'classic' astetic, I chose two main fonts:
 
 ### Wireframes
 
-Althought the final product differs from these first designs, the layout and pages are mostly the same.
-[link to wireframs](docs/README-imgs/wireframes)
+Although the final product differs from these first designs, the layout and pages are mostly the same.
+[link to wireframes](docs/README-imgs/wireframes)
 
 ### Database
 
@@ -96,7 +96,7 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 
     *If the user is logged in:*
 
-        - A 'Search Books' link is located at the rop right. This takes the user to the home page.
+        - A 'Search Books' link is located at the top right. This takes the user to the home page.
 
         - A 'My Library' link is located at the top right. This takes the user to a page where they can view books they have saved.
 
@@ -106,7 +106,7 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 
         - A 'Log out' link is located at the top right. This logs the user out and takes them to the log in page.
 
-    **On screens with a max-width of 600px, the 'Book Club' link is top center and there is a drop down nav bar located at the top left of the screen with all the same links as the larger screens.**
+    **On screens with a max-width of 600px, the 'Book Club' link is top centre and there is a drop down nav bar located at the top left of the screen with all the same links as the larger screens.**
 
 - ## Home page
 
@@ -114,7 +114,7 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 
     *If the user is not logged in:*
 
-        - There is a flashing call to action in the center of the screen which takes the user to the sign up page.
+        - There is a flashing call to action in the centre of the screen which takes the user to the sign up page.
 
         - Below the CTA there is a search bar which takes an input.
 
@@ -126,7 +126,7 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 
     *If the user is logged in:*
 
-        - Above the list of books is an 'Add Book' button. This takes the user to a page to add a book tot he databse.
+        - Above the list of books is an 'Add Book' button. This takes the user to a page to add a book to the databse.
 
         - Below each book, after it has been clicked, is an 'Add to Library' button. This takes the user to a page where they can chose to add the selected book to one of two lists in their library.
 
@@ -169,7 +169,7 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
         - 'Search books' (This links to the home page)
         - 'Add Book'
         - 'My Reviews'
-        - 'My Lubrary'
+        - 'My Library'
         - 'Edit Account' 
 
 - ## Add Book
@@ -250,7 +250,7 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 
     - A 'contact us' page 
     - Pagination 
-    - Links to allow bookshop purchaces via the app
+    - Links to allow bookshop purchases via the app
     - Links to single pages for each book with more information and links to similar books
 
 # Technologies
@@ -264,7 +264,7 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 - #### CSS3:
     >Cascading Style Sheets (CSS) is a style sheet language used for describing the presentation of a document written in a markup language such as HTML. [Read more..](https://en.wikipedia.org/wiki/CSS#CSS_3)
 
-    This was used to create custom styles for the HTML pages, as well as suppliment some of the frameworks used.
+    This was used to create custom styles for the HTML pages, as well as supplement some of the frameworks used.
 
 - #### Python:
     >Python is an interpreted high-level general-purpose programming language. Its design philosophy emphasizes code readability with its use of significant indentation. Its language constructs as well as its object-oriented approach aim to help programmers write clear, logical code for small and large-scale projects. [Read more..](https://en.wikipedia.org/wiki/Python)
@@ -280,12 +280,12 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 - #### GitPod:
     >Gitpod is a container-based development platform that puts developer experience first. Gitpod provisions ready-to-code developer environments in the cloud accessible through your browser (on your computer or tablet) and your local IDE. [Read more..](https://www.gitpod.io/docs)
 
-    This was used as the development enviroment for the entire project.
+    This was used as the development environment for the entire project.
 
 - #### FontAwesome:
     >Font Awesome is a font and icon toolkit based on CSS and Less. [Read more..](https://en.wikipedia.org/wiki/Font_Awesome)
 
-    This was used for a number of icons throughout the app, to increase the UX and intuitivness.
+    This was used for a number of icons throughout the app, to increase the UX and intuitiveness.
 
 - #### Materialise:
     >Created and designed by Google, Material Design is a design language that combines the classic principles of successful design along with innovation and technology. [Read more..](https://materializecss.com/about.html)
@@ -332,14 +332,14 @@ The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines
 
 # Testing
 
-Please find the results of my tetsting [here](TESTING.md)
+Please find the results of my testing [here](TESTING.md)
 
 # Deployment
 
 ## Initial creation
 
 I created the repository using the following steps:
- 1. Logging into my [GitHub](https://github.com/Ellis-Robinson) account and clickng the green button near the top left of the page displaying the text **NEW.**
+ 1. Logging into my [GitHub](https://github.com/Ellis-Robinson) account and clicking the green button near the top left of the page displaying the text **NEW.**
  2. This took me to a page with the option to create a new repository. Under *repository template* I clicked on the *code institute* template.
  I chose a name for the repository suitable for the project and then clicked the *create repository* button.
  3. I opened the new repository and clicked the green *gitpod* button to create a new workplace in Gitpod for writing and editing my code to develop the site.
@@ -351,7 +351,7 @@ My project was deployed to GitHub pages using the following steps:
  2. Click on the settings button, located just above the green **GITPOD** button.
  3. In settings scroll down to the **GitHub Pages** section.
  4. Under **source** click the dropdown button labelled **None** and select **Master Branch.**
- 5. The page will automatically refresh itself and after a few moments the published site link will be availible to click 
+ 5. The page will automatically refresh itself and after a few moments the published site link will be available to click 
  on the **GitHub Page** section.
 
 ## Forking the GitHub Repository
@@ -368,7 +368,7 @@ To make a clone of my project use the following steps:
  1. Go to my [account](https://github.com/Ellis-Robinson) and locate relevant repository.
  2. Next to the green **Gitpod** button, click on **CODE.**
  3. Click on **Download Zip.**
- 4. Once dowloaded, you can extract the zip file's contents and save to a desktop and run the website locally.
+ 4. Once downloaded, you can extract the zip file's contents and save to a desktop and run the website locally.
 
  ## MongoDB
 
@@ -377,14 +377,14 @@ To make a clone of my project use the following steps:
  - Select your region (or the closest one)
  - Go to Database Access and Add new database user
  - In drop down menu select 'read and write to any database'
- - In main menue, select Network Access and Add IP address
+ - In main menu, select Network Access and Add IP address
  - In collections section of your cluster select 'Create Database'
- - Create your first collection when prompted, then add your requiered collections
+ - Create your first collection when prompted, then add your required collections
  - Insert documents via the 'Insert Document' button
  
  ## Setting up the app
 
- - Within you work inviroment terminal:
+ - Within you work environment terminal:
     - instal Flask. 'pip3 instal Flask' 
     - Create files. 
         - 'touch app .py'
@@ -393,16 +393,16 @@ To make a clone of my project use the following steps:
 - Within the .gitignore file add:
     - env .py
     - __ pycache __/
-- Within the env .py file, import operating systems, and enviroment variables:
+- Within the env .py file, import operating systems, and environment variables:
     - 'import os'
     - 'os.environ.setdefault("IP". "0.0.0.0")'
     - 'os.environ.setdefault("PORT", "5000")'
     - 'os.environ.setdefault("SERCRET_KEY", "YOUR SECRET KEY")' I used [RandomKeyGen](https://randomkeygen.com/) to get my secret key.
     - 'os.environ.setdefault("MONGO_URI", "YOUR MONGO URI")' 
-        - To get you monmgo URI go to; Cluster > Overview > Connect > Connect your application. Choose the version of Python you are using, then you can copy and past the sting thats displayed. You will have to update the <database name> and <password>.
+        - To get you monmgo URI go to; Cluster > Overview > Connect > Connect your application. Choose the version of Python you are using, then you can copy and paste the string that is displayed. You will have to update the <database name> and <password>.
     - 'os.environ.setdefault("MONGO_DBNAME", "YOUR DATABASE NAME")
 
-- Within the app .py file, import opperating systems and flask requirements:
+- Within the app .py file, import operating systems and flask requirements:
     - 'import os'
     - 'from flask import Flask, flash, render_template, redirect, request, session, url_for'
     - 'if os.path.exists("env,py"): import env' 
@@ -411,7 +411,7 @@ To make a clone of my project use the following steps:
 
 ## Deploying to Heroku
 
-- Set up the files that Heroku will need. In the terminal of your work enviroment type:
+- Set up the files that Heroku will need. In the terminal of your work environment type:
     - 'pip3 freeze --lead > requirements.txt
     - 'echo web: python app .py > Procfile'
 
@@ -428,12 +428,12 @@ To make a clone of my project use the following steps:
 
 ## Connect Flask to MongoDB
 
-- In the terminal of your work enviroment:
+- In the terminal of your work environment:
     - 'pip3 install flask-pymongo'
     - 'pip3 install dnspython'
     - pip3 freeze -- local > requirements.txt
 
-- In yopur app-py file:
+- In your app-py file:
     - 'from flask_pymongo import PyMongo
     - 'from bson.objectid import ObjectId'
     - 'app.config["MONGO_DBNAME"] = os.environ.get["MONGO_DBNAME"]
