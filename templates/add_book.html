@@ -7,7 +7,7 @@
     <form class="col s12 m6 offset-m3 shadow-background white-text" method="POST" action="{{ url_for('add_book') }}">
         <div class="row">
             <div class="input-field col s12 ">
-                <input id="title" name="title" type="text" maxlength="50" pattern="^[a-zA-Z0-9_-]{1,50}$" class="validate" required>
+                <input id="title" name="title" type="text" maxlength="50" pattern="^[a-zA-Z0-9_-\s]{1,50}$" class="validate" required>
                 <label for="title">Title</label>
             </div>
         </div>
@@ -24,7 +24,7 @@
         </div>
         <div class="row">
             <div class="input-field col s12 ">
-                <input id="author" name="author" type="text" maxlength="30" pattern="^[a-zA-Z0-9_-]{1,20}$" class="validate" required>
+                <input id="author" name="author" type="text" maxlength="30" pattern="^[a-zA-Z0-9_-\s]{1,20}$" class="validate" required>
                 <label for="author">Author</label>
             </div>
         </div>

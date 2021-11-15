@@ -4,6 +4,7 @@
 
 <h4 class=" center-align white-text text-shadow">Books I've read</h4>
 <!--Books read collapsible-->
+{% if books_read|length > 0 %}
 <ul class="collapsible row">
     <!-- Shows books from users books_read list-->
     {% for book in books_read %}
@@ -57,7 +58,12 @@
     </li>
     {% endfor %}
 </ul>
+{% else %}
+<div class="center-align white-text">
+    <h2 class="shadow-background">Find some books you've read..</h2>
+    <a href="{{ url_for('get_books') }}" class="waves-effect waves-light btn-small green darken-4">Search Books</a>
 </div>
+{% endif %}
 
 
 <h4 class="center-align white-text offset-m3 text-shadow">Books To Read</h5>
@@ -124,7 +130,7 @@
     </ul>
     {% else %}
     <div class="center-align white-text">
-        <h2>Find some books to read..</h2>
+        <h2 class="shadow-background">Find some books to read..</h2>
         <a href="{{ url_for('get_books') }}" class="waves-effect waves-light btn-small green darken-4">Search Books</a>
     </div>
     {% endif %}
