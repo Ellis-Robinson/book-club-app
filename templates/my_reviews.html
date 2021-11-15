@@ -4,6 +4,7 @@
 <h3 class="center-align white-text text-shadow large-heading"> My Reviews </h3>
 <div class=row>
     <div class=" col s12 m8 offset-m2">
+        {% if user["books_reviewed"]|length > 0 %}
         <ul class="collapsible">
             {% for review in reviews %}
             <!-- checks if review was posted by user -->
@@ -35,6 +36,12 @@
             {% endif %}
             {% endfor %}
         </ul>
+        {% else %}
+        <div class="center-align white-text">
+            <h2 class="shadow-background">Find some books to review..</h2>
+            <a href="{{ url_for('get_books') }}" class="waves-effect waves-light btn-small green darken-4">Search
+                Books</a>
+        </div>
+        {% endif %}
     </div>
-</div>
-{% endblock %}
+    {% endblock %}
