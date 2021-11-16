@@ -36,9 +36,9 @@
                     <li><a href="{{ url_for('my_library') }}">My Library</a></li>
                     <li><a href="{{ url_for('my_reviews') }}">My Reviews</a></li>
                     <li><a href="{{ url_for('profile', username=session['user']) }}"><i class="fa fa-user"></i></a></li>
-                    <li><a href="{{ url_for('log_out') }}">Log out</a></li>
+                    <li><a href="{{ url_for('log_out') }}">Log Out</a></li>
                     {% else %}
-                    <li><a href="{{ url_for('log_in') }}">Log in</a></li>
+                    <li><a href="{{ url_for('log_in') }}">Log In</a></li>
                     <li><a href="{{ url_for('sign_up') }}">Sign Up</a></li>
                     {% endif %}
                 </ul>
