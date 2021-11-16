@@ -8,7 +8,7 @@
         <div class="row center-align">
             <div class="input-field col s12">
                 <select id="selected_user" name="selected_user" class="validate" required>
-                    <option value="" disabled selected>Choose the User To Remove</option>
+                    <option value="" disabled selected>Choose The User To Remove</option>
                     {% for user in users %}
                     {% if user.username != session["user"] %}
                     <option value="{{ user.username }}">{{ user.username.capitalize() }}</option>
