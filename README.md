@@ -78,7 +78,24 @@ Although the final product differs from these first designs, the layout and page
 
 ### Database
 
-The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines the relationship between different documents within.
+The database was designed on [dbdiagram](https://dbdiagram.io/home) and outlines the relationship between different documents within. 
+#### Collections: 
+- Users
+- Books
+- Genres
+- Reviews
+#### The Connections:
+One-To-Many (1:N)
+ -  User;username- 1:N -Books;added_by
+ -  User;username- 1:N -Reviews;reviewed_by
+ -  Books;rating- 1:N -Reviews;rating
+ -  Books;_ id- 1:N -Reviews;book_id
+ -  Books;title- 1:N -Reviews;book_id
+ -  Genres;genre- 1:N -Books;genre
+Many-To-Many (N:M)
+- Users;books_read- N:M -Books;_ id
+- Users;books_to_read- N:M -Books;_ id
+- Users;books_reviewed- N:M -Books;_ id
 ![Data Structure](docs/README-imgs/data-structure.png)
 
 ## Features
