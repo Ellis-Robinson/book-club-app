@@ -117,8 +117,7 @@ def log_in():
     if request.method == "POST":
         # checks if user already exists in db
         existing_user = mongo.db.users.find_one({
-            "username": request.form.get("username").lower()})
-
+           "username": request.form.get("username").lower()})
         if existing_user:
             # checks if the password for user is correct
             if check_password_hash(existing_user["password"],
